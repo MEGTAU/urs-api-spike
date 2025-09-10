@@ -1,15 +1,4 @@
 paths:
-  /interactions:
-    get:
-      summary: Get all interactions
-      description: An API to record interactions for future reference. Can initially implement writing to DB and then migrate to higher performance approach (e.g. using queues) if required
-      responses:
-        '200':
-          description: A list of interactions.
-          content:
-            application/json:
-              schema:
-                $ref: './components.yaml#/components/schemas/InteractionList'
     post:
       summary: Create an interaction
       description: An API to record interactions for future reference. Can initially implement writing to DB and then migrate to higher performance approach (e.g. using queues) if required
