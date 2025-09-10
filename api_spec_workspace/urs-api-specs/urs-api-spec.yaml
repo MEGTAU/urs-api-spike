@@ -85,17 +85,6 @@ paths:
           description: Anonymised contact information.
         '404':
           description: Contact not found
-  /cdp-users:
-    get:
-      summary: Get all CDP users
-      description: A user in the CDP backend. Every CDP user is also a Contact (but not every contact is a CDP user)
-      responses:
-        '200':
-          description: A list of CDP users.
-          content:
-            application/json:
-              schema:
-                $ref: './components.yaml#/components/schemas/CDPUserList'
   /synced-records:
     get:
       summary: Get all synced records
@@ -635,99 +624,6 @@ components:
           example: 440e8400-e29b-41d4-a716-446655440000
         payload:
           type: object
-    CDPUser:
-      type: object
-      description: A user in the CDP backend. Every CDP user is also a Contact (but not every contact is a CDP user)
-      properties:
-        contactId:
-          type: string
-          format: uuid
-          example: 550e8400-e29b-41d4-a716-446655440000
-        firstName:
-          type: string
-          example: Duncan
-        lastName:
-          type: string
-          example: Stewart
-        mobileNumber:
-          type: string
-          example: '+61491570006'
-        middleName:
-          type: string
-          example: Nicholas
-        dateOfBirth:
-          type: string
-          format: date
-          example: '2008-04-29'
-        id:
-          type: string
-          format: uuid
-          example: 2a092fa1-b32a-4483-a0e7-612a89407e36
-        apprentice:
-          type: object
-          properties:
-            apprenticeId:
-              type: string
-              example: '1123156465'
-            employerName:
-              type: string
-              example: QV Electrical
-            usi:
-              type: string
-              example: 223456789N
-            worksiteState:
-              type: string
-              example: ACT
-        email:
-          type: string
-          example: user@example.com
-        memberships:
-          type: array
-          items:
-            type: object
-            properties:
-              role:
-                type: string
-                example: SuperAdmin
-              organisation:
-                type: object
-                properties:
-                  tradingName:
-                    type: string
-                    example: tradingName
-                  id:
-                    type: string
-                    format: uuid
-                    example: e5c67a05-1662-417f-a39b-4ed245032bf2
-    CDPUserList:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/CDPUser'
-        offset:
-          type: integer
-          format: int32
-        limit:
-          type: integer
-          format: int32
-        total_count:
-          type: integer
-          format: int32
-    MergeContactsRequest:
-      type: object
-      properties:
-        primaryContactId:
-          type: string
-          format: uuid
-        secondaryContactIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        deleteSecondaryContactsAfterMerge:
-          type: boolean
     SyncedRecord:
       type: object
       description: A record synced from an external system, identified by the system link, by background processing
