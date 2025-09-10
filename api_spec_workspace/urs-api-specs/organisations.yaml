@@ -37,20 +37,6 @@ paths:
       responses:
         '201':
           description: Organisations created
-    put:
-      summary: Bulk update organisations
-      description: Organisation resource
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: './components.yaml#/components/schemas/Organisation'
-      responses:
-        '200':
-          description: Organisations updated
   /organisations/{organisationId}:
     get:
       summary: Get an organisation by ID
