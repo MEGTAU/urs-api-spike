@@ -1,0 +1,837 @@
+paths:
+  /contacts:
+    get:
+      summary: Search for contacts
+      description: General contact search to facilitate the "do i know you" use case.
+      parameters:
+        - name: includedFields
+          in: query
+          description: A list that may have the values "disclosure-settings", "contact-information", "communication-preferences", "analysis", "system-links", "relationships"
+          schema:
+            type: array
+            items:
+              type: string
+              enum: ["disclosure-settings", "contact-information", "communication-preferences", "analysis", "system-links", "relationships"]
+        - $ref: './components.yaml#/components/parameters/LimitParam'
+        - $ref: './components.yaml#/components/parameters/OffsetParam'
+      responses:
+        '200':
+          description: A list of contacts.
+          content:
+            application/json:
+              schema:
+                $ref: './components.yaml#/components/schemas/ContactList'
+    post:
+      summary: Create a contact
+      description: Represents an individual. Note that specifying meaning included fields may require multiple joins so consider performance implications.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/Contact'
+      responses:
+        '201':
+          description: Contact created
+  /contacts/bulk:
+    post:
+      summary: Bulk create contacts
+      description: Represents an individual. Note that specifying meaning included fields may require multiple joins so consider performance implications.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: './components.yaml#/components/schemas/Contact'
+      responses:
+        '201':
+          description: Contacts created
+    put:
+      summary: Bulk update contacts
+      description: Represents an individual. Note that specifying meaning included fields may require multiple joins so consider performance implications.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: './components.yaml#/components/schemas/Contact'
+      responses:
+        '200':
+          description: Contacts updated
+  /contacts/merge:
+    put:
+      summary: Merge contacts
+      description: Manually merges data from the secondary record(s) into the primary record. Data from the primary record takes precedence. Data in list is appended unless the entries are duplicates.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/MergeContactsRequest'
+      responses:
+        '200':
+          description: Contacts merged
+  /contacts/{contactId}:
+    get:
+      summary: Get a contact by ID
+      description: Represents an individual. Note that specifying meaning included fields may require multiple joins so consider performance implications.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: includedFields
+          in: query
+          description: A list that may have the values "disclosure-settings", "contact-information", "communication-preferences", "analysis", "system-links", "relationships"
+          schema:
+            type: array
+            items:
+              type: string
+              enum: ["disclosure-settings", "contact-information", "communication-preferences", "analysis", "system-links", "relationships"]
+      responses:
+        '200':
+          description: A single contact.
+          content:
+            application/json:
+              schema:
+                $ref: './components.yaml#/components/schemas/Contact'
+        '404':
+          description: Contact not found
+    put:
+      summary: Update a contact
+      description: Represents an individual. Note that specifying meaning included fields may require multiple joins so consider performance implications.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/Contact'
+      responses:
+        '200':
+          description: Contact updated
+        '404':
+          description: Contact not found
+    delete:
+      summary: Delete a contact
+      description: Represents an individual. Note that specifying meaning included fields may require multiple joins so consider performance implications.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Contact deleted
+        '404':
+          description: Contact not found
+  /contacts/{contactId}/disclosure-settings:
+    get:
+      summary: Get disclosure settings for a contact
+      description: Information disclosure settings for a contact.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Disclosure settings for the contact.
+        '404':
+          description: Contact not found
+    put:
+      summary: Update disclosure settings for a contact
+      description: Information disclosure settings for a contact.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Disclosure settings updated
+        '404':
+          description: Contact not found
+  /contacts/{contactId}/communication-preferences:
+    get:
+      summary: Get communication preferences for a contact
+      description: Includes per-channel (e.g. SMS, email, etc) in an extensible format that can support any channel
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A list of communication preferences.
+          content:
+            application/json:
+              schema:
+                $ref: './components.yaml#/components/schemas/CommunicationPreferenceList'
+        '404':
+          description: Contact not found
+    post:
+      summary: Create a communication preference for a contact
+      description: Includes per-channel (e.g. SMS, email, etc) in an extensible format that can support any channel
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/CommunicationPreference'
+      responses:
+        '201':
+          description: Communication preference created
+        '404':
+          description: Contact not found
+  /contacts/{contactId}/communication-preferences/{preferenceId}:
+    put:
+      summary: Update a communication preference for a contact
+      description: Includes per-channel (e.g. SMS, email, etc) in an extensible format that can support any channel
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: preferenceId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/CommunicationPreference'
+      responses:
+        '200':
+          description: Communication preference updated
+        '404':
+          description: Contact or preference not found
+  /contacts/{contactId}/contact-information:
+    get:
+      summary: Get contact information for a contact
+      description: Contains information about how the contact may be contacted.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A list of contact information.
+          content:
+            application/json:
+              schema:
+                $ref: './components.yaml#/components/schemas/ContactInformationList'
+        '404':
+          description: Contact not found
+    post:
+      summary: Add contact information to a contact
+      description: Contains information about how the contact may be contacted.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/ContactInformation'
+      responses:
+        '201':
+          description: Contact information added
+        '404':
+          description: Contact not found
+  /contacts/{contactId}/contact-information/{infoId}:
+    put:
+      summary: Update contact information
+      description: Contains information about how the contact may be contacted.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: infoId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/ContactInformation'
+      responses:
+        '200':
+          description: Contact information updated
+        '404':
+          description: Contact or information not found
+    delete:
+      summary: Delete contact information
+      description: Contains information about how the contact may be contacted.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: infoId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Contact information deleted
+        '404':
+          description: Contact or information not found
+  /contacts/{contactId}/roles:
+    get:
+      summary: Get roles for a contact
+      description: Contains information about the roles the contact has held at present and in the past
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: activeRoles
+          in: query
+          description: Only return active roles.
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: A list of roles for the contact.
+          content:
+            application/json:
+              schema:
+                $ref: './components.yaml#/components/schemas/RoleList'
+        '404':
+          description: Contact not found
+    post:
+      summary: Add a role to a contact
+      description: Contains information about the roles the contact has held at present and in the past
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/Role'
+      responses:
+        '201':
+          description: Role added
+        '404':
+          description: Contact not found
+  /contacts/{contactId}/roles/{roleId}:
+    put:
+      summary: Update a role for a contact
+      description: Contains information about the roles the contact has held at present and in the past
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/Role'
+      responses:
+        '200':
+          description: Role updated
+        '404':
+          description: Contact or role not found
+    delete:
+      summary: Delete a role for a contact
+      description: Contains information about the roles the contact has held at present and in the past
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Role deleted
+        '404':
+          description: Contact or role not found
+  /contacts/{contactId}/analyses:
+    get:
+      summary: Get analyses for a contact
+      description: Contains the results for an analysis (e.g vibrancy index classification) of the contact
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A list of analyses for the contact.
+          content:
+            application/json:
+              schema:
+                $ref: './components.yaml#/components/schemas/AnalysisList'
+        '404':
+          description: Contact not found
+    post:
+      summary: Add an analysis for a contact
+      description: Contains the results for an analysis (e.g vibrancy index classification) of the contact
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/Analysis'
+      responses:
+        '201':
+          description: Analysis added
+        '404':
+          description: Contact not found
+  /contacts/{contactId}/analyses/bulk:
+    post:
+      summary: Bulk create analyses for a contact
+      description: Contains the results for an analysis (e.g vibrancy index classification) of the contact
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: './components.yaml#/components/schemas/Analysis'
+      responses:
+        '201':
+          description: Analyses created
+        '404':
+          description: Contact not found
+    put:
+      summary: Bulk update analyses for a contact
+      description: Contains the results for an analysis (e.g vibrancy index classification) of the contact
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: './components.yaml#/components/schemas/Analysis'
+      responses:
+        '200':
+          description: Analyses updated
+        '404':
+          description: Contact not found
+  /contacts/{contactId}/analyses/{analysisId}:
+    put:
+      summary: Update an analysis for a contact
+      description: Contains the results for an analysis (e.g vibrancy index classification) of the contact
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: analysisId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/Analysis'
+      responses:
+        '200':
+          description: Analysis updated
+        '404':
+          description: Contact or analysis not found
+    delete:
+      summary: Delete an analysis for a contact
+      description: Contains the results for an analysis (e.g vibrancy index classification) of the contact
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: analysisId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Analysis deleted
+        '404':
+          description: Contact or analysis not found
+  /contacts/{contactId}/system-links:
+    get:
+      summary: Get system links for a contact
+      description: Each link describes a reference to the record for the contact in another ssytem, such as an SMS or LMS.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A list of system links for the contact.
+          content:
+            application/json:
+              schema:
+                $ref: './components.yaml#/components/schemas/SystemLinkList'
+        '404':
+          description: Contact not found
+    post:
+      summary: Add a system link for a contact
+      description: Each link describes a reference to the record for the contact in another ssytem, such as an SMS or LMS.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/SystemLink'
+      responses:
+        '201':
+          description: System link added
+        '404':
+          description: Contact not found
+  /contacts/{contactId}/system-links/bulk:
+    post:
+      summary: Bulk create system links for a contact
+      description: Each link describes a reference to the record for the contact in another ssytem, such as an SMS or LMS.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: './components.yaml#/components/schemas/SystemLink'
+      responses:
+        '201':
+          description: System links created
+        '404':
+          description: Contact not found
+    put:
+      summary: Bulk update system links for a contact
+      description: Each link describes a reference to the record for the contact in another ssytem, such as an SMS or LMS.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: './components.yaml#/components/schemas/SystemLink'
+      responses:
+        '200':
+          description: System links updated
+        '404':
+          description: Contact not found
+  /contacts/{contactId}/system-links/{linkId}:
+    put:
+      summary: Update a system link for a contact
+      description: Each link describes a reference to the record for the contact in another ssytem, such as an SMS or LMS.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: linkId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/SystemLink'
+      responses:
+        '200':
+          description: System link updated
+        '404':
+          description: Contact or link not found
+    delete:
+      summary: Delete a system link for a contact
+      description: Each link describes a reference to the record for the contact in another ssytem, such as an SMS or LMS.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: linkId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: System link deleted
+        '404':
+          description: Contact or link not found
+  /contacts/{contactId}/documents:
+    get:
+      summary: Get documents for a contact
+      description: Each document object represents a document about the user, such as a resume or cover letter.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A list of documents for the contact.
+          content:
+            application/json:
+              schema:
+                $ref: './components.yaml#/components/schemas/DocumentList'
+        '404':
+          description: Contact not found
+    post:
+      summary: Add a document for a contact
+      description: Each document object represents a document about the user, such as a resume or cover letter.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/Document'
+      responses:
+        '201':
+          description: Document added
+        '404':
+          description: Contact not found
+  /contacts/{contactId}/documents/bulk:
+    post:
+      summary: Bulk create documents for a contact
+      description: Each document object represents a document about the user, such as a resume or cover letter.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: './components.yaml#/components/schemas/Document'
+      responses:
+        '201':
+          description: Documents created
+        '404':
+          description: Contact not found
+    put:
+      summary: Bulk update documents for a contact
+      description: Each document object represents a document about the user, such as a resume or cover letter.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: './components.yaml#/components/schemas/Document'
+      responses:
+        '200':
+          description: Documents updated
+        '404':
+          description: Contact not found
+  /contacts/{contactId}/documents/{documentId}:
+    put:
+      summary: Update a document for a contact
+      description: Each document object represents a document about the user, such as a resume or cover letter.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: documentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/Document'
+      responses:
+        '200':
+          description: Document updated
+        '404':
+          description: Contact or document not found
+    delete:
+      summary: Delete a document for a contact
+      description: Each document object represents a document about the user, such as a resume or cover letter.
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: documentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Document deleted
+        '404':
+          description: Contact or document not found

@@ -1,0 +1,109 @@
+paths:
+  /organisations:
+    get:
+      summary: Get all organisations
+      description: Organisation resource
+      responses:
+        '200':
+          description: A list of organisations.
+          content:
+            application/json:
+              schema:
+                $ref: './components.yaml#/components/schemas/OrganisationList'
+    post:
+      summary: Create an organisation
+      description: Organisation resource
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/Organisation'
+      responses:
+        '201':
+          description: Organisation created
+  /organisations/bulk:
+    post:
+      summary: Bulk create organisations
+      description: Organisation resource
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: './components.yaml#/components/schemas/Organisation'
+      responses:
+        '201':
+          description: Organisations created
+    put:
+      summary: Bulk update organisations
+      description: Organisation resource
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: './components.yaml#/components/schemas/Organisation'
+      responses:
+        '200':
+          description: Organisations updated
+  /organisations/{organisationId}:
+    get:
+      summary: Get an organisation by ID
+      description: Organisation resource
+      parameters:
+        - name: organisationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A single organisation.
+          content:
+            application/json:
+              schema:
+                $ref: './components.yaml#/components/schemas/Organisation'
+        '404':
+          description: Organisation not found
+    put:
+      summary: Update an organisation
+      description: Organisation resource
+      parameters:
+        - name: organisationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/Organisation'
+      responses:
+        '200':
+          description: Organisation updated
+        '404':
+          description: Organisation not found
+    delete:
+      summary: Delete an organisation
+      description: Organisation resource
+      parameters:
+        - name: organisationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Organisation deleted
+        '404':
+          description: Organisation not found
