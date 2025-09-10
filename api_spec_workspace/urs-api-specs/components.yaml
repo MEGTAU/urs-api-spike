@@ -429,22 +429,6 @@ components:
           example: 440e8400-e29b-41d4-a716-446655440000
         payload:
           type: object
-    InteractionList:
-      type: object
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/Interaction'
-        offset:
-          type: integer
-          format: int32
-        limit:
-          type: integer
-          format: int32
-        total_count:
-          type: integer
-          format: int32
     CDPUser:
       type: object
       description: A user in the CDP backend. Every CDP user is also a Contact (but not every contact is a CDP user)
