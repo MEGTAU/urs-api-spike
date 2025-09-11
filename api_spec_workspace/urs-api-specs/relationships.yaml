@@ -2,7 +2,7 @@ paths:
   /relationships:
     get:
       summary: Get all relationships
-      description: Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a roles for each member in the relationship
+      description: Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a profiles for each member in the relationship
       responses:
         '200':
           description: A list of relationships.
@@ -12,7 +12,7 @@ paths:
                 $ref: './components.yaml#/components/schemas/RelationshipList'
     post:
       summary: Create a relationship
-      description: Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a roles for each member in the relationship
+      description: Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a profiles for each member in the relationship
       requestBody:
         required: true
         content:
@@ -25,7 +25,7 @@ paths:
   /relationships/bulk:
     put:
       summary: Bulk update relationships
-      description: Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a roles for each member in the relationship
+      description: Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a profiles for each member in the relationship
       requestBody:
         required: true
         content:
@@ -40,7 +40,7 @@ paths:
   /relationships/{relationshipId}:
     get:
       summary: Get a relationship by ID
-      description: Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a roles for each member in the relationship
+      description: Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a profiles for each member in the relationship
       parameters:
         - name: relationshipId
           in: path
@@ -59,7 +59,7 @@ paths:
           description: Relationship not found
     put:
       summary: Update a relationship
-      description: Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a roles for each member in the relationship
+      description: Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a profiles for each member in the relationship
       parameters:
         - name: relationshipId
           in: path
@@ -80,7 +80,7 @@ paths:
           description: Relationship not found
     delete:
       summary: Delete a relationship
-      description: Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a roles for each member in the relationship
+      description: Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a profiles for each member in the relationship
       parameters:
         - name: relationshipId
           in: path

@@ -45,10 +45,10 @@ paths:
     $ref: './contacts.yaml#/paths/~1contacts~1{contactId}~1contact-information'
   /contacts/{contactId}/contact-information/{infoId}:
     $ref: './contacts.yaml#/paths/~1contacts~1{contactId}~1contact-information~1{infoId}'
-  /contacts/{contactId}/roles:
-    $ref: './contacts.yaml#/paths/~1contacts~1{contactId}~1roles'
-  /contacts/{contactId}/roles/{roleId}:
-    $ref: './contacts.yaml#/paths/~1contacts~1{contactId}~1roles~1{roleId}'
+  /contacts/{contactId}/profiles:
+    $ref: './contacts.yaml#/paths/~1contacts~1{contactId}~1profiles'
+  /contacts/{contactId}/profiles/{profileId}:
+    $ref: './contacts.yaml#/paths/~1contacts~1{contactId}~1profiles~1{profileId}'
   /contacts/{contactId}/analyses:
     $ref: './contacts.yaml#/paths/~1contacts~1{contactId}~1analyses'
   /contacts/{contactId}/analyses/bulk:
@@ -86,7 +86,7 @@ paths:
 #  /anonymised-contacts/{contactId}:
 #    get:
 #      summary: Get an anonymised contact by ID
-#      description: Provide access of to contact information with no PII included. Can be used to to control access to PII alongside roles and permissions
+#      description: Provide access of to contact information with no PII included. Can be used to to control access to PII alongside profiles and permissions
 #      parameters:
 #        - name: contactId
 #          in: path
@@ -260,10 +260,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ContactInformation'
-        roles:
+        profiles:
           type: array
           items:
-            $ref: '#/components/schemas/Role'
+            $ref: '#/components/schemas/Profile'
         memberships:
           type: array
           items:
@@ -345,9 +345,9 @@ components:
         total_count:
           type: integer
           format: int32
-    Role:
+    Profile:
       type: object
-      description: Contains information about the roles the contact has held at present and in the past
+      description: Contains information about the profiles the contact has held at present and in the past
       properties:
         id:
           type: string
@@ -367,15 +367,15 @@ components:
         isActive:
           type: string
           example: 'true'
-        roleInformation:
+        profileInformation:
           type: object
-    RoleList:
+    ProfileList:
       type: object
       properties:
         entries:
           type: array
           items:
-            $ref: '#/components/schemas/Role'
+            $ref: '#/components/schemas/Profile'
         offset:
           type: integer
           format: int32
@@ -387,7 +387,7 @@ components:
           format: int32
     Relationship:
       type: object
-      description: Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a roles for each member in the relationship
+      description: Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a profiles for each member in the relationship
       properties:
         id:
           type: string

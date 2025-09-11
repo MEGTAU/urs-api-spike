@@ -315,10 +315,10 @@ paths:
           description: Contact information deleted
         '404':
           description: Contact or information not found
-  /contacts/{contactId}/roles:
+  /contacts/{contactId}/profiles:
     get:
-      summary: Get roles for a contact
-      description: Contains information about the roles the contact has held at present and in the past
+      summary: Get profiles for a contact
+      description: Contains information about the profiles the contact has held at present and in the past
       parameters:
         - name: contactId
           in: path
@@ -326,23 +326,23 @@ paths:
           schema:
             type: string
             format: uuid
-        - name: activeRoles
+        - name: activeProfiles
           in: query
-          description: Only return active roles.
+          description: Only return active profiles.
           schema:
             type: boolean
       responses:
         '200':
-          description: A list of roles for the contact.
+          description: A list of profiles for the contact.
           content:
             application/json:
               schema:
-                $ref: './components.yaml#/components/schemas/RoleList'
+                $ref: './components.yaml#/components/schemas/ProfileList'
         '404':
           description: Contact not found
     post:
-      summary: Add a role to a contact
-      description: Contains information about the roles the contact has held at present and in the past
+      summary: Add a profile to a contact
+      description: Contains information about the profiles the contact has held at present and in the past
       parameters:
         - name: contactId
           in: path
@@ -355,16 +355,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components.yaml#/components/schemas/Role'
+              $ref: './components.yaml#/components/schemas/Profile'
       responses:
         '201':
-          description: Role added
+          description: Profile added
         '404':
           description: Contact not found
-  /contacts/{contactId}/roles/{roleId}:
+  /contacts/{contactId}/profiles/{profileId}:
     put:
-      summary: Update a role for a contact
-      description: Contains information about the roles the contact has held at present and in the past
+      summary: Update a profile for a contact
+      description: Contains information about the profiles the contact has held at present and in the past
       parameters:
         - name: contactId
           in: path
@@ -372,7 +372,7 @@ paths:
           schema:
             type: string
             format: uuid
-        - name: roleId
+        - name: profileId
           in: path
           required: true
           schema:
@@ -383,15 +383,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components.yaml#/components/schemas/Role'
+              $ref: './components.yaml#/components/schemas/Profile'
       responses:
         '200':
-          description: Role updated
+          description: Profile updated
         '404':
-          description: Contact or role not found
+          description: Contact or profile not found
     delete:
-      summary: Delete a role for a contact
-      description: Contains information about the roles the contact has held at present and in the past
+      summary: Delete a profile for a contact
+      description: Contains information about the profiles the contact has held at present and in the past
       parameters:
         - name: contactId
           in: path
@@ -399,7 +399,7 @@ paths:
           schema:
             type: string
             format: uuid
-        - name: roleId
+        - name: profileId
           in: path
           required: true
           schema:
@@ -407,9 +407,9 @@ paths:
             format: uuid
       responses:
         '204':
-          description: Role deleted
+          description: Profile deleted
         '404':
-          description: Contact or role not found
+          description: Contact or profile not found
   /contacts/{contactId}/analyses:
     get:
       summary: Get analyses for a contact
