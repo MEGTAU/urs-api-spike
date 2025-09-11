@@ -83,130 +83,130 @@ paths:
     $ref: './interactions.yaml#/paths/~1interactions'
   /interactions/bulk:
     $ref: './interactions.yaml#/paths/~1interactions~1bulk'
-  /anonymised-contacts/{contactId}:
-    get:
-      summary: Get an anonymised contact by ID
-      description: Provide access of to contact information with no PII included. Can be used to to control access to PII alongside roles and permissions
-      parameters:
-        - name: contactId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Anonymised contact information.
-        '404':
-          description: Contact not found
-  /synced-records:
-    get:
-      summary: Get all synced records
-      description: A record synced from an external system, identified by the system link, by background processing
-      responses:
-        '200':
-          description: A list of synced records.
-          content:
-            application/json:
-              schema:
-                $ref: './components.yaml#/components/schemas/SyncedRecordList'
-    post:
-      summary: Create a synced record
-      description: A record synced from an external system, identified by the system link, by background processing
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: './components.yaml#/components/schemas/SyncedRecord'
-      responses:
-        '201':
-          description: Synced record created
-  /synced-records/bulk:
-    post:
-      summary: Bulk create synced records
-      description: A record synced from an external system, identified by the system link, by background processing
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: './components.yaml#/components/schemas/SyncedRecord'
-      responses:
-        '201':
-          description: Synced records created
-    put:
-      summary: Bulk update synced records
-      description: A record synced from an external system, identified by the system link, by background processing
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: './components.yaml#/components/schemas/SyncedRecord'
-      responses:
-        '200':
-          description: Synced records updated
-  /synced-records/{recordId}:
-    get:
-      summary: Get a synced record by ID
-      description: A record synced from an external system, identified by the system link, by background processing
-      parameters:
-        - name: recordId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: A single synced record.
-          content:
-            application/json:
-              schema:
-                $ref: './components.yaml#/components/schemas/SyncedRecord'
-        '404':
-          description: Synced record not found
-    put:
-      summary: Update a synced record
-      description: A record synced from an external system, identified by the system link, by background processing
-      parameters:
-        - name: recordId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: './components.yaml#/components/schemas/SyncedRecord'
-      responses:
-        '200':
-          description: Synced record updated
-        '404':
-          description: Synced record not found
-    delete:
-      summary: Delete a synced record
-      description: A record synced from an external system, identified by the system link, by background processing
-      parameters:
-        - name: recordId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '204':
-          description: Synced record deleted
-        '404':
-          description: Synced record not found
+#  /anonymised-contacts/{contactId}:
+#    get:
+#      summary: Get an anonymised contact by ID
+#      description: Provide access of to contact information with no PII included. Can be used to to control access to PII alongside roles and permissions
+#      parameters:
+#        - name: contactId
+#          in: path
+#          required: true
+#          schema:
+#            type: string
+#            format: uuid
+#      responses:
+#        '200':
+#          description: Anonymised contact information.
+#        '404':
+#          description: Contact not found
+#  /synced-records:
+#    get:
+#      summary: Get all synced records
+#      description: A record synced from an external system, identified by the system link, by background processing
+#      responses:
+#        '200':
+#          description: A list of synced records.
+#          content:
+#            application/json:
+#              schema:
+#                $ref: './components.yaml#/components/schemas/SyncedRecordList'
+#    post:
+#      summary: Create a synced record
+#      description: A record synced from an external system, identified by the system link, by background processing
+#      requestBody:
+#        required: true
+#        content:
+#          application/json:
+#            schema:
+#              $ref: './components.yaml#/components/schemas/SyncedRecord'
+#      responses:
+#        '201':
+#          description: Synced record created
+#  /synced-records/bulk:
+#    post:
+#      summary: Bulk create synced records
+#      description: A record synced from an external system, identified by the system link, by background processing
+#      requestBody:
+#        required: true
+#        content:
+#          application/json:
+#            schema:
+#              type: array
+#              items:
+#                $ref: './components.yaml#/components/schemas/SyncedRecord'
+#      responses:
+#        '201':
+#          description: Synced records created
+#    put:
+#      summary: Bulk update synced records
+#      description: A record synced from an external system, identified by the system link, by background processing
+#      requestBody:
+#        required: true
+#        content:
+#          application/json:
+#            schema:
+#              type: array
+#              items:
+#                $ref: './components.yaml#/components/schemas/SyncedRecord'
+#      responses:
+#        '200':
+#          description: Synced records updated
+#  /synced-records/{recordId}:
+#    get:
+#      summary: Get a synced record by ID
+#      description: A record synced from an external system, identified by the system link, by background processing
+#      parameters:
+#        - name: recordId
+#          in: path
+#          required: true
+#          schema:
+#            type: string
+#            format: uuid
+#      responses:
+#        '200':
+#          description: A single synced record.
+#          content:
+#            application/json:
+#              schema:
+#                $ref: './components.yaml#/components/schemas/SyncedRecord'
+#        '404':
+#          description: Synced record not found
+#    put:
+#      summary: Update a synced record
+#      description: A record synced from an external system, identified by the system link, by background processing
+#      parameters:
+#        - name: recordId
+#          in: path
+#          required: true
+#          schema:
+#            type: string
+#            format: uuid
+#      requestBody:
+#        required: true
+#        content:
+#          application/json:
+#            schema:
+#              $ref: './components.yaml#/components/schemas/SyncedRecord'
+#      responses:
+#        '200':
+#          description: Synced record updated
+#        '404':
+#          description: Synced record not found
+#    delete:
+#      summary: Delete a synced record
+#      description: A record synced from an external system, identified by the system link, by background processing
+#      parameters:
+#        - name: recordId
+#          in: path
+#          required: true
+#          schema:
+#            type: string
+#            format: uuid
+#      responses:
+#        '204':
+#          description: Synced record deleted
+#        '404':
+#          description: Synced record not found
 components:
   schemas:
     Contact:
