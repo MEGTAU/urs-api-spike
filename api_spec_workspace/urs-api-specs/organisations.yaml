@@ -58,7 +58,7 @@ paths:
         '404':
           description: Organisation not found
     put:
-      summary: Update an organisation
+      summary: Update (or create) an organisation
       description: Organisation resource
       parameters:
         - name: organisationId
@@ -76,8 +76,8 @@ paths:
       responses:
         '200':
           description: Organisation updated
-        '404':
-          description: Organisation not found
+        '201':
+          description: A new record was created following the upsert approach.
     delete:
       summary: Delete an organisation
       description: Organisation resource
