@@ -1,0 +1,2170 @@
+openapi: 3.0.0
+info:
+  description: "API for the Universal Relationship Service, providing a unified view\
+    \ of contacts and their relationships.\n\nIndividual operations are provided for\
+    \ contact sub-resources to provide a simple mechanism to edit data without having\
+    \ to deal with the entire contact object.\n\nBulk operations have been included\
+    \ for contact sub-resources that may be generated using a batch extract or analysis\
+    \ process.\n\nThe API structured to implemented gradually. For example, external\
+    \ system integrations will be implemented after the first release. An HTTP 501\
+    \ (Not implemented) response will be returned for API methods that are not yet\
+    \ implemented.\n\n### **Multiple Roles per Contacts**\n\nThis API supports the\
+    \ fact that an individual may act in different capacities through time. Therefore\
+    \ each contact has a number of `profiles`, such as `student`, `parent/guardian`,\
+    \ or `employer contact` associated with it. \n\nThe API supports well-known attributes\
+    \ used by multiple profile-types, as well as a generic JSON attributes that are\
+    \ used to store information that is specific to the profile type.\n\n### **Usage\
+    \ of Upsert Approach**\n\nThe upsert approach is used to either create or update\
+    \ records like contacts or organisations. This pattern uses a single **PUT** request\
+    \ to either create a new resource or update an existing one. \n\n3. **Creation\
+    \ or Update:**  \n* If the record does not exist, the server creates a new record.\
+    \ The response should be a `201 Created` status code.  \n* If the record does\
+    \ exist, the server updates the existing record with the new data. The response\
+    \ should be a `200 OK` or `204 No Content` status code.\n\n**Advantages:**\n*\
+    \ Simpler Client Logic: The client doesn't need to perform a preliminary `GET`\
+    \ request to check for the resource's existence. It can simply use a single `PUT`\
+    \ request.  \n* Idempotent: The `PUT` method is **idempotent**, meaning that multiple\
+    \ identical requests will have the same effect as a single request. This is a\
+    \ key principle of RESTful design.\n"
+  title: Universal Relationship Service API
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/api/v1
+paths:
+  /contacts:
+    get:
+      description: General contact search to facilitate the "do i know you" use case.
+      operationId: contactsGET
+      parameters:
+      - description: "A list that may have the values \"disclosure-settings\", \"\
+          contact-information\", \"communication-preferences\", \"analysis\", \"system-links\"\
+          , \"relationships\""
+        in: query
+        name: includedFields
+        schema:
+          items:
+            enum:
+            - disclosure-settings
+            - contact-information
+            - communication-preferences
+            - analysis
+            - system-links
+            - relationships
+            type: string
+          type: array
+      - description: The number of items to return.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: The number of items to skip before starting to collect the result
+          set.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactList"
+          description: A list of contacts.
+      summary: Search for contacts
+      x-eov-operation-handler: controllers/DefaultController
+    post:
+      description: Represents an individual. Note that specifying meaning included
+        fields may require multiple joins so consider performance implications.
+      operationId: contactsPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Contact"
+        required: true
+      responses:
+        "201":
+          description: Contact created
+      summary: Create a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/bulk:
+    post:
+      description: Represents an individual. Note that specifying meaning included
+        fields may require multiple joins so consider performance implications.
+      operationId: contactsBulkPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: "#/components/schemas/Contact"
+              type: array
+        required: true
+      responses:
+        "201":
+          description: Contacts created
+      summary: Bulk create contacts
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/merge:
+    put:
+      description: Manually merges data from the secondary record(s) into the primary
+        record. Data from the primary record takes precedence. Data in list is appended
+        unless the entries are duplicates.
+      operationId: contactsMergePUT
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MergeContactsRequest"
+        required: true
+      responses:
+        "200":
+          description: Contacts merged
+      summary: Merge contacts
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}:
+    delete:
+      description: Represents an individual. Note that specifying meaning included
+        fields may require multiple joins so consider performance implications.
+      operationId: contactsContactIdDELETE
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "204":
+          description: Contact deleted
+        "404":
+          description: Contact not found
+      summary: Delete a contact
+      x-eov-operation-handler: controllers/DefaultController
+    get:
+      description: Represents an individual. Note that specifying meaning included
+        fields may require multiple joins so consider performance implications.
+      operationId: contactsContactIdGET
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: "A list that may have the values \"disclosure-settings\", \"\
+          contact-information\", \"communication-preferences\", \"analysis\", \"system-links\"\
+          , \"relationships\""
+        in: query
+        name: includedFields
+        schema:
+          items:
+            enum:
+            - disclosure-settings
+            - contact-information
+            - communication-preferences
+            - analysis
+            - system-links
+            - relationships
+            type: string
+          type: array
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contact"
+          description: A single contact.
+        "404":
+          description: Contact not found
+      summary: Get a contact by ID
+      x-eov-operation-handler: controllers/DefaultController
+    put:
+      description: Represents an individual. Note that specifying meaning included
+        fields may require multiple joins so consider performance implications.
+      operationId: contactsContactIdPUT
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Contact"
+        required: true
+      responses:
+        "200":
+          description: Contact updated
+        "404":
+          description: Contact not found
+      summary: Update a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}/disclosure-settings:
+    get:
+      description: Information disclosure settings for a contact.
+      operationId: contactsContactIdDisclosureSettingsGET
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "200":
+          description: Disclosure settings for the contact.
+        "404":
+          description: Contact not found
+      summary: Get disclosure settings for a contact
+      x-eov-operation-handler: controllers/DefaultController
+    put:
+      description: Information disclosure settings for a contact.
+      operationId: contactsContactIdDisclosureSettingsPUT
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "200":
+          description: Disclosure settings updated
+        "404":
+          description: Contact not found
+      summary: Update disclosure settings for a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}/communication-preferences:
+    get:
+      description: "Includes per-channel (e.g. SMS, email, etc) in an extensible format\
+        \ that can support any channel"
+      operationId: contactsContactIdCommunicationPreferencesGET
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommunicationPreferenceList"
+          description: A list of communication preferences.
+        "404":
+          description: Contact not found
+      summary: Get communication preferences for a contact
+      x-eov-operation-handler: controllers/DefaultController
+    post:
+      description: "Includes per-channel (e.g. SMS, email, etc) in an extensible format\
+        \ that can support any channel"
+      operationId: contactsContactIdCommunicationPreferencesPOST
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommunicationPreference"
+        required: true
+      responses:
+        "201":
+          description: Communication preference created
+        "404":
+          description: Contact not found
+      summary: Create a communication preference for a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}/communication-preferences/{preferenceId}:
+    put:
+      description: "Includes per-channel (e.g. SMS, email, etc) in an extensible format\
+        \ that can support any channel"
+      operationId: contactsContactIdCommunicationPreferencesPreferenceIdPUT
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: preferenceId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommunicationPreference"
+        required: true
+      responses:
+        "200":
+          description: Communication preference updated
+        "404":
+          description: Contact or preference not found
+      summary: Update a communication preference for a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}/contact-information:
+    get:
+      description: Contains information about how the contact may be contacted.
+      operationId: contactsContactIdContactInformationGET
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactInformationList"
+          description: A list of contact information.
+        "404":
+          description: Contact not found
+      summary: Get contact information for a contact
+      x-eov-operation-handler: controllers/DefaultController
+    post:
+      description: Contains information about how the contact may be contacted.
+      operationId: contactsContactIdContactInformationPOST
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactInformation"
+        required: true
+      responses:
+        "201":
+          description: Contact information added
+        "404":
+          description: Contact not found
+      summary: Add contact information to a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}/contact-information/{infoId}:
+    delete:
+      description: Contains information about how the contact may be contacted.
+      operationId: contactsContactIdContactInformationInfoIdDELETE
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: infoId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "204":
+          description: Contact information deleted
+        "404":
+          description: Contact or information not found
+      summary: Delete contact information
+      x-eov-operation-handler: controllers/DefaultController
+    put:
+      description: Contains information about how the contact may be contacted.
+      operationId: contactsContactIdContactInformationInfoIdPUT
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: infoId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactInformation"
+        required: true
+      responses:
+        "200":
+          description: Contact information updated
+        "201":
+          description: A new record was created following the upsert approach.
+      summary: Update (or create) contact information
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}/profiles:
+    get:
+      description: Contains information about the profiles the contact has held at
+        present and in the past
+      operationId: contactsContactIdProfilesGET
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: Only return active profiles.
+        in: query
+        name: activeProfiles
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileList"
+          description: A list of profiles for the contact.
+        "404":
+          description: Contact not found
+      summary: Get profiles for a contact
+      x-eov-operation-handler: controllers/DefaultController
+    post:
+      description: Contains information about the profiles the contact has held at
+        present and in the past
+      operationId: contactsContactIdProfilesPOST
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Profile"
+        required: true
+      responses:
+        "201":
+          description: Profile added
+        "404":
+          description: Contact not found
+      summary: Add a profile to a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}/profiles/{profileId}:
+    delete:
+      description: Contains information about the profiles the contact has held at
+        present and in the past
+      operationId: contactsContactIdProfilesProfileIdDELETE
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: profileId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "204":
+          description: Profile deleted
+        "404":
+          description: Contact or profile not found
+      summary: Delete a profile for a contact
+      x-eov-operation-handler: controllers/DefaultController
+    put:
+      description: Contains information about the profiles the contact has held at
+        present and in the past
+      operationId: contactsContactIdProfilesProfileIdPUT
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: profileId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Profile"
+        required: true
+      responses:
+        "200":
+          description: Profile updated
+        "404":
+          description: Contact or profile not found
+      summary: Update a profile for a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}/analyses:
+    get:
+      description: Contains the results for an analysis (e.g vibrancy index classification)
+        of the contact
+      operationId: contactsContactIdAnalysesGET
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisList"
+          description: A list of analyses for the contact.
+        "404":
+          description: Contact not found
+      summary: Get analyses for a contact
+      x-eov-operation-handler: controllers/DefaultController
+    post:
+      description: Contains the results for an analysis (e.g vibrancy index classification)
+        of the contact
+      operationId: contactsContactIdAnalysesPOST
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Analysis"
+        required: true
+      responses:
+        "201":
+          description: Analysis added
+        "404":
+          description: Contact not found
+      summary: Add an analysis for a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}/analyses/bulk:
+    post:
+      description: Contains the results for an analysis (e.g vibrancy index classification)
+        of the contact
+      operationId: contactsContactIdAnalysesBulkPOST
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: "#/components/schemas/Analysis"
+              type: array
+        required: true
+      responses:
+        "201":
+          description: Analyses created
+        "404":
+          description: Contact not found
+      summary: Bulk create analyses for a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}/analyses/{analysisId}:
+    delete:
+      description: Contains the results for an analysis (e.g vibrancy index classification)
+        of the contact
+      operationId: contactsContactIdAnalysesAnalysisIdDELETE
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: analysisId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "204":
+          description: Analysis deleted
+        "404":
+          description: Contact or analysis not found
+      summary: Delete an analysis for a contact
+      x-eov-operation-handler: controllers/DefaultController
+    put:
+      description: Contains the results for an analysis (e.g vibrancy index classification)
+        of the contact
+      operationId: contactsContactIdAnalysesAnalysisIdPUT
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: analysisId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Analysis"
+        required: true
+      responses:
+        "200":
+          description: Analysis updated
+        "201":
+          description: A new record was created following the upsert approach.
+      summary: Update (or create) an analysis for a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}/system-links:
+    get:
+      description: "Each link describes a reference to the record for the contact\
+        \ in another ssytem, such as an SMS or LMS."
+      operationId: contactsContactIdSystemLinksGET
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SystemLinkList"
+          description: A list of system links for the contact.
+        "404":
+          description: Contact not found
+      summary: Get system links for a contact
+      x-eov-operation-handler: controllers/DefaultController
+    post:
+      description: "Each link describes a reference to the record for the contact\
+        \ in another ssytem, such as an SMS or LMS."
+      operationId: contactsContactIdSystemLinksPOST
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SystemLink"
+        required: true
+      responses:
+        "201":
+          description: System link added
+        "404":
+          description: Contact not found
+      summary: Add a system link for a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}/system-links/bulk:
+    post:
+      description: "Each link describes a reference to the record for the contact\
+        \ in another ssytem, such as an SMS or LMS."
+      operationId: contactsContactIdSystemLinksBulkPOST
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: "#/components/schemas/SystemLink"
+              type: array
+        required: true
+      responses:
+        "201":
+          description: System links created
+        "404":
+          description: Contact not found
+      summary: Bulk create system links for a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}/system-links/{linkId}:
+    delete:
+      description: "Each link describes a reference to the record for the contact\
+        \ in another ssytem, such as an SMS or LMS."
+      operationId: contactsContactIdSystemLinksLinkIdDELETE
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: linkId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "204":
+          description: System link deleted
+        "404":
+          description: Contact or link not found
+      summary: Delete a system link for a contact
+      x-eov-operation-handler: controllers/DefaultController
+    put:
+      description: "Each link describes a reference to the record for the contact\
+        \ in another ssytem, such as an SMS or LMS."
+      operationId: contactsContactIdSystemLinksLinkIdPUT
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: linkId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SystemLink"
+        required: true
+      responses:
+        "200":
+          description: System link updated
+        "201":
+          description: A new record was created following the upsert approach.
+      summary: Update (or create) a system link for a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}/documents:
+    get:
+      description: "Each document object represents a document about the user, such\
+        \ as a resume or cover letter."
+      operationId: contactsContactIdDocumentsGET
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentList"
+          description: A list of documents for the contact.
+        "404":
+          description: Contact not found
+      summary: Get documents for a contact
+      x-eov-operation-handler: controllers/DefaultController
+    post:
+      description: "Each document object represents a document about the user, such\
+        \ as a resume or cover letter."
+      operationId: contactsContactIdDocumentsPOST
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Document"
+        required: true
+      responses:
+        "201":
+          description: Document added
+        "404":
+          description: Contact not found
+      summary: Add a document for a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}/documents/bulk:
+    post:
+      description: "Each document object represents a document about the user, such\
+        \ as a resume or cover letter."
+      operationId: contactsContactIdDocumentsBulkPOST
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: "#/components/schemas/Document"
+              type: array
+        required: true
+      responses:
+        "201":
+          description: Documents created
+        "404":
+          description: Contact not found
+      summary: Bulk create documents for a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /contacts/{contactId}/documents/{documentId}:
+    delete:
+      description: "Each document object represents a document about the user, such\
+        \ as a resume or cover letter."
+      operationId: contactsContactIdDocumentsDocumentIdDELETE
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: documentId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "204":
+          description: Document deleted
+        "404":
+          description: Contact or document not found
+      summary: Delete a document for a contact
+      x-eov-operation-handler: controllers/DefaultController
+    put:
+      description: "Each document object represents a document about the user, such\
+        \ as a resume or cover letter."
+      operationId: contactsContactIdDocumentsDocumentIdPUT
+      parameters:
+      - in: path
+        name: contactId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: documentId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Document"
+        required: true
+      responses:
+        "200":
+          description: Document updated
+        "404":
+          description: Contact or document not found
+      summary: Update a document for a contact
+      x-eov-operation-handler: controllers/DefaultController
+  /relationships:
+    get:
+      description: Define a relationship between two contacts. The relationship will
+        have a type (e.g. parent-child) and a profiles for each member in the relationship
+      operationId: relationshipsGET
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RelationshipList"
+          description: A list of relationships.
+      summary: Get all relationships
+      x-eov-operation-handler: controllers/DefaultController
+    post:
+      description: Define a relationship between two contacts. The relationship will
+        have a type (e.g. parent-child) and a profiles for each member in the relationship
+      operationId: relationshipsPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Relationship"
+        required: true
+      responses:
+        "201":
+          description: Relationship created
+      summary: Create a relationship
+      x-eov-operation-handler: controllers/DefaultController
+  /relationships/bulk:
+    put:
+      description: Define a relationship between two contacts. The relationship will
+        have a type (e.g. parent-child) and a profiles for each member in the relationship
+      operationId: relationshipsBulkPUT
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: "#/components/schemas/Relationship"
+              type: array
+        required: true
+      responses:
+        "200":
+          description: Relationships updated
+      summary: Bulk update relationships
+      x-eov-operation-handler: controllers/DefaultController
+  /relationships/{relationshipId}:
+    delete:
+      description: Define a relationship between two contacts. The relationship will
+        have a type (e.g. parent-child) and a profiles for each member in the relationship
+      operationId: relationshipsRelationshipIdDELETE
+      parameters:
+      - in: path
+        name: relationshipId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "204":
+          description: Relationship deleted
+        "404":
+          description: Relationship not found
+      summary: Delete a relationship
+      x-eov-operation-handler: controllers/DefaultController
+    get:
+      description: Define a relationship between two contacts. The relationship will
+        have a type (e.g. parent-child) and a profiles for each member in the relationship
+      operationId: relationshipsRelationshipIdGET
+      parameters:
+      - in: path
+        name: relationshipId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Relationship"
+          description: A single relationship.
+        "404":
+          description: Relationship not found
+      summary: Get a relationship by ID
+      x-eov-operation-handler: controllers/DefaultController
+    put:
+      description: Define a relationship between two contacts. The relationship will
+        have a type (e.g. parent-child) and a profiles for each member in the relationship
+      operationId: relationshipsRelationshipIdPUT
+      parameters:
+      - in: path
+        name: relationshipId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Relationship"
+        required: true
+      responses:
+        "200":
+          description: Relationship updated
+        "404":
+          description: Relationship not found
+      summary: Update a relationship
+      x-eov-operation-handler: controllers/DefaultController
+  /organisations:
+    get:
+      description: Organisation resource
+      operationId: organisationsGET
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrganisationList"
+          description: A list of organisations.
+      summary: Get all organisations
+      x-eov-operation-handler: controllers/DefaultController
+    post:
+      description: Organisation resource
+      operationId: organisationsPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Organisation"
+        required: true
+      responses:
+        "201":
+          description: Organisation created
+      summary: Create an organisation
+      x-eov-operation-handler: controllers/DefaultController
+  /organisations/bulk:
+    post:
+      description: Organisation resource
+      operationId: organisationsBulkPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: "#/components/schemas/Organisation"
+              type: array
+        required: true
+      responses:
+        "201":
+          description: Organisations created
+      summary: Bulk create organisations
+      x-eov-operation-handler: controllers/DefaultController
+  /organisations/{organisationId}:
+    delete:
+      description: Organisation resource
+      operationId: organisationsOrganisationIdDELETE
+      parameters:
+      - in: path
+        name: organisationId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "204":
+          description: Organisation deleted
+        "404":
+          description: Organisation not found
+      summary: Delete an organisation
+      x-eov-operation-handler: controllers/DefaultController
+    get:
+      description: Organisation resource
+      operationId: organisationsOrganisationIdGET
+      parameters:
+      - in: path
+        name: organisationId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+          description: A single organisation.
+        "404":
+          description: Organisation not found
+      summary: Get an organisation by ID
+      x-eov-operation-handler: controllers/DefaultController
+    put:
+      description: Organisation resource
+      operationId: organisationsOrganisationIdPUT
+      parameters:
+      - in: path
+        name: organisationId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Organisation"
+        required: true
+      responses:
+        "200":
+          description: Organisation updated
+        "201":
+          description: A new record was created following the upsert approach.
+      summary: Update (or create) an organisation
+      x-eov-operation-handler: controllers/DefaultController
+  /interactions:
+    post:
+      description: An API to record interactions for future reference. Can initially
+        implement writing to DB and then migrate to higher performance approach (e.g.
+        using queues) if required
+      operationId: interactionsPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Interaction"
+        required: true
+      responses:
+        "201":
+          description: Interaction created
+      summary: Create an interaction
+      x-eov-operation-handler: controllers/DefaultController
+  /interactions/bulk:
+    post:
+      description: An API to record interactions for future reference. Can initially
+        implement writing to DB and then migrate to higher performance approach (e.g.
+        using queues) if required
+      operationId: interactionsBulkPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: "#/components/schemas/Interaction"
+              type: array
+        required: true
+      responses:
+        "201":
+          description: Interactions created
+      summary: Bulk create interactions
+      x-eov-operation-handler: controllers/DefaultController
+components:
+  parameters:
+    LimitParam:
+      description: The number of items to return.
+      explode: true
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+      style: form
+    OffsetParam:
+      description: The number of items to skip before starting to collect the result
+        set.
+      explode: true
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+      style: form
+  schemas:
+    Contact:
+      description: Represents an individual. Note that specifying meaning included
+        fields may require multiple joins so consider performance implications.
+      example:
+        lastSeenAt: 2024-07-01T12:30:00Z
+        WorkReadyParticipantNumber: "123456789"
+        lastName: Last
+        LUI: "1234567890"
+        cdpUserId: 550e8400-e29b-41d4-a716-446655440000
+        documents:
+        - createdAt: 2023-09-01T12:00:00Z
+          link: https://example.com/resume.pdf
+          id: 723e4567-e89b-12d3-a456-426614174000
+          type: resume
+        - createdAt: 2023-09-01T12:00:00Z
+          link: https://example.com/resume.pdf
+          id: 723e4567-e89b-12d3-a456-426614174000
+          type: resume
+        profiles:
+        - completedAt: 2025-01-15T17:00:00Z
+          startedAt: 2023-01-15T09:00:00Z
+          id: 323e4567-e89b-12d3-a456-426614174000
+          profileInformation: "{}"
+          type: apprentice
+          isActive: "true"
+        - completedAt: 2025-01-15T17:00:00Z
+          startedAt: 2023-01-15T09:00:00Z
+          id: 323e4567-e89b-12d3-a456-426614174000
+          profileInformation: "{}"
+          type: apprentice
+          isActive: "true"
+        USI: "1234567890"
+        memberships:
+        - "{}"
+        - "{}"
+        VSN: "123456789"
+        analyses:
+        - createdAt: 2024-03-10T10:00:00Z
+          id: 823e4567-e89b-12d3-a456-426614174000
+          type: vibrancy-index
+          results: "{}"
+        - createdAt: 2024-03-10T10:00:00Z
+          id: 823e4567-e89b-12d3-a456-426614174000
+          type: vibrancy-index
+          results: "{}"
+        firstName: First
+        createdAt: 2023-06-15T10:00:00Z
+        relationships:
+        - createdAt: 2022-03-10T11:00:00Z
+          lastConfirmAt: 2024-05-20T16:00:00Z
+          endedAt: 2025-01-01T00:00:00Z
+          relatedParties:
+          - 220e8400-e29b-41d4-a716-446655440000
+          - 330e8400-e29b-41d4-a716-446655440000
+          id: 423e4567-e89b-12d3-a456-426614174000
+          type: child
+          primaryParty: 110e8400-e29b-41d4-a716-446655440000
+        - createdAt: 2022-03-10T11:00:00Z
+          lastConfirmAt: 2024-05-20T16:00:00Z
+          endedAt: 2025-01-01T00:00:00Z
+          relatedParties:
+          - 220e8400-e29b-41d4-a716-446655440000
+          - 330e8400-e29b-41d4-a716-446655440000
+          id: 423e4567-e89b-12d3-a456-426614174000
+          type: child
+          primaryParty: 110e8400-e29b-41d4-a716-446655440000
+        SACEStudentID: 123456A
+        contactInformation:
+        - createdAt: 2022-08-20T14:00:00Z
+          lastConfirmAt: 2024-01-10T09:00:00Z
+          validated: true
+          id: 223e4567-e89b-12d3-a456-426614174000
+          type: email
+          value: test@example.com
+        - createdAt: 2022-08-20T14:00:00Z
+          lastConfirmAt: 2024-01-10T09:00:00Z
+          validated: true
+          id: 223e4567-e89b-12d3-a456-426614174000
+          type: email
+          value: test@example.com
+        systemsLinks:
+        - systemId: canvas_8768778
+          system: Canvas
+          link: link
+          id: 623e4567-e89b-12d3-a456-426614174000
+          type: lms
+        - systemId: canvas_8768778
+          system: Canvas
+          link: link
+          id: 623e4567-e89b-12d3-a456-426614174000
+          type: lms
+        middleName: Middle
+        id: 123e4567-e89b-12d3-a456-426614174000
+        customTraits:
+        - "{}"
+        - "{}"
+        TFN: "123456789"
+      properties:
+        id:
+          example: 123e4567-e89b-12d3-a456-426614174000
+          format: uuid
+          type: string
+        firstName:
+          example: First
+          type: string
+        middleName:
+          example: Middle
+          type: string
+        lastName:
+          example: Last
+          type: string
+        cdpUserId:
+          example: 550e8400-e29b-41d4-a716-446655440000
+          format: uuid
+          type: string
+        createdAt:
+          example: 2023-06-15T10:00:00Z
+          format: date-time
+          type: string
+        lastSeenAt:
+          example: 2024-07-01T12:30:00Z
+          format: date-time
+          type: string
+        USI:
+          example: "1234567890"
+          type: string
+        LUI:
+          example: "1234567890"
+          type: string
+        TFN:
+          example: "123456789"
+          type: string
+        VSN:
+          example: "123456789"
+          type: string
+        WorkReadyParticipantNumber:
+          example: "123456789"
+          type: string
+        SACEStudentID:
+          example: 123456A
+          type: string
+        contactInformation:
+          items:
+            $ref: "#/components/schemas/ContactInformation"
+          type: array
+        profiles:
+          items:
+            $ref: "#/components/schemas/Profile"
+          type: array
+        memberships:
+          items:
+            type: object
+          type: array
+        relationships:
+          items:
+            $ref: "#/components/schemas/Relationship"
+          type: array
+        systemsLinks:
+          items:
+            $ref: "#/components/schemas/SystemLink"
+          type: array
+        documents:
+          items:
+            $ref: "#/components/schemas/Document"
+          type: array
+        analyses:
+          items:
+            $ref: "#/components/schemas/Analysis"
+          type: array
+        customTraits:
+          items:
+            type: object
+          type: array
+      type: object
+    ContactList:
+      example:
+        entries:
+        - lastSeenAt: 2024-07-01T12:30:00Z
+          WorkReadyParticipantNumber: "123456789"
+          lastName: Last
+          LUI: "1234567890"
+          cdpUserId: 550e8400-e29b-41d4-a716-446655440000
+          documents:
+          - createdAt: 2023-09-01T12:00:00Z
+            link: https://example.com/resume.pdf
+            id: 723e4567-e89b-12d3-a456-426614174000
+            type: resume
+          - createdAt: 2023-09-01T12:00:00Z
+            link: https://example.com/resume.pdf
+            id: 723e4567-e89b-12d3-a456-426614174000
+            type: resume
+          profiles:
+          - completedAt: 2025-01-15T17:00:00Z
+            startedAt: 2023-01-15T09:00:00Z
+            id: 323e4567-e89b-12d3-a456-426614174000
+            profileInformation: "{}"
+            type: apprentice
+            isActive: "true"
+          - completedAt: 2025-01-15T17:00:00Z
+            startedAt: 2023-01-15T09:00:00Z
+            id: 323e4567-e89b-12d3-a456-426614174000
+            profileInformation: "{}"
+            type: apprentice
+            isActive: "true"
+          USI: "1234567890"
+          memberships:
+          - "{}"
+          - "{}"
+          VSN: "123456789"
+          analyses:
+          - createdAt: 2024-03-10T10:00:00Z
+            id: 823e4567-e89b-12d3-a456-426614174000
+            type: vibrancy-index
+            results: "{}"
+          - createdAt: 2024-03-10T10:00:00Z
+            id: 823e4567-e89b-12d3-a456-426614174000
+            type: vibrancy-index
+            results: "{}"
+          firstName: First
+          createdAt: 2023-06-15T10:00:00Z
+          relationships:
+          - createdAt: 2022-03-10T11:00:00Z
+            lastConfirmAt: 2024-05-20T16:00:00Z
+            endedAt: 2025-01-01T00:00:00Z
+            relatedParties:
+            - 220e8400-e29b-41d4-a716-446655440000
+            - 330e8400-e29b-41d4-a716-446655440000
+            id: 423e4567-e89b-12d3-a456-426614174000
+            type: child
+            primaryParty: 110e8400-e29b-41d4-a716-446655440000
+          - createdAt: 2022-03-10T11:00:00Z
+            lastConfirmAt: 2024-05-20T16:00:00Z
+            endedAt: 2025-01-01T00:00:00Z
+            relatedParties:
+            - 220e8400-e29b-41d4-a716-446655440000
+            - 330e8400-e29b-41d4-a716-446655440000
+            id: 423e4567-e89b-12d3-a456-426614174000
+            type: child
+            primaryParty: 110e8400-e29b-41d4-a716-446655440000
+          SACEStudentID: 123456A
+          contactInformation:
+          - createdAt: 2022-08-20T14:00:00Z
+            lastConfirmAt: 2024-01-10T09:00:00Z
+            validated: true
+            id: 223e4567-e89b-12d3-a456-426614174000
+            type: email
+            value: test@example.com
+          - createdAt: 2022-08-20T14:00:00Z
+            lastConfirmAt: 2024-01-10T09:00:00Z
+            validated: true
+            id: 223e4567-e89b-12d3-a456-426614174000
+            type: email
+            value: test@example.com
+          systemsLinks:
+          - systemId: canvas_8768778
+            system: Canvas
+            link: link
+            id: 623e4567-e89b-12d3-a456-426614174000
+            type: lms
+          - systemId: canvas_8768778
+            system: Canvas
+            link: link
+            id: 623e4567-e89b-12d3-a456-426614174000
+            type: lms
+          middleName: Middle
+          id: 123e4567-e89b-12d3-a456-426614174000
+          customTraits:
+          - "{}"
+          - "{}"
+          TFN: "123456789"
+        - lastSeenAt: 2024-07-01T12:30:00Z
+          WorkReadyParticipantNumber: "123456789"
+          lastName: Last
+          LUI: "1234567890"
+          cdpUserId: 550e8400-e29b-41d4-a716-446655440000
+          documents:
+          - createdAt: 2023-09-01T12:00:00Z
+            link: https://example.com/resume.pdf
+            id: 723e4567-e89b-12d3-a456-426614174000
+            type: resume
+          - createdAt: 2023-09-01T12:00:00Z
+            link: https://example.com/resume.pdf
+            id: 723e4567-e89b-12d3-a456-426614174000
+            type: resume
+          profiles:
+          - completedAt: 2025-01-15T17:00:00Z
+            startedAt: 2023-01-15T09:00:00Z
+            id: 323e4567-e89b-12d3-a456-426614174000
+            profileInformation: "{}"
+            type: apprentice
+            isActive: "true"
+          - completedAt: 2025-01-15T17:00:00Z
+            startedAt: 2023-01-15T09:00:00Z
+            id: 323e4567-e89b-12d3-a456-426614174000
+            profileInformation: "{}"
+            type: apprentice
+            isActive: "true"
+          USI: "1234567890"
+          memberships:
+          - "{}"
+          - "{}"
+          VSN: "123456789"
+          analyses:
+          - createdAt: 2024-03-10T10:00:00Z
+            id: 823e4567-e89b-12d3-a456-426614174000
+            type: vibrancy-index
+            results: "{}"
+          - createdAt: 2024-03-10T10:00:00Z
+            id: 823e4567-e89b-12d3-a456-426614174000
+            type: vibrancy-index
+            results: "{}"
+          firstName: First
+          createdAt: 2023-06-15T10:00:00Z
+          relationships:
+          - createdAt: 2022-03-10T11:00:00Z
+            lastConfirmAt: 2024-05-20T16:00:00Z
+            endedAt: 2025-01-01T00:00:00Z
+            relatedParties:
+            - 220e8400-e29b-41d4-a716-446655440000
+            - 330e8400-e29b-41d4-a716-446655440000
+            id: 423e4567-e89b-12d3-a456-426614174000
+            type: child
+            primaryParty: 110e8400-e29b-41d4-a716-446655440000
+          - createdAt: 2022-03-10T11:00:00Z
+            lastConfirmAt: 2024-05-20T16:00:00Z
+            endedAt: 2025-01-01T00:00:00Z
+            relatedParties:
+            - 220e8400-e29b-41d4-a716-446655440000
+            - 330e8400-e29b-41d4-a716-446655440000
+            id: 423e4567-e89b-12d3-a456-426614174000
+            type: child
+            primaryParty: 110e8400-e29b-41d4-a716-446655440000
+          SACEStudentID: 123456A
+          contactInformation:
+          - createdAt: 2022-08-20T14:00:00Z
+            lastConfirmAt: 2024-01-10T09:00:00Z
+            validated: true
+            id: 223e4567-e89b-12d3-a456-426614174000
+            type: email
+            value: test@example.com
+          - createdAt: 2022-08-20T14:00:00Z
+            lastConfirmAt: 2024-01-10T09:00:00Z
+            validated: true
+            id: 223e4567-e89b-12d3-a456-426614174000
+            type: email
+            value: test@example.com
+          systemsLinks:
+          - systemId: canvas_8768778
+            system: Canvas
+            link: link
+            id: 623e4567-e89b-12d3-a456-426614174000
+            type: lms
+          - systemId: canvas_8768778
+            system: Canvas
+            link: link
+            id: 623e4567-e89b-12d3-a456-426614174000
+            type: lms
+          middleName: Middle
+          id: 123e4567-e89b-12d3-a456-426614174000
+          customTraits:
+          - "{}"
+          - "{}"
+          TFN: "123456789"
+        offset: 0
+        total_count: 1
+        limit: 6
+      properties:
+        entries:
+          items:
+            $ref: "#/components/schemas/Contact"
+          type: array
+        offset:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        total_count:
+          format: int32
+          type: integer
+      type: object
+    ContactInformation:
+      description: Contains information about how the contact may be contacted.
+      example:
+        createdAt: 2022-08-20T14:00:00Z
+        lastConfirmAt: 2024-01-10T09:00:00Z
+        validated: true
+        id: 223e4567-e89b-12d3-a456-426614174000
+        type: email
+        value: test@example.com
+      properties:
+        id:
+          example: 223e4567-e89b-12d3-a456-426614174000
+          format: uuid
+          type: string
+        type:
+          example: email
+          type: string
+        value:
+          example: test@example.com
+          type: string
+        validated:
+          example: true
+          type: boolean
+        createdAt:
+          example: 2022-08-20T14:00:00Z
+          format: date-time
+          type: string
+        lastConfirmAt:
+          example: 2024-01-10T09:00:00Z
+          format: date-time
+          type: string
+      type: object
+    ContactInformationList:
+      example:
+        entries:
+        - createdAt: 2022-08-20T14:00:00Z
+          lastConfirmAt: 2024-01-10T09:00:00Z
+          validated: true
+          id: 223e4567-e89b-12d3-a456-426614174000
+          type: email
+          value: test@example.com
+        - createdAt: 2022-08-20T14:00:00Z
+          lastConfirmAt: 2024-01-10T09:00:00Z
+          validated: true
+          id: 223e4567-e89b-12d3-a456-426614174000
+          type: email
+          value: test@example.com
+        offset: 0
+        total_count: 1
+        limit: 6
+      properties:
+        entries:
+          items:
+            $ref: "#/components/schemas/ContactInformation"
+          type: array
+        offset:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        total_count:
+          format: int32
+          type: integer
+      type: object
+    Profile:
+      description: Contains information about the profiles the contact has held at
+        present and in the past
+      example:
+        completedAt: 2025-01-15T17:00:00Z
+        startedAt: 2023-01-15T09:00:00Z
+        id: 323e4567-e89b-12d3-a456-426614174000
+        profileInformation: "{}"
+        type: apprentice
+        isActive: "true"
+      properties:
+        id:
+          example: 323e4567-e89b-12d3-a456-426614174000
+          format: uuid
+          type: string
+        type:
+          example: apprentice
+          type: string
+        startedAt:
+          example: 2023-01-15T09:00:00Z
+          format: date-time
+          type: string
+        completedAt:
+          example: 2025-01-15T17:00:00Z
+          format: date-time
+          type: string
+        isActive:
+          example: "true"
+          type: string
+        profileInformation:
+          type: object
+      type: object
+    ProfileList:
+      example:
+        entries:
+        - completedAt: 2025-01-15T17:00:00Z
+          startedAt: 2023-01-15T09:00:00Z
+          id: 323e4567-e89b-12d3-a456-426614174000
+          profileInformation: "{}"
+          type: apprentice
+          isActive: "true"
+        - completedAt: 2025-01-15T17:00:00Z
+          startedAt: 2023-01-15T09:00:00Z
+          id: 323e4567-e89b-12d3-a456-426614174000
+          profileInformation: "{}"
+          type: apprentice
+          isActive: "true"
+        offset: 0
+        total_count: 1
+        limit: 6
+      properties:
+        entries:
+          items:
+            $ref: "#/components/schemas/Profile"
+          type: array
+        offset:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        total_count:
+          format: int32
+          type: integer
+      type: object
+    Relationship:
+      description: Define a relationship between two contacts. The relationship will
+        have a type (e.g. parent-child) and a profiles for each member in the relationship
+      example:
+        createdAt: 2022-03-10T11:00:00Z
+        lastConfirmAt: 2024-05-20T16:00:00Z
+        endedAt: 2025-01-01T00:00:00Z
+        relatedParties:
+        - 220e8400-e29b-41d4-a716-446655440000
+        - 330e8400-e29b-41d4-a716-446655440000
+        id: 423e4567-e89b-12d3-a456-426614174000
+        type: child
+        primaryParty: 110e8400-e29b-41d4-a716-446655440000
+      properties:
+        id:
+          example: 423e4567-e89b-12d3-a456-426614174000
+          format: uuid
+          type: string
+        createdAt:
+          example: 2022-03-10T11:00:00Z
+          format: date-time
+          type: string
+        lastConfirmAt:
+          example: 2024-05-20T16:00:00Z
+          format: date-time
+          type: string
+        endedAt:
+          example: 2025-01-01T00:00:00Z
+          format: date-time
+          type: string
+        primaryParty:
+          example: 110e8400-e29b-41d4-a716-446655440000
+          format: uuid
+          type: string
+        relatedParties:
+          example:
+          - 220e8400-e29b-41d4-a716-446655440000
+          - 330e8400-e29b-41d4-a716-446655440000
+          items:
+            format: uuid
+            type: string
+          type: array
+        type:
+          example: child
+          type: string
+      type: object
+    RelationshipList:
+      example:
+        entries:
+        - createdAt: 2022-03-10T11:00:00Z
+          lastConfirmAt: 2024-05-20T16:00:00Z
+          endedAt: 2025-01-01T00:00:00Z
+          relatedParties:
+          - 220e8400-e29b-41d4-a716-446655440000
+          - 330e8400-e29b-41d4-a716-446655440000
+          id: 423e4567-e89b-12d3-a456-426614174000
+          type: child
+          primaryParty: 110e8400-e29b-41d4-a716-446655440000
+        - createdAt: 2022-03-10T11:00:00Z
+          lastConfirmAt: 2024-05-20T16:00:00Z
+          endedAt: 2025-01-01T00:00:00Z
+          relatedParties:
+          - 220e8400-e29b-41d4-a716-446655440000
+          - 330e8400-e29b-41d4-a716-446655440000
+          id: 423e4567-e89b-12d3-a456-426614174000
+          type: child
+          primaryParty: 110e8400-e29b-41d4-a716-446655440000
+        offset: 0
+        total_count: 1
+        limit: 6
+      properties:
+        entries:
+          items:
+            $ref: "#/components/schemas/Relationship"
+          type: array
+        offset:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        total_count:
+          format: int32
+          type: integer
+      type: object
+    CommunicationPreference:
+      description: "Includes per-channel (e.g. SMS, email, etc) in an extensible format\
+        \ that can support any channel"
+      example:
+        allowed: true
+        channel: email
+        id: 523e4567-e89b-12d3-a456-426614174000
+        preferred: true
+      properties:
+        id:
+          example: 523e4567-e89b-12d3-a456-426614174000
+          format: uuid
+          type: string
+        channel:
+          example: email
+          type: string
+        allowed:
+          example: true
+          type: boolean
+        preferred:
+          example: true
+          type: boolean
+      type: object
+    CommunicationPreferenceList:
+      example:
+        entries:
+        - allowed: true
+          channel: email
+          id: 523e4567-e89b-12d3-a456-426614174000
+          preferred: true
+        - allowed: true
+          channel: email
+          id: 523e4567-e89b-12d3-a456-426614174000
+          preferred: true
+        offset: 0
+        total_count: 1
+        limit: 6
+      properties:
+        entries:
+          items:
+            $ref: "#/components/schemas/CommunicationPreference"
+          type: array
+        offset:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        total_count:
+          format: int32
+          type: integer
+      type: object
+    SystemLink:
+      description: "Each link describes a reference to the record for the contact\
+        \ in another ssytem, such as an SMS or LMS."
+      example:
+        systemId: canvas_8768778
+        system: Canvas
+        link: link
+        id: 623e4567-e89b-12d3-a456-426614174000
+        type: lms
+      properties:
+        id:
+          example: 623e4567-e89b-12d3-a456-426614174000
+          format: uuid
+          type: string
+        system:
+          example: Canvas
+          type: string
+        type:
+          example: lms
+          type: string
+        systemId:
+          example: canvas_8768778
+          type: string
+        link:
+          nullable: true
+          type: string
+      type: object
+    SystemLinkList:
+      example:
+        entries:
+        - systemId: canvas_8768778
+          system: Canvas
+          link: link
+          id: 623e4567-e89b-12d3-a456-426614174000
+          type: lms
+        - systemId: canvas_8768778
+          system: Canvas
+          link: link
+          id: 623e4567-e89b-12d3-a456-426614174000
+          type: lms
+        offset: 0
+        total_count: 1
+        limit: 6
+      properties:
+        entries:
+          items:
+            $ref: "#/components/schemas/SystemLink"
+          type: array
+        offset:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        total_count:
+          format: int32
+          type: integer
+      type: object
+    Document:
+      description: "Each document object represents a document about the user, such\
+        \ as a resume or cover letter."
+      example:
+        createdAt: 2023-09-01T12:00:00Z
+        link: https://example.com/resume.pdf
+        id: 723e4567-e89b-12d3-a456-426614174000
+        type: resume
+      properties:
+        id:
+          example: 723e4567-e89b-12d3-a456-426614174000
+          format: uuid
+          type: string
+        type:
+          example: resume
+          type: string
+        link:
+          example: https://example.com/resume.pdf
+          type: string
+        createdAt:
+          example: 2023-09-01T12:00:00Z
+          format: date-time
+          type: string
+      type: object
+    DocumentList:
+      example:
+        entries:
+        - createdAt: 2023-09-01T12:00:00Z
+          link: https://example.com/resume.pdf
+          id: 723e4567-e89b-12d3-a456-426614174000
+          type: resume
+        - createdAt: 2023-09-01T12:00:00Z
+          link: https://example.com/resume.pdf
+          id: 723e4567-e89b-12d3-a456-426614174000
+          type: resume
+        offset: 0
+        total_count: 1
+        limit: 6
+      properties:
+        entries:
+          items:
+            $ref: "#/components/schemas/Document"
+          type: array
+        offset:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        total_count:
+          format: int32
+          type: integer
+      type: object
+    Analysis:
+      description: Contains the results for an analysis (e.g vibrancy index classification)
+        of the contact
+      example:
+        createdAt: 2024-03-10T10:00:00Z
+        id: 823e4567-e89b-12d3-a456-426614174000
+        type: vibrancy-index
+        results: "{}"
+      properties:
+        id:
+          example: 823e4567-e89b-12d3-a456-426614174000
+          format: uuid
+          type: string
+        type:
+          example: vibrancy-index
+          type: string
+        createdAt:
+          example: 2024-03-10T10:00:00Z
+          format: date-time
+          type: string
+        results:
+          type: object
+      type: object
+    AnalysisList:
+      example:
+        entries:
+        - createdAt: 2024-03-10T10:00:00Z
+          id: 823e4567-e89b-12d3-a456-426614174000
+          type: vibrancy-index
+          results: "{}"
+        - createdAt: 2024-03-10T10:00:00Z
+          id: 823e4567-e89b-12d3-a456-426614174000
+          type: vibrancy-index
+          results: "{}"
+        offset: 0
+        total_count: 1
+        limit: 6
+      properties:
+        entries:
+          items:
+            $ref: "#/components/schemas/Analysis"
+          type: array
+        offset:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        total_count:
+          format: int32
+          type: integer
+      type: object
+    Organisation:
+      description: Organisation resource
+      example:
+        legalName: Skynet Pty Ltd
+        tradingName: Skynet
+        employer:
+          employerId: "12345678"
+        worksite:
+          address: "123 Fake St, Gotham City"
+          state: ACT
+        id: f969c016-531a-4105-8c64-a84a6b9aedbc
+        abn: "12345678901"
+      properties:
+        legalName:
+          example: Skynet Pty Ltd
+          type: string
+        tradingName:
+          example: Skynet
+          type: string
+        employer:
+          $ref: "#/components/schemas/Organisation_employer"
+        worksite:
+          $ref: "#/components/schemas/Organisation_worksite"
+        id:
+          example: f969c016-531a-4105-8c64-a84a6b9aedbc
+          format: uuid
+          type: string
+        abn:
+          example: "12345678901"
+          type: string
+      type: object
+    OrganisationList:
+      example:
+        entries:
+        - legalName: Skynet Pty Ltd
+          tradingName: Skynet
+          employer:
+            employerId: "12345678"
+          worksite:
+            address: "123 Fake St, Gotham City"
+            state: ACT
+          id: f969c016-531a-4105-8c64-a84a6b9aedbc
+          abn: "12345678901"
+        - legalName: Skynet Pty Ltd
+          tradingName: Skynet
+          employer:
+            employerId: "12345678"
+          worksite:
+            address: "123 Fake St, Gotham City"
+            state: ACT
+          id: f969c016-531a-4105-8c64-a84a6b9aedbc
+          abn: "12345678901"
+        offset: 0
+        total_count: 1
+        limit: 6
+      properties:
+        entries:
+          items:
+            $ref: "#/components/schemas/Organisation"
+          type: array
+        offset:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        total_count:
+          format: int32
+          type: integer
+      type: object
+    Interaction:
+      description: An API to record interactions for future reference. Can initially
+        implement writing to DB and then migrate to higher performance approach (e.g.
+        using queues) if required
+      example:
+        createdAt: 2024-02-28T18:00:00Z
+        contactId: 440e8400-e29b-41d4-a716-446655440000
+        payload: "{}"
+        id: 923e4567-e89b-12d3-a456-426614174000
+      properties:
+        id:
+          example: 923e4567-e89b-12d3-a456-426614174000
+          format: uuid
+          type: string
+        createdAt:
+          example: 2024-02-28T18:00:00Z
+          format: date-time
+          type: string
+        contactId:
+          example: 440e8400-e29b-41d4-a716-446655440000
+          format: uuid
+          type: string
+        payload:
+          type: object
+      type: object
+    SyncedRecord:
+      description: "A record synced from an external system, identified by the system\
+        \ link, by background processing"
+      properties:
+        systemLinkId:
+          format: uuid
+          type: string
+        contactId:
+          format: uuid
+          type: string
+        syncedRecord:
+          type: object
+      type: object
+    SyncedRecordList:
+      properties:
+        entries:
+          items:
+            $ref: "#/components/schemas/SyncedRecord"
+          type: array
+        offset:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        total_count:
+          format: int32
+          type: integer
+      type: object
+    MergeContactsRequest:
+      example:
+        secondaryContactIds:
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        deleteSecondaryContactsAfterMerge: true
+        primaryContactId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        primaryContactId:
+          format: uuid
+          type: string
+        secondaryContactIds:
+          items:
+            format: uuid
+            type: string
+          type: array
+        deleteSecondaryContactsAfterMerge:
+          type: boolean
+      type: object
+    Organisation_employer:
+      example:
+        employerId: "12345678"
+      properties:
+        employerId:
+          example: "12345678"
+          type: string
+      type: object
+    Organisation_worksite:
+      example:
+        address: "123 Fake St, Gotham City"
+        state: ACT
+      properties:
+        address:
+          example: "123 Fake St, Gotham City"
+          type: string
+        state:
+          example: ACT
+          type: string
+      type: object
