@@ -48,20 +48,6 @@ paths:
       responses:
         '201':
           description: Contacts created
-    put:
-      summary: Bulk update contacts
-      description: Represents an individual. Note that specifying meaning included fields may require multiple joins so consider performance implications.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: './components.yaml#/components/schemas/Contact'
-      responses:
-        '200':
-          description: Contacts updated
   /contacts/merge:
     put:
       summary: Merge contacts
@@ -489,29 +475,6 @@ paths:
           description: Analyses created
         '404':
           description: Contact not found
-    put:
-      summary: Bulk update analyses for a contact
-      description: Contains the results for an analysis (e.g vibrancy index classification) of the contact
-      parameters:
-        - name: contactId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: './components.yaml#/components/schemas/Analysis'
-      responses:
-        '200':
-          description: Analyses updated
-        '404':
-          description: Contact not found
   /contacts/{contactId}/analyses/{analysisId}:
     put:
       summary: Update (or create) an analysis for a contact
@@ -626,29 +589,6 @@ paths:
           description: System links created
         '404':
           description: Contact not found
-    put:
-      summary: Bulk update system links for a contact
-      description: Each link describes a reference to the record for the contact in another ssytem, such as an SMS or LMS.
-      parameters:
-        - name: contactId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: './components.yaml#/components/schemas/SystemLink'
-      responses:
-        '200':
-          description: System links updated
-        '404':
-          description: Contact not found
   /contacts/{contactId}/system-links/{linkId}:
     put:
       summary: Update (or create) a system link for a contact
@@ -761,29 +701,6 @@ paths:
       responses:
         '201':
           description: Documents created
-        '404':
-          description: Contact not found
-    put:
-      summary: Bulk update documents for a contact
-      description: Each document object represents a document about the user, such as a resume or cover letter.
-      parameters:
-        - name: contactId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: './components.yaml#/components/schemas/Document'
-      responses:
-        '200':
-          description: Documents updated
         '404':
           description: Contact not found
   /contacts/{contactId}/documents/{documentId}:
