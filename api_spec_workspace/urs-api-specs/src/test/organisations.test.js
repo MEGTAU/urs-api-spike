@@ -15,6 +15,7 @@ describe('Organisations API', () => {
     const newOrganisation = {
       legalName: 'Test Corp',
       tradingName: 'Test Corp',
+      organisationType: 'School',
       abn: '12345678901',
     };
 
@@ -26,6 +27,7 @@ describe('Organisations API', () => {
     expect(res.body).to.be.an('object');
     expect(res.body.legalName).to.equal(newOrganisation.legalName);
     expect(res.body.id).to.be.a('string');
+    expect(res.body.organisationType).to.equal(newOrganisation.organisationType);
     organisationId = res.body.id;
   });
 

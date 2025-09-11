@@ -2030,6 +2030,9 @@ components:
         tradingName:
           example: Skynet
           type: string
+        organisationType:
+          example: School
+          type: string
         employer:
           $ref: "#/components/schemas/Organisation_employer"
         worksite:

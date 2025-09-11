@@ -395,6 +395,9 @@ components:
         abn:
           type: string
           example: '12345678901'
+        organisationType:
+          type: string
+          example: 'School'
     OrganisationList:
       type: object
       properties:
