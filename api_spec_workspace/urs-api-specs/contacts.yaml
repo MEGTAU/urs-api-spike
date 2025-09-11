@@ -282,7 +282,7 @@ paths:
           description: Contact not found
   /contacts/{contactId}/contact-information/{infoId}:
     put:
-      summary: Update contact information
+      summary: Update (or create) contact information
       description: Contains information about how the contact may be contacted.
       parameters:
         - name: contactId
@@ -306,8 +306,8 @@ paths:
       responses:
         '200':
           description: Contact information updated
-        '404':
-          description: Contact or information not found
+        '201':
+          description: A new record was created following the upsert approach.
     delete:
       summary: Delete contact information
       description: Contains information about how the contact may be contacted.
@@ -514,7 +514,7 @@ paths:
           description: Contact not found
   /contacts/{contactId}/analyses/{analysisId}:
     put:
-      summary: Update an analysis for a contact
+      summary: Update (or create) an analysis for a contact
       description: Contains the results for an analysis (e.g vibrancy index classification) of the contact
       parameters:
         - name: contactId
@@ -538,8 +538,8 @@ paths:
       responses:
         '200':
           description: Analysis updated
-        '404':
-          description: Contact or analysis not found
+        '201':
+          description: A new record was created following the upsert approach.
     delete:
       summary: Delete an analysis for a contact
       description: Contains the results for an analysis (e.g vibrancy index classification) of the contact
@@ -651,7 +651,7 @@ paths:
           description: Contact not found
   /contacts/{contactId}/system-links/{linkId}:
     put:
-      summary: Update a system link for a contact
+      summary: Update (or create) a system link for a contact
       description: Each link describes a reference to the record for the contact in another ssytem, such as an SMS or LMS.
       parameters:
         - name: contactId
@@ -675,8 +675,8 @@ paths:
       responses:
         '200':
           description: System link updated
-        '404':
-          description: Contact or link not found
+        '201':
+          description: A new record was created following the upsert approach.
     delete:
       summary: Delete a system link for a contact
       description: Each link describes a reference to the record for the contact in another ssytem, such as an SMS or LMS.
