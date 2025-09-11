@@ -70,6 +70,7 @@ describe('Organisations API', () => {
     expect(res.body).to.be.an('array');
     expect(res.body).to.have.lengthOf(3);
 
+    const createdOrgIds = [];
     res.body.forEach((org, index) => {
       expect(org).to.be.an('object');
       expect(org.legalName).to.equal(organisationsToCreate[index].legalName);
@@ -77,6 +78,21 @@ describe('Organisations API', () => {
       expect(org.organisationType).to.equal(organisationsToCreate[index].organisationType);
       expect(org.abn).to.equal(organisationsToCreate[index].abn);
       expect(org.id).to.be.a('string');
+      createdOrgIds.push(org.id);
+    });
+
+    const allExpectedOrgIds = [organisationId, ...createdOrgIds];
+
+    const getRes = await request
+      .get('/api/v1/organisations')
+      .expect(200);
+
+    expect(getRes.body.entries).to.be.an('array');
+    expect(getRes.body.entries).to.have.lengthOf(allExpectedOrgIds.length);
+
+    const retrievedOrgIds = getRes.body.entries.map(org => org.id);
+    allExpectedOrgIds.forEach(id => {
+      expect(retrievedOrgIds).to.include(id);
     });
   });
 });
