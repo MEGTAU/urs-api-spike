@@ -11,6 +11,12 @@ info:
 
     The API structured to implemented gradually. For example, external system integrations will be implemented after the first release. An HTTP 501 (Not implemented) response will be returned for API methods that are not yet implemented.
     
+    ### **Multiple Roles per Contacts**
+    
+    This API supports the fact that an individual may act in different capacities through time. Therefore each contact has a number of `profiles`, such as `student`, `parent/guardian`, or `employer contact` associated with it. 
+    
+    The API supports well-known attributes used by multiple profile-types, as well as a generic JSON attributes that are used to store information that is specific to the profile type.
+    
     ### **Usage of Upsert Approach**
     
     The upsert approach is used to either create or update records like contacts or organisations. This pattern uses a single **PUT** request to either create a new resource or update an existing one. 
