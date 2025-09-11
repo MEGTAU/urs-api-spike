@@ -57,15 +57,7 @@ class Controller {
   }
 
   static getRequestBodyName(request) {
-    const codeGenDefinedBodyName = request.openapi.schema['x-codegen-request-body-name'];
-    if (codeGenDefinedBodyName !== undefined) {
-      return codeGenDefinedBodyName;
-    }
-    const refObjectPath = request.openapi.schema.requestBody.content['application/json'].schema.$ref;
-    if (refObjectPath !== undefined && refObjectPath.length > 0) {
-      return (refObjectPath.substr(refObjectPath.lastIndexOf('/') + 1));
-    }
-    return 'body';
+    return 'organisation';
   }
 
   static collectRequestParams(request) {

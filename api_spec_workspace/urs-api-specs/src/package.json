@@ -1,11 +1,12 @@
 {
-  "name":  "universal-relationship-service-api",
+  "name": "universal-relationship-service-api",
   "version": "1.0.0",
   "description": "API for the Universal Relationship Service, providing a unified view of contacts and their relationships.  Individual operations are provided for contact sub-resources to provide a simple mechanism to edit data without having to deal with the entire contact object.  Bulk operations have been included for contact sub-resources that may be generated using a batch extract or analysis process.  The API structured to implemented gradually. For example, external system integrations will be implemented after the first release. An HTTP 501 (Not implemented) response will be returned for API methods that are not yet implemented.  ### **Multiple Roles per Contacts**  This API supports the fact that an individual may act in different capacities through time. Therefore each contact has a number of `profiles`, such as `student`, `parent/guardian`, or `employer contact` associated with it.   The API supports well-known attributes used by multiple profile-types, as well as a generic JSON attributes that are used to store information that is specific to the profile type.  ### **Usage of Upsert Approach**  The upsert approach is used to either create or update records like contacts or organisations. This pattern uses a single **PUT** request to either create a new resource or update an existing one.   3. **Creation or Update:**   * If the record does not exist, the server creates a new record. The response should be a `201 Created` status code.   * If the record does exist, the server updates the existing record with the new data. The response should be a `200 OK` or `204 No Content` status code.  **Advantages:** * Simpler Client Logic: The client doesn't need to perform a preliminary `GET` request to check for the resource's existence. It can simply use a single `PUT` request.   * Idempotent: The `PUT` method is **idempotent**, meaning that multiple identical requests will have the same effect as a single request. This is a key principle of RESTful design. ",
   "main": "index.js",
   "scripts": {
     "prestart": "npm install",
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "mocha test/**/*.test.js"
   },
   "keywords": [
     "openapi-generator",
@@ -24,6 +25,7 @@
     "ono": "^5.0.1",
     "openapi-sampler": "^1.0.0-beta.15",
     "swagger-ui-express": "^4.0.2",
+    "uuid": "^8.3.2",
     "winston": "^3.2.1"
   },
   "devDependencies": {
@@ -32,7 +34,8 @@
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.17.2",
-    "mocha": "^7.1.1"
+    "mocha": "^7.1.1",
+    "supertest": "^7.1.4"
   },
   "eslintConfig": {
     "env": {

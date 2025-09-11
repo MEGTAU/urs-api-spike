@@ -1050,9 +1050,14 @@ paths:
             schema:
               $ref: "#/components/schemas/Organisation"
         required: true
+        x-codegen-request-body-name: organisation
       responses:
-        "201":
+        '201':
           description: Organisation created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organisation'
       summary: Create an organisation
       x-eov-operation-handler: controllers/DefaultController
   /organisations/bulk:
@@ -1127,6 +1132,7 @@ paths:
             schema:
               $ref: "#/components/schemas/Organisation"
         required: true
+        x-codegen-request-body-name: organisation
       responses:
         "200":
           description: Organisation updated

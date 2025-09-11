@@ -1,10 +1,13 @@
 /* eslint-disable no-unused-vars */
 const Service = require('./Service');
+const { v4: uuidv4 } = require('uuid');
+
+let organisations = [];
 
 /**
 * Bulk create contacts
 * Represents an individual. Note that specifying meaning included fields may require multiple joins so consider performance implications.
-*
+* 
 * contact List 
 * no response value expected for this operation
 * */
@@ -25,7 +28,7 @@ const contactsBulkPOST = ({ contact }) => new Promise(
 /**
 * Delete an analysis for a contact
 * Contains the results for an analysis (e.g vibrancy index classification) of the contact
-*
+* 
 * contactId UUID 
 * analysisId UUID 
 * no response value expected for this operation
@@ -48,7 +51,7 @@ const contactsContactIdAnalysesAnalysisIdDELETE = ({ contactId, analysisId }) =>
 /**
 * Update (or create) an analysis for a contact
 * Contains the results for an analysis (e.g vibrancy index classification) of the contact
-*
+* 
 * contactId UUID 
 * analysisId UUID 
 * analysis Analysis 
@@ -73,7 +76,7 @@ const contactsContactIdAnalysesAnalysisIdPUT = ({ contactId, analysisId, analysi
 /**
 * Bulk create analyses for a contact
 * Contains the results for an analysis (e.g vibrancy index classification) of the contact
-*
+* 
 * contactId UUID 
 * analysis List 
 * no response value expected for this operation
@@ -96,7 +99,7 @@ const contactsContactIdAnalysesBulkPOST = ({ contactId, analysis }) => new Promi
 /**
 * Get analyses for a contact
 * Contains the results for an analysis (e.g vibrancy index classification) of the contact
-*
+* 
 * contactId UUID 
 * returns AnalysisList
 * */
@@ -117,7 +120,7 @@ const contactsContactIdAnalysesGET = ({ contactId }) => new Promise(
 /**
 * Add an analysis for a contact
 * Contains the results for an analysis (e.g vibrancy index classification) of the contact
-*
+* 
 * contactId UUID 
 * analysis Analysis 
 * no response value expected for this operation
@@ -140,7 +143,7 @@ const contactsContactIdAnalysesPOST = ({ contactId, analysis }) => new Promise(
 /**
 * Get communication preferences for a contact
 * Includes per-channel (e.g. SMS, email, etc) in an extensible format that can support any channel
-*
+* 
 * contactId UUID 
 * returns CommunicationPreferenceList
 * */
@@ -161,7 +164,7 @@ const contactsContactIdCommunicationPreferencesGET = ({ contactId }) => new Prom
 /**
 * Create a communication preference for a contact
 * Includes per-channel (e.g. SMS, email, etc) in an extensible format that can support any channel
-*
+* 
 * contactId UUID 
 * communicationPreference CommunicationPreference 
 * no response value expected for this operation
@@ -184,7 +187,7 @@ const contactsContactIdCommunicationPreferencesPOST = ({ contactId, communicatio
 /**
 * Update a communication preference for a contact
 * Includes per-channel (e.g. SMS, email, etc) in an extensible format that can support any channel
-*
+* 
 * contactId UUID 
 * preferenceId UUID 
 * communicationPreference CommunicationPreference 
@@ -209,7 +212,7 @@ const contactsContactIdCommunicationPreferencesPreferenceIdPUT = ({ contactId, p
 /**
 * Get contact information for a contact
 * Contains information about how the contact may be contacted.
-*
+* 
 * contactId UUID 
 * returns ContactInformationList
 * */
@@ -230,7 +233,7 @@ const contactsContactIdContactInformationGET = ({ contactId }) => new Promise(
 /**
 * Delete contact information
 * Contains information about how the contact may be contacted.
-*
+* 
 * contactId UUID 
 * infoId UUID 
 * no response value expected for this operation
@@ -253,7 +256,7 @@ const contactsContactIdContactInformationInfoIdDELETE = ({ contactId, infoId }) 
 /**
 * Update (or create) contact information
 * Contains information about how the contact may be contacted.
-*
+* 
 * contactId UUID 
 * infoId UUID 
 * contactInformation ContactInformation 
@@ -278,7 +281,7 @@ const contactsContactIdContactInformationInfoIdPUT = ({ contactId, infoId, conta
 /**
 * Add contact information to a contact
 * Contains information about how the contact may be contacted.
-*
+* 
 * contactId UUID 
 * contactInformation ContactInformation 
 * no response value expected for this operation
@@ -301,7 +304,7 @@ const contactsContactIdContactInformationPOST = ({ contactId, contactInformation
 /**
 * Delete a contact
 * Represents an individual. Note that specifying meaning included fields may require multiple joins so consider performance implications.
-*
+* 
 * contactId UUID 
 * no response value expected for this operation
 * */
@@ -322,7 +325,7 @@ const contactsContactIdDELETE = ({ contactId }) => new Promise(
 /**
 * Get disclosure settings for a contact
 * Information disclosure settings for a contact.
-*
+* 
 * contactId UUID 
 * no response value expected for this operation
 * */
@@ -343,7 +346,7 @@ const contactsContactIdDisclosureSettingsGET = ({ contactId }) => new Promise(
 /**
 * Update disclosure settings for a contact
 * Information disclosure settings for a contact.
-*
+* 
 * contactId UUID 
 * no response value expected for this operation
 * */
@@ -364,7 +367,7 @@ const contactsContactIdDisclosureSettingsPUT = ({ contactId }) => new Promise(
 /**
 * Bulk create documents for a contact
 * Each document object represents a document about the user, such as a resume or cover letter.
-*
+* 
 * contactId UUID 
 * document List 
 * no response value expected for this operation
@@ -387,7 +390,7 @@ const contactsContactIdDocumentsBulkPOST = ({ contactId, document }) => new Prom
 /**
 * Delete a document for a contact
 * Each document object represents a document about the user, such as a resume or cover letter.
-*
+* 
 * contactId UUID 
 * documentId UUID 
 * no response value expected for this operation
@@ -410,7 +413,7 @@ const contactsContactIdDocumentsDocumentIdDELETE = ({ contactId, documentId }) =
 /**
 * Update a document for a contact
 * Each document object represents a document about the user, such as a resume or cover letter.
-*
+* 
 * contactId UUID 
 * documentId UUID 
 * document Document 
@@ -435,7 +438,7 @@ const contactsContactIdDocumentsDocumentIdPUT = ({ contactId, documentId, docume
 /**
 * Get documents for a contact
 * Each document object represents a document about the user, such as a resume or cover letter.
-*
+* 
 * contactId UUID 
 * returns DocumentList
 * */
@@ -456,7 +459,7 @@ const contactsContactIdDocumentsGET = ({ contactId }) => new Promise(
 /**
 * Add a document for a contact
 * Each document object represents a document about the user, such as a resume or cover letter.
-*
+* 
 * contactId UUID 
 * document Document 
 * no response value expected for this operation
@@ -479,9 +482,9 @@ const contactsContactIdDocumentsPOST = ({ contactId, document }) => new Promise(
 /**
 * Get a contact by ID
 * Represents an individual. Note that specifying meaning included fields may require multiple joins so consider performance implications.
-*
+* 
 * contactId UUID 
-* includedFields List A list that may have the values \"disclosure-settings\", \"contact-information\", \"communication-preferences\", \"analysis\", \"system-links\", \"relationships\" (optional)
+* includedFields List A list that may have the values "disclosure-settings", "contact-information", "communication-preferences", "analysis", "system-links", "relationships" (optional)
 * returns Contact
 * */
 const contactsContactIdGET = ({ contactId, includedFields }) => new Promise(
@@ -502,7 +505,7 @@ const contactsContactIdGET = ({ contactId, includedFields }) => new Promise(
 /**
 * Update a contact
 * Represents an individual. Note that specifying meaning included fields may require multiple joins so consider performance implications.
-*
+* 
 * contactId UUID 
 * contact Contact 
 * no response value expected for this operation
@@ -525,7 +528,7 @@ const contactsContactIdPUT = ({ contactId, contact }) => new Promise(
 /**
 * Get profiles for a contact
 * Contains information about the profiles the contact has held at present and in the past
-*
+* 
 * contactId UUID 
 * activeProfiles Boolean Only return active profiles. (optional)
 * returns ProfileList
@@ -548,7 +551,7 @@ const contactsContactIdProfilesGET = ({ contactId, activeProfiles }) => new Prom
 /**
 * Add a profile to a contact
 * Contains information about the profiles the contact has held at present and in the past
-*
+* 
 * contactId UUID 
 * profile Profile 
 * no response value expected for this operation
@@ -571,7 +574,7 @@ const contactsContactIdProfilesPOST = ({ contactId, profile }) => new Promise(
 /**
 * Delete a profile for a contact
 * Contains information about the profiles the contact has held at present and in the past
-*
+* 
 * contactId UUID 
 * profileId UUID 
 * no response value expected for this operation
@@ -594,7 +597,7 @@ const contactsContactIdProfilesProfileIdDELETE = ({ contactId, profileId }) => n
 /**
 * Update a profile for a contact
 * Contains information about the profiles the contact has held at present and in the past
-*
+* 
 * contactId UUID 
 * profileId UUID 
 * profile Profile 
@@ -619,7 +622,7 @@ const contactsContactIdProfilesProfileIdPUT = ({ contactId, profileId, profile }
 /**
 * Bulk create system links for a contact
 * Each link describes a reference to the record for the contact in another ssytem, such as an SMS or LMS.
-*
+* 
 * contactId UUID 
 * systemLink List 
 * no response value expected for this operation
@@ -642,7 +645,7 @@ const contactsContactIdSystemLinksBulkPOST = ({ contactId, systemLink }) => new 
 /**
 * Get system links for a contact
 * Each link describes a reference to the record for the contact in another ssytem, such as an SMS or LMS.
-*
+* 
 * contactId UUID 
 * returns SystemLinkList
 * */
@@ -663,7 +666,7 @@ const contactsContactIdSystemLinksGET = ({ contactId }) => new Promise(
 /**
 * Delete a system link for a contact
 * Each link describes a reference to the record for the contact in another ssytem, such as an SMS or LMS.
-*
+* 
 * contactId UUID 
 * linkId UUID 
 * no response value expected for this operation
@@ -686,7 +689,7 @@ const contactsContactIdSystemLinksLinkIdDELETE = ({ contactId, linkId }) => new 
 /**
 * Update (or create) a system link for a contact
 * Each link describes a reference to the record for the contact in another ssytem, such as an SMS or LMS.
-*
+* 
 * contactId UUID 
 * linkId UUID 
 * systemLink SystemLink 
@@ -711,7 +714,7 @@ const contactsContactIdSystemLinksLinkIdPUT = ({ contactId, linkId, systemLink }
 /**
 * Add a system link for a contact
 * Each link describes a reference to the record for the contact in another ssytem, such as an SMS or LMS.
-*
+* 
 * contactId UUID 
 * systemLink SystemLink 
 * no response value expected for this operation
@@ -733,9 +736,9 @@ const contactsContactIdSystemLinksPOST = ({ contactId, systemLink }) => new Prom
 );
 /**
 * Search for contacts
-* General contact search to facilitate the \"do i know you\" use case.
-*
-* includedFields List A list that may have the values \"disclosure-settings\", \"contact-information\", \"communication-preferences\", \"analysis\", \"system-links\", \"relationships\" (optional)
+* General contact search to facilitate the "do i know you" use case.
+* 
+* includedFields List A list that may have the values "disclosure-settings", "contact-information", "communication-preferences", "analysis", "system-links", "relationships" (optional)
 * limit Integer The number of items to return. (optional)
 * offset Integer The number of items to skip before starting to collect the result set. (optional)
 * returns ContactList
@@ -759,7 +762,7 @@ const contactsGET = ({ includedFields, limit, offset }) => new Promise(
 /**
 * Merge contacts
 * Manually merges data from the secondary record(s) into the primary record. Data from the primary record takes precedence. Data in list is appended unless the entries are duplicates.
-*
+* 
 * mergeContactsRequest MergeContactsRequest 
 * no response value expected for this operation
 * */
@@ -780,7 +783,7 @@ const contactsMergePUT = ({ mergeContactsRequest }) => new Promise(
 /**
 * Create a contact
 * Represents an individual. Note that specifying meaning included fields may require multiple joins so consider performance implications.
-*
+* 
 * contact Contact 
 * no response value expected for this operation
 * */
@@ -801,7 +804,7 @@ const contactsPOST = ({ contact }) => new Promise(
 /**
 * Bulk create interactions
 * An API to record interactions for future reference. Can initially implement writing to DB and then migrate to higher performance approach (e.g. using queues) if required
-*
+* 
 * interaction List 
 * no response value expected for this operation
 * */
@@ -822,7 +825,7 @@ const interactionsBulkPOST = ({ interaction }) => new Promise(
 /**
 * Create an interaction
 * An API to record interactions for future reference. Can initially implement writing to DB and then migrate to higher performance approach (e.g. using queues) if required
-*
+* 
 * interaction Interaction 
 * no response value expected for this operation
 * */
@@ -843,7 +846,7 @@ const interactionsPOST = ({ interaction }) => new Promise(
 /**
 * Bulk create organisations
 * Organisation resource
-*
+* 
 * organisation List 
 * no response value expected for this operation
 * */
@@ -864,13 +867,17 @@ const organisationsBulkPOST = ({ organisation }) => new Promise(
 /**
 * Get all organisations
 * Organisation resource
-*
+* 
 * returns OrganisationList
 * */
 const organisationsGET = () => new Promise(
   async (resolve, reject) => {
     try {
       resolve(Service.successResponse({
+        entries: organisations,
+        offset: 0,
+        limit: organisations.length,
+        total_count: organisations.length,
       }));
     } catch (e) {
       reject(Service.rejectResponse(
@@ -883,16 +890,20 @@ const organisationsGET = () => new Promise(
 /**
 * Delete an organisation
 * Organisation resource
-*
+* 
 * organisationId UUID 
 * no response value expected for this operation
 * */
 const organisationsOrganisationIdDELETE = ({ organisationId }) => new Promise(
   async (resolve, reject) => {
     try {
-      resolve(Service.successResponse({
-        organisationId,
-      }));
+      const index = organisations.findIndex(o => o.id === organisationId);
+      if (index > -1) {
+        organisations.splice(index, 1);
+        resolve(Service.successResponse({}, 204));
+      } else {
+        reject(Service.rejectResponse('Organisation not found', 404));
+      }
     } catch (e) {
       reject(Service.rejectResponse(
         e.message || 'Invalid input',
@@ -904,16 +915,19 @@ const organisationsOrganisationIdDELETE = ({ organisationId }) => new Promise(
 /**
 * Get an organisation by ID
 * Organisation resource
-*
+* 
 * organisationId UUID 
 * returns Organisation
 * */
 const organisationsOrganisationIdGET = ({ organisationId }) => new Promise(
   async (resolve, reject) => {
     try {
-      resolve(Service.successResponse({
-        organisationId,
-      }));
+      const organisation = organisations.find(o => o.id === organisationId);
+      if (organisation) {
+        resolve(Service.successResponse(organisation));
+      } else {
+        reject(Service.rejectResponse('Organisation not found', 404));
+      }
     } catch (e) {
       reject(Service.rejectResponse(
         e.message || 'Invalid input',
@@ -925,7 +939,7 @@ const organisationsOrganisationIdGET = ({ organisationId }) => new Promise(
 /**
 * Update (or create) an organisation
 * Organisation resource
-*
+* 
 * organisationId UUID 
 * organisation Organisation 
 * no response value expected for this operation
@@ -933,10 +947,15 @@ const organisationsOrganisationIdGET = ({ organisationId }) => new Promise(
 const organisationsOrganisationIdPUT = ({ organisationId, organisation }) => new Promise(
   async (resolve, reject) => {
     try {
-      resolve(Service.successResponse({
-        organisationId,
-        organisation,
-      }));
+      const index = organisations.findIndex(o => o.id === organisationId);
+      if (index > -1) {
+        organisations[index] = { ...organisations[index], ...organisation };
+        resolve(Service.successResponse(organisations[index]));
+      } else {
+        const newOrganisation = { ...organisation, id: organisationId };
+        organisations.push(newOrganisation);
+        resolve(Service.successResponse(newOrganisation, 201));
+      }
     } catch (e) {
       reject(Service.rejectResponse(
         e.message || 'Invalid input',
@@ -948,16 +967,16 @@ const organisationsOrganisationIdPUT = ({ organisationId, organisation }) => new
 /**
 * Create an organisation
 * Organisation resource
-*
+* 
 * organisation Organisation 
 * no response value expected for this operation
 * */
 const organisationsPOST = ({ organisation }) => new Promise(
   async (resolve, reject) => {
     try {
-      resolve(Service.successResponse({
-        organisation,
-      }));
+      const newOrganisation = { ...organisation, id: uuidv4() };
+      organisations.push(newOrganisation);
+      resolve(Service.successResponse(newOrganisation, 201));
     } catch (e) {
       reject(Service.rejectResponse(
         e.message || 'Invalid input',
@@ -969,7 +988,7 @@ const organisationsPOST = ({ organisation }) => new Promise(
 /**
 * Bulk update relationships
 * Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a profiles for each member in the relationship
-*
+* 
 * relationship List 
 * no response value expected for this operation
 * */
@@ -990,14 +1009,13 @@ const relationshipsBulkPUT = ({ relationship }) => new Promise(
 /**
 * Get all relationships
 * Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a profiles for each member in the relationship
-*
+* 
 * returns RelationshipList
 * */
 const relationshipsGET = () => new Promise(
   async (resolve, reject) => {
     try {
-      resolve(Service.successResponse({
-      }));
+      resolve(Service.successResponse({}));
     } catch (e) {
       reject(Service.rejectResponse(
         e.message || 'Invalid input',
@@ -1009,7 +1027,7 @@ const relationshipsGET = () => new Promise(
 /**
 * Create a relationship
 * Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a profiles for each member in the relationship
-*
+* 
 * relationship Relationship 
 * no response value expected for this operation
 * */
@@ -1030,7 +1048,7 @@ const relationshipsPOST = ({ relationship }) => new Promise(
 /**
 * Delete a relationship
 * Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a profiles for each member in the relationship
-*
+* 
 * relationshipId UUID 
 * no response value expected for this operation
 * */
@@ -1051,7 +1069,7 @@ const relationshipsRelationshipIdDELETE = ({ relationshipId }) => new Promise(
 /**
 * Get a relationship by ID
 * Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a profiles for each member in the relationship
-*
+* 
 * relationshipId UUID 
 * returns Relationship
 * */
@@ -1072,7 +1090,7 @@ const relationshipsRelationshipIdGET = ({ relationshipId }) => new Promise(
 /**
 * Update a relationship
 * Define a relationship between two contacts. The relationship will have a type (e.g. parent-child) and a profiles for each member in the relationship
-*
+* 
 * relationshipId UUID 
 * relationship Relationship 
 * no response value expected for this operation
