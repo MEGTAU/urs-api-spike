@@ -853,9 +853,12 @@ const interactionsPOST = ({ interaction }) => new Promise(
 const organisationsBulkPOST = ({ organisation }) => new Promise(
   async (resolve, reject) => {
     try {
-      resolve(Service.successResponse({
-        organisation,
-      }));
+      const createdOrganisations = organisation.map(org => {
+        const newOrg = { ...org, id: uuidv4() };
+        organisations.push(newOrg);
+        return newOrg;
+      });
+      resolve(Service.successResponse(createdOrganisations, 201));
     } catch (e) {
       reject(Service.rejectResponse(
         e.message || 'Invalid input',

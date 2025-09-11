@@ -39,4 +39,44 @@ describe('Organisations API', () => {
     expect(res.body).to.be.an('object');
     expect(res.body.id).to.equal(organisationId);
   });
+
+  it('should bulk create organisations', async () => {
+    const organisationsToCreate = [
+      {
+        legalName: 'Bulk Org 1',
+        tradingName: 'BO1',
+        organisationType: 'University',
+        abn: '11111111111',
+      },
+      {
+        legalName: 'Bulk Org 2',
+        tradingName: 'BO2',
+        organisationType: 'College',
+        abn: '22222222222',
+      },
+      {
+        legalName: 'Bulk Org 3',
+        tradingName: 'BO3',
+        organisationType: 'School',
+        abn: '33333333333',
+      },
+    ];
+
+    const res = await request
+      .post('/api/v1/organisations/bulk')
+      .send(organisationsToCreate)
+      .expect(201);
+
+    expect(res.body).to.be.an('array');
+    expect(res.body).to.have.lengthOf(3);
+
+    res.body.forEach((org, index) => {
+      expect(org).to.be.an('object');
+      expect(org.legalName).to.equal(organisationsToCreate[index].legalName);
+      expect(org.tradingName).to.equal(organisationsToCreate[index].tradingName);
+      expect(org.organisationType).to.equal(organisationsToCreate[index].organisationType);
+      expect(org.abn).to.equal(organisationsToCreate[index].abn);
+      expect(org.id).to.be.a('string');
+    });
+  });
 });
