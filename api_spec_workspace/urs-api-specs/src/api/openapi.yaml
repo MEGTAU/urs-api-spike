@@ -36,8 +36,8 @@ paths:
       description: General contact search to facilitate the "do i know you" use case.
       operationId: contactsGET
       parameters:
-      - description: "A list that may have the values \"disclosure-settings\", \"\
-          contact-information\", \"communication-preferences\", \"analysis\", \"system-links\"\
+      - description: "A list that may have the values \"disclosure-settings\", \"
+          contact-information\", \"communication-preferences\", \"analysis\", \"system-links\"
           , \"relationships\""
         in: query
         name: includedFields
@@ -79,7 +79,7 @@ paths:
                 $ref: "#/components/schemas/ContactList"
           description: A list of contacts.
       summary: Search for contacts
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
     post:
       description: Represents an individual. Note that specifying meaning included
         fields may require multiple joins so consider performance implications.
@@ -94,7 +94,7 @@ paths:
         "201":
           description: Contact created
       summary: Create a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/bulk:
     post:
       description: Represents an individual. Note that specifying meaning included
@@ -112,7 +112,7 @@ paths:
         "201":
           description: Contacts created
       summary: Bulk create contacts
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/merge:
     put:
       description: Manually merges data from the secondary record(s) into the primary
@@ -129,7 +129,7 @@ paths:
         "200":
           description: Contacts merged
       summary: Merge contacts
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}:
     delete:
       description: Represents an individual. Note that specifying meaning included
@@ -148,7 +148,7 @@ paths:
         "404":
           description: Contact not found
       summary: Delete a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
     get:
       description: Represents an individual. Note that specifying meaning included
         fields may require multiple joins so consider performance implications.
@@ -160,8 +160,8 @@ paths:
         schema:
           format: uuid
           type: string
-      - description: "A list that may have the values \"disclosure-settings\", \"\
-          contact-information\", \"communication-preferences\", \"analysis\", \"system-links\"\
+      - description: "A list that may have the values \"disclosure-settings\", \"
+          contact-information\", \"communication-preferences\", \"analysis\", \"system-links\"
           , \"relationships\""
         in: query
         name: includedFields
@@ -186,7 +186,7 @@ paths:
         "404":
           description: Contact not found
       summary: Get a contact by ID
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
     put:
       description: Represents an individual. Note that specifying meaning included
         fields may require multiple joins so consider performance implications.
@@ -210,7 +210,7 @@ paths:
         "404":
           description: Contact not found
       summary: Update a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}/disclosure-settings:
     get:
       description: Information disclosure settings for a contact.
@@ -228,7 +228,7 @@ paths:
         "404":
           description: Contact not found
       summary: Get disclosure settings for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
     put:
       description: Information disclosure settings for a contact.
       operationId: contactsContactIdDisclosureSettingsPUT
@@ -245,11 +245,11 @@ paths:
         "404":
           description: Contact not found
       summary: Update disclosure settings for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}/communication-preferences:
     get:
-      description: "Includes per-channel (e.g. SMS, email, etc) in an extensible format\
-        \ that can support any channel"
+      description: "Includes per-channel (e.g. SMS, email, etc) in an extensible format
+        that can support any channel"
       operationId: contactsContactIdCommunicationPreferencesGET
       parameters:
       - in: path
@@ -268,10 +268,10 @@ paths:
         "404":
           description: Contact not found
       summary: Get communication preferences for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
     post:
-      description: "Includes per-channel (e.g. SMS, email, etc) in an extensible format\
-        \ that can support any channel"
+      description: "Includes per-channel (e.g. SMS, email, etc) in an extensible format
+        that can support any channel"
       operationId: contactsContactIdCommunicationPreferencesPOST
       parameters:
       - in: path
@@ -292,11 +292,11 @@ paths:
         "404":
           description: Contact not found
       summary: Create a communication preference for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}/communication-preferences/{preferenceId}:
     put:
-      description: "Includes per-channel (e.g. SMS, email, etc) in an extensible format\
-        \ that can support any channel"
+      description: "Includes per-channel (e.g. SMS, email, etc) in an extensible format
+        that can support any channel"
       operationId: contactsContactIdCommunicationPreferencesPreferenceIdPUT
       parameters:
       - in: path
@@ -323,7 +323,7 @@ paths:
         "404":
           description: Contact or preference not found
       summary: Update a communication preference for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}/contact-information:
     get:
       description: Contains information about how the contact may be contacted.
@@ -345,7 +345,7 @@ paths:
         "404":
           description: Contact not found
       summary: Get contact information for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
     post:
       description: Contains information about how the contact may be contacted.
       operationId: contactsContactIdContactInformationPOST
@@ -368,7 +368,7 @@ paths:
         "404":
           description: Contact not found
       summary: Add contact information to a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}/contact-information/{infoId}:
     delete:
       description: Contains information about how the contact may be contacted.
@@ -392,7 +392,7 @@ paths:
         "404":
           description: Contact or information not found
       summary: Delete contact information
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
     put:
       description: Contains information about how the contact may be contacted.
       operationId: contactsContactIdContactInformationInfoIdPUT
@@ -421,7 +421,7 @@ paths:
         "201":
           description: A new record was created following the upsert approach.
       summary: Update (or create) contact information
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}/profiles:
     get:
       description: Contains information about the profiles the contact has held at
@@ -449,7 +449,7 @@ paths:
         "404":
           description: Contact not found
       summary: Get profiles for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
     post:
       description: Contains information about the profiles the contact has held at
         present and in the past
@@ -473,7 +473,7 @@ paths:
         "404":
           description: Contact not found
       summary: Add a profile to a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}/profiles/{profileId}:
     delete:
       description: Contains information about the profiles the contact has held at
@@ -498,7 +498,7 @@ paths:
         "404":
           description: Contact or profile not found
       summary: Delete a profile for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
     put:
       description: Contains information about the profiles the contact has held at
         present and in the past
@@ -528,7 +528,7 @@ paths:
         "404":
           description: Contact or profile not found
       summary: Update a profile for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}/analyses:
     get:
       description: Contains the results for an analysis (e.g vibrancy index classification)
@@ -551,7 +551,7 @@ paths:
         "404":
           description: Contact not found
       summary: Get analyses for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
     post:
       description: Contains the results for an analysis (e.g vibrancy index classification)
         of the contact
@@ -575,7 +575,7 @@ paths:
         "404":
           description: Contact not found
       summary: Add an analysis for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}/analyses/bulk:
     post:
       description: Contains the results for an analysis (e.g vibrancy index classification)
@@ -602,7 +602,7 @@ paths:
         "404":
           description: Contact not found
       summary: Bulk create analyses for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}/analyses/{analysisId}:
     delete:
       description: Contains the results for an analysis (e.g vibrancy index classification)
@@ -627,7 +627,7 @@ paths:
         "404":
           description: Contact or analysis not found
       summary: Delete an analysis for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
     put:
       description: Contains the results for an analysis (e.g vibrancy index classification)
         of the contact
@@ -657,11 +657,11 @@ paths:
         "201":
           description: A new record was created following the upsert approach.
       summary: Update (or create) an analysis for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}/system-links:
     get:
-      description: "Each link describes a reference to the record for the contact\
-        \ in another ssytem, such as an SMS or LMS."
+      description: "Each link describes a reference to the record for the contact
+        in another ssytem, such as an SMS or LMS."
       operationId: contactsContactIdSystemLinksGET
       parameters:
       - in: path
@@ -680,10 +680,10 @@ paths:
         "404":
           description: Contact not found
       summary: Get system links for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
     post:
-      description: "Each link describes a reference to the record for the contact\
-        \ in another ssytem, such as an SMS or LMS."
+      description: "Each link describes a reference to the record for the contact
+        in another ssytem, such as an SMS or LMS."
       operationId: contactsContactIdSystemLinksPOST
       parameters:
       - in: path
@@ -704,11 +704,11 @@ paths:
         "404":
           description: Contact not found
       summary: Add a system link for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}/system-links/bulk:
     post:
-      description: "Each link describes a reference to the record for the contact\
-        \ in another ssytem, such as an SMS or LMS."
+      description: "Each link describes a reference to the record for the contact
+        in another system, such as an SMS or LMS."
       operationId: contactsContactIdSystemLinksBulkPOST
       parameters:
       - in: path
@@ -731,11 +731,11 @@ paths:
         "404":
           description: Contact not found
       summary: Bulk create system links for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}/system-links/{linkId}:
     delete:
-      description: "Each link describes a reference to the record for the contact\
-        \ in another ssytem, such as an SMS or LMS."
+      description: "Each link describes a reference to the record for the contact
+        in another ssytem, such as an SMS or LMS."
       operationId: contactsContactIdSystemLinksLinkIdDELETE
       parameters:
       - in: path
@@ -756,10 +756,10 @@ paths:
         "404":
           description: Contact or link not found
       summary: Delete a system link for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
     put:
-      description: "Each link describes a reference to the record for the contact\
-        \ in another ssytem, such as an SMS or LMS."
+      description: "Each link describes a reference to the record for the contact
+        in another ssytem, such as an SMS or LMS."
       operationId: contactsContactIdSystemLinksLinkIdPUT
       parameters:
       - in: path
@@ -786,11 +786,11 @@ paths:
         "201":
           description: A new record was created following the upsert approach.
       summary: Update (or create) a system link for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}/documents:
     get:
-      description: "Each document object represents a document about the user, such\
-        \ as a resume or cover letter."
+      description: "Each document object represents a document about the user, such
+        as a resume or cover letter."
       operationId: contactsContactIdDocumentsGET
       parameters:
       - in: path
@@ -809,10 +809,10 @@ paths:
         "404":
           description: Contact not found
       summary: Get documents for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
     post:
-      description: "Each document object represents a document about the user, such\
-        \ as a resume or cover letter."
+      description: "Each document object represents a document about the user, such
+        as a resume or cover letter."
       operationId: contactsContactIdDocumentsPOST
       parameters:
       - in: path
@@ -833,11 +833,11 @@ paths:
         "404":
           description: Contact not found
       summary: Add a document for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}/documents/bulk:
     post:
-      description: "Each document object represents a document about the user, such\
-        \ as a resume or cover letter."
+      description: "Each document object represents a document about the user, such
+        as a resume or cover letter."
       operationId: contactsContactIdDocumentsBulkPOST
       parameters:
       - in: path
@@ -860,11 +860,11 @@ paths:
         "404":
           description: Contact not found
       summary: Bulk create documents for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
   /contacts/{contactId}/documents/{documentId}:
     delete:
-      description: "Each document object represents a document about the user, such\
-        \ as a resume or cover letter."
+      description: "Each document object represents a document about the user, such
+        as a resume or cover letter."
       operationId: contactsContactIdDocumentsDocumentIdDELETE
       parameters:
       - in: path
@@ -885,10 +885,10 @@ paths:
         "404":
           description: Contact or document not found
       summary: Delete a document for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
     put:
-      description: "Each document object represents a document about the user, such\
-        \ as a resume or cover letter."
+      description: "Each document object represents a document about the user, such
+        as a resume or cover letter."
       operationId: contactsContactIdDocumentsDocumentIdPUT
       parameters:
       - in: path
@@ -915,7 +915,8 @@ paths:
         "404":
           description: Contact or document not found
       summary: Update a document for a contact
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/ContactsController
+
   /relationships:
     get:
       description: Define a relationship between two contacts. The relationship will
