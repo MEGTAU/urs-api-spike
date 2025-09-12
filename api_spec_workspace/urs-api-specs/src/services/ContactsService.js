@@ -493,10 +493,12 @@ const contactsContactIdDocumentsPOST = ({contactId, document}) => new Promise(
 const contactsContactIdGET = ({contactId, includedFields}) => new Promise(
     async (resolve, reject) => {
         try {
-            resolve(Service.successResponse({
-                contactId,
-                includedFields,
-            }));
+            const organisation = contacts.find(o => o.id === contactId);
+            if (organisation) {
+                resolve(Service.successResponse(organisation));
+            } else {
+                reject(Service.rejectResponse('Contact not found', 404));
+            }
         } catch (e) {
             reject(Service.rejectResponse(
                 e.message || 'Invalid input',
