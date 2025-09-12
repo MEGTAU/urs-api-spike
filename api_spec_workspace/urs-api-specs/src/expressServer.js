@@ -42,6 +42,7 @@ class ExpressServer {
     this.app.get('/openapi', (req, res) => res.sendFile((path.join(__dirname, 'api', 'openapi.yaml'))));
     // View the openapi document in a visual interface. Should be able to test from this page
     this.app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(this.schema));
+    this.app.use('/ui', express.static(path.join(__dirname, 'ui')));
     this.app.get('/login-redirect', (req, res) => {
       res.status(200);
       res.json(req.query);
