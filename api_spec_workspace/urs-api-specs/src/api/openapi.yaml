@@ -90,9 +90,14 @@ paths:
             schema:
               $ref: "#/components/schemas/Contact"
         required: true
+        x-codegen-request-body-name: contact
       responses:
         "201":
           description: Contact created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contact"
       summary: Create a contact
       x-eov-operation-handler: controllers/ContactsController
   /contacts/bulk:
