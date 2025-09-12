@@ -10,6 +10,20 @@ const server = new ExpressServer(8081, openApiYaml);
 const request = supertest(server.app);
 
 describe('Contacts API', () => {
+    before(async () => {
+        // Create some contacts to test with
+        const contact1 = {
+            firstName: 'Test',
+            lastName: 'One',
+        };
+        const contact2 = {
+            firstName: 'Test',
+            lastName: 'Two',
+        };
+        await request.post('/api/v1/contacts').send(contact1);
+        await request.post('/api/v1/contacts').send(contact2);
+    });
+
     it('should create a new contact', async () => {
         const newContact = {
             firstName: 'John',
@@ -50,5 +64,18 @@ describe('Contacts API', () => {
         expect(getRes.body.id).to.equal(contactId);
         expect(getRes.body.firstName).to.equal(newContact.firstName);
         expect(getRes.body.lastName).to.equal(newContact.lastName);
+    });
+
+    it('should get a list of contacts', async () => {
+        const res = await request
+            .get('/api/v1/contacts')
+            .expect(200);
+
+        expect(res.body).to.be.an('object');
+        expect(res.body.entries).to.be.an('array');
+        expect(res.body.entries.length).to.be.greaterThan(1);
+        // check for the contacts created in the before() block
+        expect(res.body.entries.some(c => c.lastName === 'One')).to.be.true;
+        expect(res.body.entries.some(c => c.lastName === 'Two')).to.be.true;
     });
 });

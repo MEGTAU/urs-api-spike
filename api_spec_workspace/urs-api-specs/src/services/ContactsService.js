@@ -752,9 +752,10 @@ const contactsGET = ({includedFields, limit, offset}) => new Promise(
     async (resolve, reject) => {
         try {
             resolve(Service.successResponse({
-                includedFields,
-                limit,
-                offset,
+                entries: contacts,
+                offset: offset || 0,
+                limit: limit || contacts.length,
+                total_count: contacts.length
             }));
         } catch (e) {
             reject(Service.rejectResponse(
