@@ -78,4 +78,39 @@ describe('Contacts API', () => {
         expect(res.body.entries.some(c => c.lastName === 'One')).to.be.true;
         expect(res.body.entries.some(c => c.lastName === 'Two')).to.be.true;
     });
+
+    it('should update a contact', async () => {
+        // Create a new contact first
+        const newContact = {
+            firstName: 'Update',
+            lastName: 'Me',
+        };
+
+        const createRes = await request
+            .post('/api/v1/contacts')
+            .send(newContact)
+            .expect(201);
+
+        const contactId = createRes.body.id;
+
+        const updatedContact = {
+            ...newContact,
+            id: contactId,
+            firstName: 'Updated',
+        };
+
+        await request
+            .put(`/api/v1/contacts/${contactId}`)
+            .send(updatedContact)
+            .expect(200);
+
+        const getRes = await request
+            .get(`/api/v1/contacts/${contactId}`)
+            .expect(200);
+
+        expect(getRes.body).to.be.an('object');
+        expect(getRes.body.id).to.equal(contactId);
+        expect(getRes.body.firstName).to.equal('Updated');
+        expect(getRes.body.lastName).to.equal('Me');
+    });
 });

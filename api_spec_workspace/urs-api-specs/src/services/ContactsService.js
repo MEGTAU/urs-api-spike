@@ -518,10 +518,13 @@ const contactsContactIdGET = ({contactId, includedFields}) => new Promise(
 const contactsContactIdPUT = ({contactId, contact}) => new Promise(
     async (resolve, reject) => {
         try {
-            resolve(Service.successResponse({
-                contactId,
-                contact,
-            }));
+            const index = contacts.findIndex(o => o.id === contactId);
+            if (index !== -1) {
+                contacts[index] = {...contacts[index], ...contact};
+                resolve(Service.successResponse(contacts[index]));
+            } else {
+                reject(Service.rejectResponse('Contact not found', 404));
+            }
         } catch (e) {
             reject(Service.rejectResponse(
                 e.message || 'Invalid input',
