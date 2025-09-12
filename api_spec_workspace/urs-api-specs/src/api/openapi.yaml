@@ -930,7 +930,7 @@ paths:
                 $ref: "#/components/schemas/RelationshipList"
           description: A list of relationships.
       summary: Get all relationships
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/RelationshipsController
     post:
       description: Define a relationship between two contacts. The relationship will
         have a type (e.g. parent-child) and a profiles for each member in the relationship
@@ -945,7 +945,7 @@ paths:
         "201":
           description: Relationship created
       summary: Create a relationship
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/RelationshipsController
   /relationships/bulk:
     put:
       description: Define a relationship between two contacts. The relationship will
@@ -963,7 +963,7 @@ paths:
         "200":
           description: Relationships updated
       summary: Bulk update relationships
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/RelationshipsController
   /relationships/{relationshipId}:
     delete:
       description: Define a relationship between two contacts. The relationship will
@@ -982,7 +982,7 @@ paths:
         "404":
           description: Relationship not found
       summary: Delete a relationship
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/RelationshipsController
     get:
       description: Define a relationship between two contacts. The relationship will
         have a type (e.g. parent-child) and a profiles for each member in the relationship
@@ -1004,7 +1004,8 @@ paths:
         "404":
           description: Relationship not found
       summary: Get a relationship by ID
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/RelationshipsController
+
     put:
       description: Define a relationship between two contacts. The relationship will
         have a type (e.g. parent-child) and a profiles for each member in the relationship
@@ -1028,7 +1029,7 @@ paths:
         "404":
           description: Relationship not found
       summary: Update a relationship
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/RelationshipsController
   /organisations:
     get:
       description: Organisation resource
