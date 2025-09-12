@@ -13,24 +13,24 @@ describe('Interactions API', () => {
 
 
 
-    // it('should create a new interaction', async () => {
-    //     const newInteraction = {
-    //         contactId: uuidv4(),
-    //         payload: {
-    //             message: 'This is a single test interaction',
-    //         },
-    //     };
-    //
-    //     const res = await request
-    //         .post('/api/v1/interactions')
-    //         .send(newInteraction)
-    //         .expect(201);
-    //
-    //     expect(res.body).to.be.an('object');
-    //     expect(res.body.id).to.be.a('string');
-    //     expect(res.body.contactId).to.equal(newInteraction.contactId);
-    //     expect(res.body.payload.message).to.equal(newInteraction.payload.message);
-    // });
+    it('should create a new interaction', async () => {
+        const newInteraction = {
+            contactId: uuidv4(),
+            payload: {
+                message: 'This is a single test interaction',
+            },
+        };
+
+        const res = await request
+            .post('/api/v1/interactions')
+            .send(newInteraction)
+            .expect(201);
+
+        expect(res.body).to.be.an('object');
+        expect(res.body.id).to.be.a('string');
+        expect(res.body.contactId).to.equal(newInteraction.contactId);
+        expect(res.body.payload.message).to.equal(newInteraction.payload.message);
+    });
 
 
     it('should bulk create interactions', async () => {
@@ -69,4 +69,14 @@ describe('Interactions API', () => {
             expect(interaction.payload.message).to.equal(interactionsToCreate[index].payload.message);
         });
     });
+
+  it('should get all interactions', async () => {
+    const res = await request
+      .get('/api/v1/interactions')
+      .expect(200);
+
+    expect(res.body).to.be.an('object');
+    expect(res.body.entries).to.be.an('array');
+    expect(res.body.entries).to.have.lengthOf.at.least(1); // At least one interaction from previous tests
+  });
 });

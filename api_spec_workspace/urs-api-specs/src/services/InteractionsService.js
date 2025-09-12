@@ -50,7 +50,32 @@ const interactionsPOST = ({interaction}) => new Promise(
     },
 );
 
+/**
+* Get all interactions
+* An API to record interactions for future reference.
+*
+* returns InteractionList
+* */
+const interactionsGET = () => new Promise(
+  async (resolve, reject) => {
+    try {
+      resolve(Service.successResponse({
+        entries: interactions,
+        offset: 0,
+        limit: interactions.length,
+        total_count: interactions.length,
+      }));
+    } catch (e) {
+      reject(Service.rejectResponse(
+        e.message || 'Invalid input',
+        e.status || 405,
+      ));
+    }
+  },
+);
+
 module.exports = {
     interactionsBulkPOST,
     interactionsPOST,
+    interactionsGET,
 };

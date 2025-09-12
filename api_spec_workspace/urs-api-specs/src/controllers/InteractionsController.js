@@ -9,7 +9,12 @@ const interactionsPOST = async (request, response) => {
   await Controller.handleRequest(request, response, service.interactionsPOST);
 };
 
+const interactionsGET = async (request, response) => {
+  await Controller.handleRequest(request, response, service.interactionsGET);
+};
+
 module.exports = {
   interactionsBulkPOST,
   interactionsPOST,
+  interactionsGET,
 };

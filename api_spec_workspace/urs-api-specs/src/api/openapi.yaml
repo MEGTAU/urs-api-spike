@@ -1179,6 +1179,18 @@ paths:
                 $ref: "#/components/schemas/Interaction"
       summary: Create an interaction
       x-eov-operation-handler: controllers/InteractionsController
+    get: # Add this new GET method
+      description: Get all interactions
+      operationId: interactionsGET
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InteractionList"
+          description: A list of interactions.
+      summary: Get all interactions
+      x-eov-operation-handler: controllers/InteractionsController
   /interactions/bulk:
     post:
       description: An API to record interactions for future reference. Can initially
@@ -2205,4 +2217,20 @@ components:
         state:
           example: ACT
           type: string
+      type: object
+    InteractionList:
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: "#/components/schemas/Interaction"
+        offset:
+          type: integer
+          format: int32
+        limit:
+          type: integer
+          format: int32
+        total_count:
+          type: integer
+          format: int32
       type: object
