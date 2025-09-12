@@ -2,7 +2,7 @@
 const Service = require('./Service');
 const { v4: uuidv4 } = require('uuid');
 
-let organisations = [];
+
 
 /**
 * Bulk create contacts

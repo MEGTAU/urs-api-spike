@@ -1040,7 +1040,7 @@ paths:
                 $ref: "#/components/schemas/OrganisationList"
           description: A list of organisations.
       summary: Get all organisations
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/OrganisationController
     post:
       description: Organisation resource
       operationId: organisationsPOST
@@ -1059,7 +1059,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Organisation'
       summary: Create an organisation
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/OrganisationController
   /organisations/bulk:
     post:
       description: Organisation resource
@@ -1090,7 +1090,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Organisation"
       summary: Bulk create organisations
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/OrganisationController
   /organisations/{organisationId}:
     delete:
       description: Organisation resource
@@ -1108,7 +1108,7 @@ paths:
         "404":
           description: Organisation not found
       summary: Delete an organisation
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/OrganisationController
     get:
       description: Organisation resource
       operationId: organisationsOrganisationIdGET
@@ -1129,7 +1129,7 @@ paths:
         "404":
           description: Organisation not found
       summary: Get an organisation by ID
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/OrganisationController
     put:
       description: Organisation resource
       operationId: organisationsOrganisationIdPUT
@@ -1153,7 +1153,7 @@ paths:
         "201":
           description: A new record was created following the upsert approach.
       summary: Update (or create) an organisation
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/OrganisationController
   /interactions:
     post:
       description: An API to record interactions for future reference. Can initially
