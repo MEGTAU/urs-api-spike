@@ -29,48 +29,48 @@ info:
   title: Universal Relationship Service API
   version: 1.0.0
 servers:
-- url: http://localhost:8080/api/v1
+  - url: http://localhost:8080/api/v1
 paths:
   /contacts:
     get:
       description: General contact search to facilitate the "do i know you" use case.
       operationId: contactsGET
       parameters:
-      - description: "A list that may have the values \"disclosure-settings\", \"
+        - description: "A list that may have the values \"disclosure-settings\", \"
           contact-information\", \"communication-preferences\", \"analysis\", \"system-links\"
           , \"relationships\""
-        in: query
-        name: includedFields
-        schema:
-          items:
-            enum:
-            - disclosure-settings
-            - contact-information
-            - communication-preferences
-            - analysis
-            - system-links
-            - relationships
-            type: string
-          type: array
-      - description: The number of items to return.
-        explode: true
-        in: query
-        name: limit
-        required: false
-        schema:
-          format: int32
-          type: integer
-        style: form
-      - description: The number of items to skip before starting to collect the result
-          set.
-        explode: true
-        in: query
-        name: offset
-        required: false
-        schema:
-          format: int32
-          type: integer
-        style: form
+          in: query
+          name: includedFields
+          schema:
+            items:
+              enum:
+                - disclosure-settings
+                - contact-information
+                - communication-preferences
+                - analysis
+                - system-links
+                - relationships
+              type: string
+            type: array
+        - description: The number of items to return.
+          explode: true
+          in: query
+          name: limit
+          required: false
+          schema:
+            format: int32
+            type: integer
+          style: form
+        - description: The number of items to skip before starting to collect the result
+            set.
+          explode: true
+          in: query
+          name: offset
+          required: false
+          schema:
+            format: int32
+            type: integer
+          style: form
       responses:
         "200":
           content:
@@ -136,12 +136,12 @@ paths:
         fields may require multiple joins so consider performance implications.
       operationId: contactsContactIdDELETE
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "204":
           description: Contact deleted
@@ -154,28 +154,28 @@ paths:
         fields may require multiple joins so consider performance implications.
       operationId: contactsContactIdGET
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
-      - description: "A list that may have the values \"disclosure-settings\", \"
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
+        - description: "A list that may have the values \"disclosure-settings\", \"
           contact-information\", \"communication-preferences\", \"analysis\", \"system-links\"
           , \"relationships\""
-        in: query
-        name: includedFields
-        schema:
-          items:
-            enum:
-            - disclosure-settings
-            - contact-information
-            - communication-preferences
-            - analysis
-            - system-links
-            - relationships
-            type: string
-          type: array
+          in: query
+          name: includedFields
+          schema:
+            items:
+              enum:
+                - disclosure-settings
+                - contact-information
+                - communication-preferences
+                - analysis
+                - system-links
+                - relationships
+              type: string
+            type: array
       responses:
         "200":
           content:
@@ -192,12 +192,12 @@ paths:
         fields may require multiple joins so consider performance implications.
       operationId: contactsContactIdPUT
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -216,12 +216,12 @@ paths:
       description: Information disclosure settings for a contact.
       operationId: contactsContactIdDisclosureSettingsGET
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "200":
           description: Disclosure settings for the contact.
@@ -233,12 +233,12 @@ paths:
       description: Information disclosure settings for a contact.
       operationId: contactsContactIdDisclosureSettingsPUT
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "200":
           description: Disclosure settings updated
@@ -252,12 +252,12 @@ paths:
         that can support any channel"
       operationId: contactsContactIdCommunicationPreferencesGET
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "200":
           content:
@@ -274,12 +274,12 @@ paths:
         that can support any channel"
       operationId: contactsContactIdCommunicationPreferencesPOST
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -299,18 +299,18 @@ paths:
         that can support any channel"
       operationId: contactsContactIdCommunicationPreferencesPreferenceIdPUT
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
-      - in: path
-        name: preferenceId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
+        - in: path
+          name: preferenceId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -329,12 +329,12 @@ paths:
       description: Contains information about how the contact may be contacted.
       operationId: contactsContactIdContactInformationGET
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "200":
           content:
@@ -350,12 +350,12 @@ paths:
       description: Contains information about how the contact may be contacted.
       operationId: contactsContactIdContactInformationPOST
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -374,18 +374,18 @@ paths:
       description: Contains information about how the contact may be contacted.
       operationId: contactsContactIdContactInformationInfoIdDELETE
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
-      - in: path
-        name: infoId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
+        - in: path
+          name: infoId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "204":
           description: Contact information deleted
@@ -397,18 +397,18 @@ paths:
       description: Contains information about how the contact may be contacted.
       operationId: contactsContactIdContactInformationInfoIdPUT
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
-      - in: path
-        name: infoId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
+        - in: path
+          name: infoId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -428,17 +428,17 @@ paths:
         present and in the past
       operationId: contactsContactIdProfilesGET
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
-      - description: Only return active profiles.
-        in: query
-        name: activeProfiles
-        schema:
-          type: boolean
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
+        - description: Only return active profiles.
+          in: query
+          name: activeProfiles
+          schema:
+            type: boolean
       responses:
         "200":
           content:
@@ -455,12 +455,12 @@ paths:
         present and in the past
       operationId: contactsContactIdProfilesPOST
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -480,18 +480,18 @@ paths:
         present and in the past
       operationId: contactsContactIdProfilesProfileIdDELETE
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
-      - in: path
-        name: profileId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
+        - in: path
+          name: profileId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "204":
           description: Profile deleted
@@ -504,18 +504,18 @@ paths:
         present and in the past
       operationId: contactsContactIdProfilesProfileIdPUT
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
-      - in: path
-        name: profileId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
+        - in: path
+          name: profileId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -535,12 +535,12 @@ paths:
         of the contact
       operationId: contactsContactIdAnalysesGET
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "200":
           content:
@@ -557,12 +557,12 @@ paths:
         of the contact
       operationId: contactsContactIdAnalysesPOST
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -582,12 +582,12 @@ paths:
         of the contact
       operationId: contactsContactIdAnalysesBulkPOST
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -609,18 +609,18 @@ paths:
         of the contact
       operationId: contactsContactIdAnalysesAnalysisIdDELETE
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
-      - in: path
-        name: analysisId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
+        - in: path
+          name: analysisId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "204":
           description: Analysis deleted
@@ -633,18 +633,18 @@ paths:
         of the contact
       operationId: contactsContactIdAnalysesAnalysisIdPUT
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
-      - in: path
-        name: analysisId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
+        - in: path
+          name: analysisId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -664,12 +664,12 @@ paths:
         in another ssytem, such as an SMS or LMS."
       operationId: contactsContactIdSystemLinksGET
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "200":
           content:
@@ -686,12 +686,12 @@ paths:
         in another ssytem, such as an SMS or LMS."
       operationId: contactsContactIdSystemLinksPOST
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -711,12 +711,12 @@ paths:
         in another system, such as an SMS or LMS."
       operationId: contactsContactIdSystemLinksBulkPOST
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -738,18 +738,18 @@ paths:
         in another ssytem, such as an SMS or LMS."
       operationId: contactsContactIdSystemLinksLinkIdDELETE
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
-      - in: path
-        name: linkId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
+        - in: path
+          name: linkId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "204":
           description: System link deleted
@@ -762,18 +762,18 @@ paths:
         in another ssytem, such as an SMS or LMS."
       operationId: contactsContactIdSystemLinksLinkIdPUT
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
-      - in: path
-        name: linkId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
+        - in: path
+          name: linkId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -793,12 +793,12 @@ paths:
         as a resume or cover letter."
       operationId: contactsContactIdDocumentsGET
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "200":
           content:
@@ -815,12 +815,12 @@ paths:
         as a resume or cover letter."
       operationId: contactsContactIdDocumentsPOST
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -840,12 +840,12 @@ paths:
         as a resume or cover letter."
       operationId: contactsContactIdDocumentsBulkPOST
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -867,18 +867,18 @@ paths:
         as a resume or cover letter."
       operationId: contactsContactIdDocumentsDocumentIdDELETE
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
-      - in: path
-        name: documentId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
+        - in: path
+          name: documentId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "204":
           description: Document deleted
@@ -891,18 +891,18 @@ paths:
         as a resume or cover letter."
       operationId: contactsContactIdDocumentsDocumentIdPUT
       parameters:
-      - in: path
-        name: contactId
-        required: true
-        schema:
-          format: uuid
-          type: string
-      - in: path
-        name: documentId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            format: uuid
+            type: string
+        - in: path
+          name: documentId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -970,12 +970,12 @@ paths:
         have a type (e.g. parent-child) and a profiles for each member in the relationship
       operationId: relationshipsRelationshipIdDELETE
       parameters:
-      - in: path
-        name: relationshipId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: relationshipId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "204":
           description: Relationship deleted
@@ -988,12 +988,12 @@ paths:
         have a type (e.g. parent-child) and a profiles for each member in the relationship
       operationId: relationshipsRelationshipIdGET
       parameters:
-      - in: path
-        name: relationshipId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: relationshipId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "200":
           content:
@@ -1011,12 +1011,12 @@ paths:
         have a type (e.g. parent-child) and a profiles for each member in the relationship
       operationId: relationshipsRelationshipIdPUT
       parameters:
-      - in: path
-        name: relationshipId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: relationshipId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -1074,6 +1074,7 @@ paths:
                 $ref: "#/components/schemas/Organisation"
               type: array
         required: true
+        x-codegen-request-body-name: organisation
       responses:
         "201":
           description: Organisations created
@@ -1098,12 +1099,12 @@ paths:
       description: Organisation resource
       operationId: organisationsOrganisationIdDELETE
       parameters:
-      - in: path
-        name: organisationId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: organisationId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "204":
           description: Organisation deleted
@@ -1115,12 +1116,12 @@ paths:
       description: Organisation resource
       operationId: organisationsOrganisationIdGET
       parameters:
-      - in: path
-        name: organisationId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: organisationId
+          required: true
+          schema:
+            format: uuid
+            type: string
       responses:
         "200":
           content:
@@ -1136,12 +1137,12 @@ paths:
       description: Organisation resource
       operationId: organisationsOrganisationIdPUT
       parameters:
-      - in: path
-        name: organisationId
-        required: true
-        schema:
-          format: uuid
-          type: string
+        - in: path
+          name: organisationId
+          required: true
+          schema:
+            format: uuid
+            type: string
       requestBody:
         content:
           application/json:
@@ -1168,9 +1169,14 @@ paths:
             schema:
               $ref: "#/components/schemas/Interaction"
         required: true
+        x-codegen-request-body-name: interaction
       responses:
         "201":
           description: Interaction created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Interaction"
       summary: Create an interaction
       x-eov-operation-handler: controllers/InteractionsController
   /interactions/bulk:
@@ -1187,9 +1193,16 @@ paths:
                 $ref: "#/components/schemas/Interaction"
               type: array
         required: true
+        x-codegen-request-body-name: interaction
       responses:
         "201":
           description: Interactions created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Interaction"
       summary: Bulk create interactions
       x-eov-operation-handler: controllers/InteractionsController
 components:
@@ -1226,92 +1239,92 @@ components:
         LUI: "1234567890"
         cdpUserId: 550e8400-e29b-41d4-a716-446655440000
         documents:
-        - createdAt: 2023-09-01T12:00:00Z
-          link: https://example.com/resume.pdf
-          id: 723e4567-e89b-12d3-a456-426614174000
-          type: resume
-        - createdAt: 2023-09-01T12:00:00Z
-          link: https://example.com/resume.pdf
-          id: 723e4567-e89b-12d3-a456-426614174000
-          type: resume
+          - createdAt: 2023-09-01T12:00:00Z
+            link: https://example.com/resume.pdf
+            id: 723e4567-e89b-12d3-a456-426614174000
+            type: resume
+          - createdAt: 2023-09-01T12:00:00Z
+            link: https://example.com/resume.pdf
+            id: 723e4567-e89b-12d3-a456-426614174000
+            type: resume
         profiles:
-        - completedAt: 2025-01-15T17:00:00Z
-          startedAt: 2023-01-15T09:00:00Z
-          id: 323e4567-e89b-12d3-a456-426614174000
-          profileInformation: "{}"
-          type: apprentice
-          isActive: "true"
-        - completedAt: 2025-01-15T17:00:00Z
-          startedAt: 2023-01-15T09:00:00Z
-          id: 323e4567-e89b-12d3-a456-426614174000
-          profileInformation: "{}"
-          type: apprentice
-          isActive: "true"
+          - completedAt: 2025-01-15T17:00:00Z
+            startedAt: 2023-01-15T09:00:00Z
+            id: 323e4567-e89b-12d3-a456-426614174000
+            profileInformation: "{}"
+            type: apprentice
+            isActive: "true"
+          - completedAt: 2025-01-15T17:00:00Z
+            startedAt: 2023-01-15T09:00:00Z
+            id: 323e4567-e89b-12d3-a456-426614174000
+            profileInformation: "{}"
+            type: apprentice
+            isActive: "true"
         USI: "1234567890"
         memberships:
-        - "{}"
-        - "{}"
+          - "{}"
+          - "{}"
         VSN: "123456789"
         analyses:
-        - createdAt: 2024-03-10T10:00:00Z
-          id: 823e4567-e89b-12d3-a456-426614174000
-          type: vibrancy-index
-          results: "{}"
-        - createdAt: 2024-03-10T10:00:00Z
-          id: 823e4567-e89b-12d3-a456-426614174000
-          type: vibrancy-index
-          results: "{}"
+          - createdAt: 2024-03-10T10:00:00Z
+            id: 823e4567-e89b-12d3-a456-426614174000
+            type: vibrancy-index
+            results: "{}"
+          - createdAt: 2024-03-10T10:00:00Z
+            id: 823e4567-e89b-12d3-a456-426614174000
+            type: vibrancy-index
+            results: "{}"
         firstName: First
         createdAt: 2023-06-15T10:00:00Z
         relationships:
-        - createdAt: 2022-03-10T11:00:00Z
-          lastConfirmAt: 2024-05-20T16:00:00Z
-          endedAt: 2025-01-01T00:00:00Z
-          relatedParties:
-          - 220e8400-e29b-41d4-a716-446655440000
-          - 330e8400-e29b-41d4-a716-446655440000
-          id: 423e4567-e89b-12d3-a456-426614174000
-          type: child
-          primaryParty: 110e8400-e29b-41d4-a716-446655440000
-        - createdAt: 2022-03-10T11:00:00Z
-          lastConfirmAt: 2024-05-20T16:00:00Z
-          endedAt: 2025-01-01T00:00:00Z
-          relatedParties:
-          - 220e8400-e29b-41d4-a716-446655440000
-          - 330e8400-e29b-41d4-a716-446655440000
-          id: 423e4567-e89b-12d3-a456-426614174000
-          type: child
-          primaryParty: 110e8400-e29b-41d4-a716-446655440000
+          - createdAt: 2022-03-10T11:00:00Z
+            lastConfirmAt: 2024-05-20T16:00:00Z
+            endedAt: 2025-01-01T00:00:00Z
+            relatedParties:
+              - 220e8400-e29b-41d4-a716-446655440000
+              - 330e8400-e29b-41d4-a716-446655440000
+            id: 423e4567-e89b-12d3-a456-426614174000
+            type: child
+            primaryParty: 110e8400-e29b-41d4-a716-446655440000
+          - createdAt: 2022-03-10T11:00:00Z
+            lastConfirmAt: 2024-05-20T16:00:00Z
+            endedAt: 2025-01-01T00:00:00Z
+            relatedParties:
+              - 220e8400-e29b-41d4-a716-446655440000
+              - 330e8400-e29b-41d4-a716-446655440000
+            id: 423e4567-e89b-12d3-a456-426614174000
+            type: child
+            primaryParty: 110e8400-e29b-41d4-a716-446655440000
         SACEStudentID: 123456A
         contactInformation:
-        - createdAt: 2022-08-20T14:00:00Z
-          lastConfirmAt: 2024-01-10T09:00:00Z
-          validated: true
-          id: 223e4567-e89b-12d3-a456-426614174000
-          type: email
-          value: test@example.com
-        - createdAt: 2022-08-20T14:00:00Z
-          lastConfirmAt: 2024-01-10T09:00:00Z
-          validated: true
-          id: 223e4567-e89b-12d3-a456-426614174000
-          type: email
-          value: test@example.com
+          - createdAt: 2022-08-20T14:00:00Z
+            lastConfirmAt: 2024-01-10T09:00:00Z
+            validated: true
+            id: 223e4567-e89b-12d3-a456-426614174000
+            type: email
+            value: test@example.com
+          - createdAt: 2022-08-20T14:00:00Z
+            lastConfirmAt: 2024-01-10T09:00:00Z
+            validated: true
+            id: 223e4567-e89b-12d3-a456-426614174000
+            type: email
+            value: test@example.com
         systemsLinks:
-        - systemId: canvas_8768778
-          system: Canvas
-          link: link
-          id: 623e4567-e89b-12d3-a456-426614174000
-          type: lms
-        - systemId: canvas_8768778
-          system: Canvas
-          link: link
-          id: 623e4567-e89b-12d3-a456-426614174000
-          type: lms
+          - systemId: canvas_8768778
+            system: Canvas
+            link: link
+            id: 623e4567-e89b-12d3-a456-426614174000
+            type: lms
+          - systemId: canvas_8768778
+            system: Canvas
+            link: link
+            id: 623e4567-e89b-12d3-a456-426614174000
+            type: lms
         middleName: Middle
         id: 123e4567-e89b-12d3-a456-426614174000
         customTraits:
-        - "{}"
-        - "{}"
+          - "{}"
+          - "{}"
         TFN: "123456789"
       properties:
         id:
@@ -1393,192 +1406,192 @@ components:
     ContactList:
       example:
         entries:
-        - lastSeenAt: 2024-07-01T12:30:00Z
-          WorkReadyParticipantNumber: "123456789"
-          lastName: Last
-          LUI: "1234567890"
-          cdpUserId: 550e8400-e29b-41d4-a716-446655440000
-          documents:
-          - createdAt: 2023-09-01T12:00:00Z
-            link: https://example.com/resume.pdf
-            id: 723e4567-e89b-12d3-a456-426614174000
-            type: resume
-          - createdAt: 2023-09-01T12:00:00Z
-            link: https://example.com/resume.pdf
-            id: 723e4567-e89b-12d3-a456-426614174000
-            type: resume
-          profiles:
-          - completedAt: 2025-01-15T17:00:00Z
-            startedAt: 2023-01-15T09:00:00Z
-            id: 323e4567-e89b-12d3-a456-426614174000
-            profileInformation: "{}"
-            type: apprentice
-            isActive: "true"
-          - completedAt: 2025-01-15T17:00:00Z
-            startedAt: 2023-01-15T09:00:00Z
-            id: 323e4567-e89b-12d3-a456-426614174000
-            profileInformation: "{}"
-            type: apprentice
-            isActive: "true"
-          USI: "1234567890"
-          memberships:
-          - "{}"
-          - "{}"
-          VSN: "123456789"
-          analyses:
-          - createdAt: 2024-03-10T10:00:00Z
-            id: 823e4567-e89b-12d3-a456-426614174000
-            type: vibrancy-index
-            results: "{}"
-          - createdAt: 2024-03-10T10:00:00Z
-            id: 823e4567-e89b-12d3-a456-426614174000
-            type: vibrancy-index
-            results: "{}"
-          firstName: First
-          createdAt: 2023-06-15T10:00:00Z
-          relationships:
-          - createdAt: 2022-03-10T11:00:00Z
-            lastConfirmAt: 2024-05-20T16:00:00Z
-            endedAt: 2025-01-01T00:00:00Z
-            relatedParties:
-            - 220e8400-e29b-41d4-a716-446655440000
-            - 330e8400-e29b-41d4-a716-446655440000
-            id: 423e4567-e89b-12d3-a456-426614174000
-            type: child
-            primaryParty: 110e8400-e29b-41d4-a716-446655440000
-          - createdAt: 2022-03-10T11:00:00Z
-            lastConfirmAt: 2024-05-20T16:00:00Z
-            endedAt: 2025-01-01T00:00:00Z
-            relatedParties:
-            - 220e8400-e29b-41d4-a716-446655440000
-            - 330e8400-e29b-41d4-a716-446655440000
-            id: 423e4567-e89b-12d3-a456-426614174000
-            type: child
-            primaryParty: 110e8400-e29b-41d4-a716-446655440000
-          SACEStudentID: 123456A
-          contactInformation:
-          - createdAt: 2022-08-20T14:00:00Z
-            lastConfirmAt: 2024-01-10T09:00:00Z
-            validated: true
-            id: 223e4567-e89b-12d3-a456-426614174000
-            type: email
-            value: test@example.com
-          - createdAt: 2022-08-20T14:00:00Z
-            lastConfirmAt: 2024-01-10T09:00:00Z
-            validated: true
-            id: 223e4567-e89b-12d3-a456-426614174000
-            type: email
-            value: test@example.com
-          systemsLinks:
-          - systemId: canvas_8768778
-            system: Canvas
-            link: link
-            id: 623e4567-e89b-12d3-a456-426614174000
-            type: lms
-          - systemId: canvas_8768778
-            system: Canvas
-            link: link
-            id: 623e4567-e89b-12d3-a456-426614174000
-            type: lms
-          middleName: Middle
-          id: 123e4567-e89b-12d3-a456-426614174000
-          customTraits:
-          - "{}"
-          - "{}"
-          TFN: "123456789"
-        - lastSeenAt: 2024-07-01T12:30:00Z
-          WorkReadyParticipantNumber: "123456789"
-          lastName: Last
-          LUI: "1234567890"
-          cdpUserId: 550e8400-e29b-41d4-a716-446655440000
-          documents:
-          - createdAt: 2023-09-01T12:00:00Z
-            link: https://example.com/resume.pdf
-            id: 723e4567-e89b-12d3-a456-426614174000
-            type: resume
-          - createdAt: 2023-09-01T12:00:00Z
-            link: https://example.com/resume.pdf
-            id: 723e4567-e89b-12d3-a456-426614174000
-            type: resume
-          profiles:
-          - completedAt: 2025-01-15T17:00:00Z
-            startedAt: 2023-01-15T09:00:00Z
-            id: 323e4567-e89b-12d3-a456-426614174000
-            profileInformation: "{}"
-            type: apprentice
-            isActive: "true"
-          - completedAt: 2025-01-15T17:00:00Z
-            startedAt: 2023-01-15T09:00:00Z
-            id: 323e4567-e89b-12d3-a456-426614174000
-            profileInformation: "{}"
-            type: apprentice
-            isActive: "true"
-          USI: "1234567890"
-          memberships:
-          - "{}"
-          - "{}"
-          VSN: "123456789"
-          analyses:
-          - createdAt: 2024-03-10T10:00:00Z
-            id: 823e4567-e89b-12d3-a456-426614174000
-            type: vibrancy-index
-            results: "{}"
-          - createdAt: 2024-03-10T10:00:00Z
-            id: 823e4567-e89b-12d3-a456-426614174000
-            type: vibrancy-index
-            results: "{}"
-          firstName: First
-          createdAt: 2023-06-15T10:00:00Z
-          relationships:
-          - createdAt: 2022-03-10T11:00:00Z
-            lastConfirmAt: 2024-05-20T16:00:00Z
-            endedAt: 2025-01-01T00:00:00Z
-            relatedParties:
-            - 220e8400-e29b-41d4-a716-446655440000
-            - 330e8400-e29b-41d4-a716-446655440000
-            id: 423e4567-e89b-12d3-a456-426614174000
-            type: child
-            primaryParty: 110e8400-e29b-41d4-a716-446655440000
-          - createdAt: 2022-03-10T11:00:00Z
-            lastConfirmAt: 2024-05-20T16:00:00Z
-            endedAt: 2025-01-01T00:00:00Z
-            relatedParties:
-            - 220e8400-e29b-41d4-a716-446655440000
-            - 330e8400-e29b-41d4-a716-446655440000
-            id: 423e4567-e89b-12d3-a456-426614174000
-            type: child
-            primaryParty: 110e8400-e29b-41d4-a716-446655440000
-          SACEStudentID: 123456A
-          contactInformation:
-          - createdAt: 2022-08-20T14:00:00Z
-            lastConfirmAt: 2024-01-10T09:00:00Z
-            validated: true
-            id: 223e4567-e89b-12d3-a456-426614174000
-            type: email
-            value: test@example.com
-          - createdAt: 2022-08-20T14:00:00Z
-            lastConfirmAt: 2024-01-10T09:00:00Z
-            validated: true
-            id: 223e4567-e89b-12d3-a456-426614174000
-            type: email
-            value: test@example.com
-          systemsLinks:
-          - systemId: canvas_8768778
-            system: Canvas
-            link: link
-            id: 623e4567-e89b-12d3-a456-426614174000
-            type: lms
-          - systemId: canvas_8768778
-            system: Canvas
-            link: link
-            id: 623e4567-e89b-12d3-a456-426614174000
-            type: lms
-          middleName: Middle
-          id: 123e4567-e89b-12d3-a456-426614174000
-          customTraits:
-          - "{}"
-          - "{}"
-          TFN: "123456789"
+          - lastSeenAt: 2024-07-01T12:30:00Z
+            WorkReadyParticipantNumber: "123456789"
+            lastName: Last
+            LUI: "1234567890"
+            cdpUserId: 550e8400-e29b-41d4-a716-446655440000
+            documents:
+              - createdAt: 2023-09-01T12:00:00Z
+                link: https://example.com/resume.pdf
+                id: 723e4567-e89b-12d3-a456-426614174000
+                type: resume
+              - createdAt: 2023-09-01T12:00:00Z
+                link: https://example.com/resume.pdf
+                id: 723e4567-e89b-12d3-a456-426614174000
+                type: resume
+            profiles:
+              - completedAt: 2025-01-15T17:00:00Z
+                startedAt: 2023-01-15T09:00:00Z
+                id: 323e4567-e89b-12d3-a456-426614174000
+                profileInformation: "{}"
+                type: apprentice
+                isActive: "true"
+              - completedAt: 2025-01-15T17:00:00Z
+                startedAt: 2023-01-15T09:00:00Z
+                id: 323e4567-e89b-12d3-a456-426614174000
+                profileInformation: "{}"
+                type: apprentice
+                isActive: "true"
+            USI: "1234567890"
+            memberships:
+              - "{}"
+              - "{}"
+            VSN: "123456789"
+            analyses:
+              - createdAt: 2024-03-10T10:00:00Z
+                id: 823e4567-e89b-12d3-a456-426614174000
+                type: vibrancy-index
+                results: "{}"
+              - createdAt: 2024-03-10T10:00:00Z
+                id: 823e4567-e89b-12d3-a456-426614174000
+                type: vibrancy-index
+                results: "{}"
+            firstName: First
+            createdAt: 2023-06-15T10:00:00Z
+            relationships:
+              - createdAt: 2022-03-10T11:00:00Z
+                lastConfirmAt: 2024-05-20T16:00:00Z
+                endedAt: 2025-01-01T00:00:00Z
+                relatedParties:
+                  - 220e8400-e29b-41d4-a716-446655440000
+                  - 330e8400-e29b-41d4-a716-446655440000
+                id: 423e4567-e89b-12d3-a456-426614174000
+                type: child
+                primaryParty: 110e8400-e29b-41d4-a716-446655440000
+              - createdAt: 2022-03-10T11:00:00Z
+                lastConfirmAt: 2024-05-20T16:00:00Z
+                endedAt: 2025-01-01T00:00:00Z
+                relatedParties:
+                  - 220e8400-e29b-41d4-a716-446655440000
+                  - 330e8400-e29b-41d4-a716-446655440000
+                id: 423e4567-e89b-12d3-a456-426614174000
+                type: child
+                primaryParty: 110e8400-e29b-41d4-a716-446655440000
+            SACEStudentID: 123456A
+            contactInformation:
+              - createdAt: 2022-08-20T14:00:00Z
+                lastConfirmAt: 2024-01-10T09:00:00Z
+                validated: true
+                id: 223e4567-e89b-12d3-a456-426614174000
+                type: email
+                value: test@example.com
+              - createdAt: 2022-08-20T14:00:00Z
+                lastConfirmAt: 2024-01-10T09:00:00Z
+                validated: true
+                id: 223e4567-e89b-12d3-a456-426614174000
+                type: email
+                value: test@example.com
+            systemsLinks:
+              - systemId: canvas_8768778
+                system: Canvas
+                link: link
+                id: 623e4567-e89b-12d3-a456-426614174000
+                type: lms
+              - systemId: canvas_8768778
+                system: Canvas
+                link: link
+                id: 623e4567-e89b-12d3-a456-426614174000
+                type: lms
+            middleName: Middle
+            id: 123e4567-e89b-12d3-a456-426614174000
+            customTraits:
+              - "{}"
+              - "{}"
+            TFN: "123456789"
+          - lastSeenAt: 2024-07-01T12:30:00Z
+            WorkReadyParticipantNumber: "123456789"
+            lastName: Last
+            LUI: "1234567890"
+            cdpUserId: 550e8400-e29b-41d4-a716-446655440000
+            documents:
+              - createdAt: 2023-09-01T12:00:00Z
+                link: https://example.com/resume.pdf
+                id: 723e4567-e89b-12d3-a456-426614174000
+                type: resume
+              - createdAt: 2023-09-01T12:00:00Z
+                link: https://example.com/resume.pdf
+                id: 723e4567-e89b-12d3-a456-426614174000
+                type: resume
+            profiles:
+              - completedAt: 2025-01-15T17:00:00Z
+                startedAt: 2023-01-15T09:00:00Z
+                id: 323e4567-e89b-12d3-a456-426614174000
+                profileInformation: "{}"
+                type: apprentice
+                isActive: "true"
+              - completedAt: 2025-01-15T17:00:00Z
+                startedAt: 2023-01-15T09:00:00Z
+                id: 323e4567-e89b-12d3-a456-426614174000
+                profileInformation: "{}"
+                type: apprentice
+                isActive: "true"
+            USI: "1234567890"
+            memberships:
+              - "{}"
+              - "{}"
+            VSN: "123456789"
+            analyses:
+              - createdAt: 2024-03-10T10:00:00Z
+                id: 823e4567-e89b-12d3-a456-426614174000
+                type: vibrancy-index
+                results: "{}"
+              - createdAt: 2024-03-10T10:00:00Z
+                id: 823e4567-e89b-12d3-a456-426614174000
+                type: vibrancy-index
+                results: "{}"
+            firstName: First
+            createdAt: 2023-06-15T10:00:00Z
+            relationships:
+              - createdAt: 2022-03-10T11:00:00Z
+                lastConfirmAt: 2024-05-20T16:00:00Z
+                endedAt: 2025-01-01T00:00:00Z
+                relatedParties:
+                  - 220e8400-e29b-41d4-a716-446655440000
+                  - 330e8400-e29b-41d4-a716-446655440000
+                id: 423e4567-e89b-12d3-a456-426614174000
+                type: child
+                primaryParty: 110e8400-e29b-41d4-a716-446655440000
+              - createdAt: 2022-03-10T11:00:00Z
+                lastConfirmAt: 2024-05-20T16:00:00Z
+                endedAt: 2025-01-01T00:00:00Z
+                relatedParties:
+                  - 220e8400-e29b-41d4-a716-446655440000
+                  - 330e8400-e29b-41d4-a716-446655440000
+                id: 423e4567-e89b-12d3-a456-426614174000
+                type: child
+                primaryParty: 110e8400-e29b-41d4-a716-446655440000
+            SACEStudentID: 123456A
+            contactInformation:
+              - createdAt: 2022-08-20T14:00:00Z
+                lastConfirmAt: 2024-01-10T09:00:00Z
+                validated: true
+                id: 223e4567-e89b-12d3-a456-426614174000
+                type: email
+                value: test@example.com
+              - createdAt: 2022-08-20T14:00:00Z
+                lastConfirmAt: 2024-01-10T09:00:00Z
+                validated: true
+                id: 223e4567-e89b-12d3-a456-426614174000
+                type: email
+                value: test@example.com
+            systemsLinks:
+              - systemId: canvas_8768778
+                system: Canvas
+                link: link
+                id: 623e4567-e89b-12d3-a456-426614174000
+                type: lms
+              - systemId: canvas_8768778
+                system: Canvas
+                link: link
+                id: 623e4567-e89b-12d3-a456-426614174000
+                type: lms
+            middleName: Middle
+            id: 123e4567-e89b-12d3-a456-426614174000
+            customTraits:
+              - "{}"
+              - "{}"
+            TFN: "123456789"
         offset: 0
         total_count: 1
         limit: 6
@@ -1632,18 +1645,18 @@ components:
     ContactInformationList:
       example:
         entries:
-        - createdAt: 2022-08-20T14:00:00Z
-          lastConfirmAt: 2024-01-10T09:00:00Z
-          validated: true
-          id: 223e4567-e89b-12d3-a456-426614174000
-          type: email
-          value: test@example.com
-        - createdAt: 2022-08-20T14:00:00Z
-          lastConfirmAt: 2024-01-10T09:00:00Z
-          validated: true
-          id: 223e4567-e89b-12d3-a456-426614174000
-          type: email
-          value: test@example.com
+          - createdAt: 2022-08-20T14:00:00Z
+            lastConfirmAt: 2024-01-10T09:00:00Z
+            validated: true
+            id: 223e4567-e89b-12d3-a456-426614174000
+            type: email
+            value: test@example.com
+          - createdAt: 2022-08-20T14:00:00Z
+            lastConfirmAt: 2024-01-10T09:00:00Z
+            validated: true
+            id: 223e4567-e89b-12d3-a456-426614174000
+            type: email
+            value: test@example.com
         offset: 0
         total_count: 1
         limit: 6
@@ -1697,18 +1710,18 @@ components:
     ProfileList:
       example:
         entries:
-        - completedAt: 2025-01-15T17:00:00Z
-          startedAt: 2023-01-15T09:00:00Z
-          id: 323e4567-e89b-12d3-a456-426614174000
-          profileInformation: "{}"
-          type: apprentice
-          isActive: "true"
-        - completedAt: 2025-01-15T17:00:00Z
-          startedAt: 2023-01-15T09:00:00Z
-          id: 323e4567-e89b-12d3-a456-426614174000
-          profileInformation: "{}"
-          type: apprentice
-          isActive: "true"
+          - completedAt: 2025-01-15T17:00:00Z
+            startedAt: 2023-01-15T09:00:00Z
+            id: 323e4567-e89b-12d3-a456-426614174000
+            profileInformation: "{}"
+            type: apprentice
+            isActive: "true"
+          - completedAt: 2025-01-15T17:00:00Z
+            startedAt: 2023-01-15T09:00:00Z
+            id: 323e4567-e89b-12d3-a456-426614174000
+            profileInformation: "{}"
+            type: apprentice
+            isActive: "true"
         offset: 0
         total_count: 1
         limit: 6
@@ -1735,8 +1748,8 @@ components:
         lastConfirmAt: 2024-05-20T16:00:00Z
         endedAt: 2025-01-01T00:00:00Z
         relatedParties:
-        - 220e8400-e29b-41d4-a716-446655440000
-        - 330e8400-e29b-41d4-a716-446655440000
+          - 220e8400-e29b-41d4-a716-446655440000
+          - 330e8400-e29b-41d4-a716-446655440000
         id: 423e4567-e89b-12d3-a456-426614174000
         type: child
         primaryParty: 110e8400-e29b-41d4-a716-446655440000
@@ -1763,8 +1776,8 @@ components:
           type: string
         relatedParties:
           example:
-          - 220e8400-e29b-41d4-a716-446655440000
-          - 330e8400-e29b-41d4-a716-446655440000
+            - 220e8400-e29b-41d4-a716-446655440000
+            - 330e8400-e29b-41d4-a716-446655440000
           items:
             format: uuid
             type: string
@@ -1776,24 +1789,24 @@ components:
     RelationshipList:
       example:
         entries:
-        - createdAt: 2022-03-10T11:00:00Z
-          lastConfirmAt: 2024-05-20T16:00:00Z
-          endedAt: 2025-01-01T00:00:00Z
-          relatedParties:
-          - 220e8400-e29b-41d4-a716-446655440000
-          - 330e8400-e29b-41d4-a716-446655440000
-          id: 423e4567-e89b-12d3-a456-426614174000
-          type: child
-          primaryParty: 110e8400-e29b-41d4-a716-446655440000
-        - createdAt: 2022-03-10T11:00:00Z
-          lastConfirmAt: 2024-05-20T16:00:00Z
-          endedAt: 2025-01-01T00:00:00Z
-          relatedParties:
-          - 220e8400-e29b-41d4-a716-446655440000
-          - 330e8400-e29b-41d4-a716-446655440000
-          id: 423e4567-e89b-12d3-a456-426614174000
-          type: child
-          primaryParty: 110e8400-e29b-41d4-a716-446655440000
+          - createdAt: 2022-03-10T11:00:00Z
+            lastConfirmAt: 2024-05-20T16:00:00Z
+            endedAt: 2025-01-01T00:00:00Z
+            relatedParties:
+              - 220e8400-e29b-41d4-a716-446655440000
+              - 330e8400-e29b-41d4-a716-446655440000
+            id: 423e4567-e89b-12d3-a456-426614174000
+            type: child
+            primaryParty: 110e8400-e29b-41d4-a716-446655440000
+          - createdAt: 2022-03-10T11:00:00Z
+            lastConfirmAt: 2024-05-20T16:00:00Z
+            endedAt: 2025-01-01T00:00:00Z
+            relatedParties:
+              - 220e8400-e29b-41d4-a716-446655440000
+              - 330e8400-e29b-41d4-a716-446655440000
+            id: 423e4567-e89b-12d3-a456-426614174000
+            type: child
+            primaryParty: 110e8400-e29b-41d4-a716-446655440000
         offset: 0
         total_count: 1
         limit: 6
@@ -1838,14 +1851,14 @@ components:
     CommunicationPreferenceList:
       example:
         entries:
-        - allowed: true
-          channel: email
-          id: 523e4567-e89b-12d3-a456-426614174000
-          preferred: true
-        - allowed: true
-          channel: email
-          id: 523e4567-e89b-12d3-a456-426614174000
-          preferred: true
+          - allowed: true
+            channel: email
+            id: 523e4567-e89b-12d3-a456-426614174000
+            preferred: true
+          - allowed: true
+            channel: email
+            id: 523e4567-e89b-12d3-a456-426614174000
+            preferred: true
         offset: 0
         total_count: 1
         limit: 6
@@ -1894,16 +1907,16 @@ components:
     SystemLinkList:
       example:
         entries:
-        - systemId: canvas_8768778
-          system: Canvas
-          link: link
-          id: 623e4567-e89b-12d3-a456-426614174000
-          type: lms
-        - systemId: canvas_8768778
-          system: Canvas
-          link: link
-          id: 623e4567-e89b-12d3-a456-426614174000
-          type: lms
+          - systemId: canvas_8768778
+            system: Canvas
+            link: link
+            id: 623e4567-e89b-12d3-a456-426614174000
+            type: lms
+          - systemId: canvas_8768778
+            system: Canvas
+            link: link
+            id: 623e4567-e89b-12d3-a456-426614174000
+            type: lms
         offset: 0
         total_count: 1
         limit: 6
@@ -1949,14 +1962,14 @@ components:
     DocumentList:
       example:
         entries:
-        - createdAt: 2023-09-01T12:00:00Z
-          link: https://example.com/resume.pdf
-          id: 723e4567-e89b-12d3-a456-426614174000
-          type: resume
-        - createdAt: 2023-09-01T12:00:00Z
-          link: https://example.com/resume.pdf
-          id: 723e4567-e89b-12d3-a456-426614174000
-          type: resume
+          - createdAt: 2023-09-01T12:00:00Z
+            link: https://example.com/resume.pdf
+            id: 723e4567-e89b-12d3-a456-426614174000
+            type: resume
+          - createdAt: 2023-09-01T12:00:00Z
+            link: https://example.com/resume.pdf
+            id: 723e4567-e89b-12d3-a456-426614174000
+            type: resume
         offset: 0
         total_count: 1
         limit: 6
@@ -2001,14 +2014,14 @@ components:
     AnalysisList:
       example:
         entries:
-        - createdAt: 2024-03-10T10:00:00Z
-          id: 823e4567-e89b-12d3-a456-426614174000
-          type: vibrancy-index
-          results: "{}"
-        - createdAt: 2024-03-10T10:00:00Z
-          id: 823e4567-e89b-12d3-a456-426614174000
-          type: vibrancy-index
-          results: "{}"
+          - createdAt: 2024-03-10T10:00:00Z
+            id: 823e4567-e89b-12d3-a456-426614174000
+            type: vibrancy-index
+            results: "{}"
+          - createdAt: 2024-03-10T10:00:00Z
+            id: 823e4567-e89b-12d3-a456-426614174000
+            type: vibrancy-index
+            results: "{}"
         offset: 0
         total_count: 1
         limit: 6
@@ -2064,24 +2077,24 @@ components:
     OrganisationList:
       example:
         entries:
-        - legalName: Skynet Pty Ltd
-          tradingName: Skynet
-          employer:
-            employerId: "12345678"
-          worksite:
-            address: "123 Fake St, Gotham City"
-            state: ACT
-          id: f969c016-531a-4105-8c64-a84a6b9aedbc
-          abn: "12345678901"
-        - legalName: Skynet Pty Ltd
-          tradingName: Skynet
-          employer:
-            employerId: "12345678"
-          worksite:
-            address: "123 Fake St, Gotham City"
-            state: ACT
-          id: f969c016-531a-4105-8c64-a84a6b9aedbc
-          abn: "12345678901"
+          - legalName: Skynet Pty Ltd
+            tradingName: Skynet
+            employer:
+              employerId: "12345678"
+            worksite:
+              address: "123 Fake St, Gotham City"
+              state: ACT
+            id: f969c016-531a-4105-8c64-a84a6b9aedbc
+            abn: "12345678901"
+          - legalName: Skynet Pty Ltd
+            tradingName: Skynet
+            employer:
+              employerId: "12345678"
+            worksite:
+              address: "123 Fake St, Gotham City"
+              state: ACT
+            id: f969c016-531a-4105-8c64-a84a6b9aedbc
+            abn: "12345678901"
         offset: 0
         total_count: 1
         limit: 6
@@ -2157,8 +2170,8 @@ components:
     MergeContactsRequest:
       example:
         secondaryContactIds:
-        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         deleteSecondaryContactsAfterMerge: true
         primaryContactId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
       properties:

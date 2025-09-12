@@ -1,9 +1,11 @@
-const DefaultService = require('./InteractionsService');
+const InteractionsService = require('./InteractionsService');
 const OrganisationService = require('./OrganisationService');
 const ContactsService = require('./ContactsService');
+const RelationshipsService = require('./RelationshipsService')
 
 module.exports = {
-  DefaultService,
-  OrganisationService,
-  ContactsService,
+    InteractionsService,
+    OrganisationService,
+    ContactsService,
+    RelationshipsService,
 };
