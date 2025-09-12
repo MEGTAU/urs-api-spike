@@ -1,4 +1,4 @@
-const DefaultController = require('./DefaultController');
+const DefaultController = require('./InteractionsController');
 const OrganisationController = require('./OrganisationController');
 const ContactsController = require('./ContactsController');
 

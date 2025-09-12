@@ -1,4 +1,4 @@
-const DefaultService = require('./DefaultService');
+const DefaultService = require('./InteractionsService');
 const OrganisationService = require('./OrganisationService');
 const ContactsService = require('./ContactsService');
 

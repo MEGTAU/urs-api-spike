@@ -1,5 +1,5 @@
 const Controller = require('./Controller');
-const service = require('../services/DefaultService');
+const service = require('../services/InteractionsService');
 
 const interactionsBulkPOST = async (request, response) => {
   await Controller.handleRequest(request, response, service.interactionsBulkPOST);

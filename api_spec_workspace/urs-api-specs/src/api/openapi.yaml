@@ -1172,7 +1172,7 @@ paths:
         "201":
           description: Interaction created
       summary: Create an interaction
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/InteractionsController
   /interactions/bulk:
     post:
       description: An API to record interactions for future reference. Can initially
@@ -1191,7 +1191,7 @@ paths:
         "201":
           description: Interactions created
       summary: Bulk create interactions
-      x-eov-operation-handler: controllers/DefaultController
+      x-eov-operation-handler: controllers/InteractionsController
 components:
   parameters:
     LimitParam:
