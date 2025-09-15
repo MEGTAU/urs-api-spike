@@ -87,6 +87,7 @@ describe('Organisations API', () => {
       .get('/api/v1/organisations')
       .expect(200);
 
+    console.log("Retrieved %i organisations from API", getRes.body.entries.length);
     expect(getRes.body.entries).to.be.an('array');
     expect(getRes.body.entries).to.have.lengthOf(allExpectedOrgIds.length);
 
