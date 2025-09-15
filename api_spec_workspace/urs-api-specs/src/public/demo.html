@@ -192,12 +192,33 @@
 <div id="Relationships" class="tabcontent">
     <h3>Relationships</h3>
     <p>This tab displays the various relationships</p>
-    <p>TODO Add table</p>
+    <button onclick="document.getElementById('import-relationships-input').click()">Import from CSV</button>
+    <input type="file" id="import-relationships-input" onchange="importRelationships(this.files[0])" style="display: none;" accept=".csv">
+    <button onclick="exportRelationships()">Export to CSV</button>
+    <table id="relationships-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Created At</th>
+                <th>Last Confirmed At</th>
+                <th>Ended At</th>
+                <th>Primary Party</th>
+                <th>Related Parties</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Relationship data will be inserted here -->
+        </tbody>
+    </table>
 </div>
 
 <div id="Interactions" class="tabcontent">
     <h3>Interactions</h3>
     <p>This tab displays interactions.</p>
+    <button onclick="document.getElementById('import-interactions-input').click()">Import from CSV</button>
+    <input type="file" id="import-interactions-input" onchange="importInteractions(this.files[0])" style="display: none;" accept=".csv">
+    <button onclick="exportInteractions()">Export to CSV</button>
     <table id="interactions-table">
         <thead>
             <tr>
@@ -239,6 +260,8 @@
 </script>
 <script>
     let organisationData = []; // To store fetched organisations
+    let interactionData = []; // To store fetched interactions
+    let relationshipData = []; // To store fetched relationships
 
     function downloadCSV(data, filename) {
         const csvRows = [];
@@ -383,17 +406,67 @@
         }
     }
 
+    async function importInteractions(file) {
+        if (!file) return;
+
+        uploadCSV(file, async (interactions) => {
+            const interactionsToImport = interactions.map(interaction => ({
+                createdAt: interaction.createdAt,
+                contactId: interaction.contactId,
+                payload: JSON.parse(interaction.payload) // Assuming payload is a JSON string in the CSV
+            }));
+
+            try {
+                const response = await fetch('/api/v1/interactions/bulk', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(interactionsToImport)
+                });
+
+                if (response.ok) {
+                    alert('Interactions imported successfully!');
+                    fetchInteractions(); // Refresh the table
+                } else {
+                    const error = await response.json();
+                    alert('Error importing interactions: ' + (error.message || 'Unknown error'));
+                    console.error('Error importing interactions:', error);
+                }
+            } catch (error) {
+                alert('Error importing interactions: ' + error.message);
+                console.error('Error importing interactions:', error);
+            }
+        });
+    }
+
+    async function exportInteractions() {
+        if (interactionData.length === 0) {
+            await fetchInteractions();
+        }
+        
+        const dataToExport = interactionData.map(interaction => ({
+            id: interaction.id,
+            createdAt: interaction.createdAt,
+            contactId: interaction.contactId,
+            payload: JSON.stringify(interaction.payload)
+        }));
+
+        downloadCSV(dataToExport, 'interactions.csv');
+    }
+
     async function fetchInteractions() {
         const interactionsTable = document.querySelector('#interactions-table tbody');
         try {
             const response = await fetch('/api/v1/interactions');
             if (response.ok) {
                 const interactionList = await response.json();
+                interactionData = interactionList.entries; // Store the data
                 
                 // Clear existing rows
                 interactionsTable.innerHTML = '';
 
-                interactionList.entries.forEach(interaction => {
+                interactionData.forEach(interaction => {
                     const row = interactionsTable.insertRow();
                     row.insertCell().textContent = interaction.id;
                     row.insertCell().textContent = interaction.createdAt;
@@ -406,9 +479,92 @@
         }
     }
 
+    async function importRelationships(file) {
+        if (!file) return;
+
+        uploadCSV(file, async (relationships) => {
+            const relationshipsToImport = relationships.map(relationship => ({
+                createdAt: relationship.createdAt,
+                lastConfirmAt: relationship.lastConfirmAt,
+                endedAt: relationship.endedAt,
+                primaryParty: relationship.primaryParty,
+                relatedParties: relationship.relatedParties.split('|'), // Assuming they are pipe-separated in the CSV
+                type: relationship.type
+            }));
+
+            try {
+                const response = await fetch('/api/v1/relationships/bulk', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(relationshipsToImport)
+                });
+
+                if (response.ok) {
+                    alert('Relationships imported successfully!');
+                    fetchRelationships(); // Refresh the table
+                } else {
+                    const error = await response.json();
+                    alert('Error importing relationships: ' + (error.message || 'Unknown error'));
+                    console.error('Error importing relationships:', error);
+                }
+            } catch (error) {
+                alert('Error importing relationships: ' + error.message);
+                console.error('Error importing relationships:', error);
+            }
+        });
+    }
+
+    async function exportRelationships() {
+        if (relationshipData.length === 0) {
+            await fetchRelationships();
+        }
+        
+        const dataToExport = relationshipData.map(relationship => ({
+            id: relationship.id,
+            createdAt: relationship.createdAt,
+            lastConfirmAt: relationship.lastConfirmAt,
+            endedAt: relationship.endedAt,
+            primaryParty: relationship.primaryParty,
+            relatedParties: relationship.relatedParties.join('|'), // Pipe-separate for CSV
+            type: relationship.type
+        }));
+
+        downloadCSV(dataToExport, 'relationships.csv');
+    }
+
+    async function fetchRelationships() {
+        const relationshipsTable = document.querySelector('#relationships-table tbody');
+        try {
+            const response = await fetch('/api/v1/relationships');
+            if (response.ok) {
+                const relationshipList = await response.json();
+                relationshipData = relationshipList.entries; // Store the data
+                
+                // Clear existing rows
+                relationshipsTable.innerHTML = '';
+
+                relationshipData.forEach(relationship => {
+                    const row = relationshipsTable.insertRow();
+                    row.insertCell().textContent = relationship.id;
+                    row.insertCell().textContent = relationship.createdAt;
+                    row.insertCell().textContent = relationship.lastConfirmAt;
+                    row.insertCell().textContent = relationship.endedAt;
+                    row.insertCell().textContent = relationship.primaryParty;
+                    row.insertCell().textContent = relationship.relatedParties.join(', ');
+                    row.insertCell().textContent = relationship.type;
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching relationships:', error);
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         fetchOrganisations();
         fetchInteractions();
+        fetchRelationships();
     });
 </script>
 <!--    <script>-->
