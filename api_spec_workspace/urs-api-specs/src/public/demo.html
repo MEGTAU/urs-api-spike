@@ -137,6 +137,23 @@
         </li>
     </ul>
 
+    <h2>Todos</h2>
+    <ul>
+        <li>Implement authentication and authorisation</li>
+        <li>Implement pagination</li>
+        <li>Implement sorting and filtering</li>
+        <li>Implement search</li>
+        <li>Implement more relationship types</li>
+        <li>Implement more profile types</li>
+        <li>Implement more organisation types</li>
+        <li>Implement more contact/person fields</li>
+        <li>Implement more organisation fields</li>
+        <li>Implement more relationship fields</li>
+        <li>Improve UI/UX</li>
+        <li>Add tests</li>
+        <li>Add CI/CD</li>
+    </ul>
+
 </div>
 
 <div id="Contacts/Persons" class="tabcontent">
@@ -149,7 +166,23 @@
 <div id="Organisations" class="tabcontent">
     <h3>Organisations</h3>
     <p>This tab displays organisations, such as education providers and employers.</p>
-    <p>TODO Add table</p>
+    <table id="organisations-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Legal Name</th>
+                <th>Trading Name</th>
+                <th>Type</th>
+                <th>ABN</th>
+                <th>Employer ID</th>
+                <th>Worksite Address</th>
+                <th>Worksite State</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Organisation data will be inserted here -->
+        </tbody>
+    </table>
 </div>
 
 <div id="Relationships" class="tabcontent">
@@ -181,6 +214,34 @@
         document.getElementById(cityName).style.display = "block";
         evt.currentTarget.className += " active";
     }
+</script>
+<script>
+    async function fetchOrganisations() {
+        const organisationsTable = document.querySelector('#organisations-table tbody');
+        try {
+            const response = await fetch('/api/v1/organisations');
+            if (response.ok) {
+                const organisationList = await response.json();
+                organisationList.entries.forEach(org => {
+                    const row = organisationsTable.insertRow();
+                    row.insertCell().textContent = org.id;
+                    row.insertCell().textContent = org.legalName;
+                    row.insertCell().textContent = org.tradingName;
+                    row.insertCell().textContent = org.organisationType;
+                    row.insertCell().textContent = org.abn;
+                    row.insertCell().textContent = org.employer ? org.employer.employerId : '';
+                    row.insertCell().textContent = org.worksite ? org.worksite.address : '';
+                    row.insertCell().textContent = org.worksite ? org.worksite.state : '';
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching organisations:', error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchOrganisations();
+    });
 </script>
 <!--    <script>-->
 <!--        async function fetchPets() {-->
