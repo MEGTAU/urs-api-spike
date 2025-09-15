@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 const OpenApiValidator = require('express-openapi-validator');
 const logger = require('./logger');
 const config = require('./config');
+const { loadOrganisations } = require('./data-loader/loadOrganisations');
 
 class ExpressServer {
     constructor(port, openApiYaml) {
@@ -80,6 +81,7 @@ class ExpressServer {
 
         http.createServer(this.app).listen(this.port);
         console.log(`Listening on port ${this.port}`);
+        loadOrganisations();
     }
 
     async close() {

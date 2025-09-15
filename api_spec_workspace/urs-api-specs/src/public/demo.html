@@ -166,6 +166,7 @@
 <div id="Organisations" class="tabcontent">
     <h3>Organisations</h3>
     <p>This tab displays organisations, such as education providers and employers.</p>
+    <button onclick="exportOrganisations()">Export to CSV</button>
     <table id="organisations-table">
         <thead>
             <tr>
@@ -216,13 +217,67 @@
     }
 </script>
 <script>
+    let organisationData = []; // To store fetched organisations
+
+    function downloadCSV(data, filename) {
+        const csvRows = [];
+        // Get the headers
+        const headers = Object.keys(data[0]);
+        csvRows.push(headers.join(','));
+
+        // Loop over the rows
+        for (const row of data) {
+            const values = headers.map(header => {
+                const escaped = ('' + row[header]).replace(/"/g, '"');
+                return `"${escaped}"`;
+            });
+            csvRows.push(values.join(','));
+        }
+
+        const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('hidden', '');
+        a.setAttribute('href', url);
+        a.setAttribute('download', filename);
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    async function exportOrganisations() {
+        // We can use the already fetched data. If not available, fetch it.
+        if (organisationData.length === 0) {
+            await fetchOrganisations();
+        }
+        
+        // Flatten the data for CSV export
+        const flattenedData = organisationData.map(org => ({
+            id: org.id,
+            legalName: org.legalName,
+            tradingName: org.tradingName,
+            organisationType: org.organisationType,
+            abn: org.abn,
+            employerId: org.employer ? org.employer.employerId : '',
+            worksiteAddress: org.worksite ? org.worksite.address : '',
+            worksiteState: org.worksite ? org.worksite.state : ''
+        }));
+
+        downloadCSV(flattenedData, 'organisations.csv');
+    }
+
     async function fetchOrganisations() {
         const organisationsTable = document.querySelector('#organisations-table tbody');
         try {
             const response = await fetch('/api/v1/organisations');
             if (response.ok) {
                 const organisationList = await response.json();
-                organisationList.entries.forEach(org => {
+                organisationData = organisationList.entries; // Store the data
+                
+                // Clear existing rows
+                organisationsTable.innerHTML = '';
+
+                organisationData.forEach(org => {
                     const row = organisationsTable.insertRow();
                     row.insertCell().textContent = org.id;
                     row.insertCell().textContent = org.legalName;
