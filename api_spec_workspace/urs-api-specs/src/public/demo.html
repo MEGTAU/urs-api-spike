@@ -166,6 +166,8 @@
 <div id="Organisations" class="tabcontent">
     <h3>Organisations</h3>
     <p>This tab displays organisations, such as education providers and employers.</p>
+    <button onclick="document.getElementById('import-organisations-input').click()">Import from CSV</button>
+    <input type="file" id="import-organisations-input" onchange="importOrganisations(this.files[0])" style="display: none;" accept=".csv">
     <button onclick="exportOrganisations()">Export to CSV</button>
     <table id="organisations-table">
         <thead>
@@ -243,6 +245,74 @@
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+    }
+
+    function parseCSV(csv) {
+        const lines = csv.split('\n');
+        const result = [];
+        const headers = lines[0].match(/(".*?"|[^,]+)(?=\s*,|\s*$)/g).map(h => h.trim().replace(/^"|"$/g, ''));
+
+        for (let i = 1; i < lines.length; i++) {
+            if (!lines[i]) continue;
+            const obj = {};
+            const currentline = lines[i].match(/(".*?"|[^,]+)(?=\s*,|\s*$)/g);
+            if (!currentline) continue;
+
+            for (let j = 0; j < headers.length; j++) {
+                obj[headers[j]] = currentline[j].trim().replace(/^"|"$/g, '');
+            }
+            result.push(obj);
+        }
+        return result;
+    }
+
+
+    function uploadCSV(file, onUpload) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const text = e.target.result;
+            const data = parseCSV(text);
+            onUpload(data);
+        };
+        reader.readAsText(file);
+    }
+
+    async function importOrganisations(file) {
+        if (!file) return;
+
+        uploadCSV(file, async (organisations) => {
+            // The CSV data is flattened, we need to un-flatten it to match the API
+            const unflattenedData = organisations.map(org => ({
+                legalName: org.legalName,
+                tradingName: org.tradingName,
+                organisationType: org.organisationType,
+                abn: org.abn,
+                employer: org.employerId ? { employerId: org.employerId } : null,
+                worksite: (org.worksiteAddress || org.worksiteState) ? { address: org.worksiteAddress, state: org.worksiteState } : null
+            }));
+
+            try {
+                const response = await fetch('/api/v1/organisations/bulk', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(unflattenedData)
+                });
+
+                if (response.ok) {
+                    alert('Organisations imported successfully!');
+                    fetchOrganisations(); // Refresh the table
+                } else {
+                    const error = await response.json();
+                    alert('Error importing organisations: ' + (error.message || 'Unknown error'));
+                    console.error('Error importing organisations:', error);
+                }
+            } catch (error) {
+                alert('Error importing organisations: ' + error.message);
+                console.error('Error importing organisations:', error);
+            }
+        });
     }
 
     async function exportOrganisations() {
