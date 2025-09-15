@@ -122,6 +122,7 @@
     <button class="tablinks" onclick="openTab(event, 'Contacts/Persons')">Contacts/Persons</button>
     <button class="tablinks" onclick="openTab(event, 'Organisations')">Organisations</button>
     <button class="tablinks" onclick="openTab(event, 'Relationships')">Relationships</button>
+    <button class="tablinks" onclick="openTab(event, 'Interactions')">Interactions</button>
 </div>
 
 <!-- Tab content -->
@@ -192,6 +193,24 @@
     <h3>Relationships</h3>
     <p>This tab displays the various relationships</p>
     <p>TODO Add table</p>
+</div>
+
+<div id="Interactions" class="tabcontent">
+    <h3>Interactions</h3>
+    <p>This tab displays interactions.</p>
+    <table id="interactions-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Created At</th>
+                <th>Contact ID</th>
+                <th>Payload</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Interaction data will be inserted here -->
+        </tbody>
+    </table>
 </div>
 
 <script>
@@ -364,8 +383,32 @@
         }
     }
 
+    async function fetchInteractions() {
+        const interactionsTable = document.querySelector('#interactions-table tbody');
+        try {
+            const response = await fetch('/api/v1/interactions');
+            if (response.ok) {
+                const interactionList = await response.json();
+                
+                // Clear existing rows
+                interactionsTable.innerHTML = '';
+
+                interactionList.entries.forEach(interaction => {
+                    const row = interactionsTable.insertRow();
+                    row.insertCell().textContent = interaction.id;
+                    row.insertCell().textContent = interaction.createdAt;
+                    row.insertCell().textContent = interaction.contactId;
+                    row.insertCell().textContent = JSON.stringify(interaction.payload);
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching interactions:', error);
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         fetchOrganisations();
+        fetchInteractions();
     });
 </script>
 <!--    <script>-->
