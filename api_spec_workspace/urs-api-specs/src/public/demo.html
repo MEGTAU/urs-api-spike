@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Petstore Demo</title>
+    <title>Universal Relationship Server Spike</title>
     <style>
         body {
             font-family: sans-serif;
@@ -76,13 +76,17 @@
 
         /* Go from zero to full opacity */
         @keyframes fadeEffect {
-            from {opacity: 0;}
-            to {opacity: 1;}
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
     </style>
 </head>
 <body>
-<h1>Petstore Demo</h1>
+<h1>Universal Relationship Server Spike</h1>
 
 <!--    <h2>Pets</h2>-->
 <!--    <table id="pets-table">-->
@@ -123,27 +127,40 @@
 <!-- Tab content -->
 <div id="About" class="tabcontent">
     <h3>About</h3>
-    <p>About is the capital city of England.</p>
+
+    <ul>
+        <li>
+            <a href="http://localhost:8080/docs">Swagger UI</a>
+        </li>
+        <li>
+            <a href="http://localhost:8080/openapi">Raw Open API specification</a>
+        </li>
+    </ul>
+
 </div>
 
 <div id="Contacts/Persons" class="tabcontent">
     <h3>Contacts/Persons</h3>
-    <p>Contacts/Persons is the capital of France.</p>
+    <p>A `Contact/Person` resource represents the "digital soul". Each `Contact/Person` may have multiple profiles
+        (e.g. `jobseeker`) associated with them.</p>
+    <p>TODO Add table</p>
 </div>
 
 <div id="Organisations" class="tabcontent">
     <h3>Organisations</h3>
-    <p>Organisations is the capital of Japan.</p>
+    <p>This tab displays organisations, such as education providers and employers.</p>
+    <p>TODO Add table</p>
 </div>
 
 <div id="Relationships" class="tabcontent">
     <h3>Relationships</h3>
-    <p>Organisations is the capital of Japan.</p>
+    <p>This tab displays the various relationships</p>
+    <p>TODO Add table</p>
 </div>
 
 <script>
     document.getElementById("defaultOpen").click();
-    
+
     function openTab(evt, cityName) {
         // Declare all variables
         var i, tabcontent, tablinks;
