@@ -13,6 +13,7 @@ const logger = require('./logger');
 const config = require('./config');
 const { loadOrganisations } = require('./data-loader/loadOrganisations');
 const { loadInteractions } = require('./data-loader/loadInteractions');
+const { loadContacts } = require('./data-loader/loadContacts');
 
 class ExpressServer {
     constructor(port, openApiYaml) {
@@ -84,6 +85,7 @@ class ExpressServer {
         console.log(`Listening on port ${this.port}`);
         loadOrganisations();
         loadInteractions();
+        loadContacts();
     }
 
     async close() {
