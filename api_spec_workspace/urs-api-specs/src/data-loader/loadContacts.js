@@ -25,7 +25,7 @@ const contacts = [
                 type: 'student',
                 startedAt: '2023-01-01T09:00:00Z',
                 completedAt: '2025-01-01T09:00:00Z',
-                isActive: true,
+                isActive: false,
                 profileInformation: {
                     course: 'Technical Drafting',
                     studentId: 'S12345'

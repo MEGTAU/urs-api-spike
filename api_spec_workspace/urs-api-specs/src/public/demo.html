@@ -182,6 +182,10 @@
             <th>SACE Student Id</th>
             <th>Profile ID</th>
             <th>Profile Type</th>
+            <th>Started At</th>
+            <th>Completed At</th>
+            <th>Is Active</th>
+            <th>Profile Information</th>
         </tr>
         </thead>
         <tbody>
@@ -626,7 +630,6 @@
         }
     }
 
-    // TODO this doesn't contain profile details
     async function exportContacts() {
         if (contactData.length === 0) {
             await fetchContacts();
@@ -651,7 +654,11 @@
                         WorkReadyParticipantNumber: contact.WorkReadyParticipantNumber,
                         SACEStudentId: contact.SACEStudentId,
                         profileId: profile.id,
-                        profileType: profile.type
+                        profileType: profile.type,
+                        startedAt: profile.startedAt,
+                        completedAt: profile.completedAt,
+                        isActive: profile.isActive,
+                        profileInformation: JSON.stringify(profile.profileInformation)
                     });
                 });
             } else {
@@ -670,7 +677,11 @@
                     WorkReadyParticipantNumber: contact.WorkReadyParticipantNumber,
                     SACEStudentId: contact.SACEStudentId,
                     profileId: '',
-                    profileType: ''
+                    profileType: '',
+                    startedAt: '',
+                    completedAt: '',
+                    isActive: '',
+                    profileInformation: ''
                 });
             }
         });
@@ -709,6 +720,10 @@
                         row.insertCell().textContent = contact.SACEStudentId;
                         row.insertCell().textContent = ''; // No profile ID
                         row.insertCell().textContent = ''; // No profile Type
+                        row.insertCell().textContent = ''; // No startedAt
+                        row.insertCell().textContent = ''; // No completedAt
+                        row.insertCell().textContent = ''; // No isActive
+                        row.insertCell().textContent = ''; // No profileInformation
                     } else {
                         contact.profiles.forEach((profile, index) => {
                             const row = contactsTable.insertRow();
@@ -769,6 +784,10 @@
                             // Add profile details for every profile
                             row.insertCell().textContent = profile.id;
                             row.insertCell().textContent = profile.type;
+                            row.insertCell().textContent = profile.startedAt;
+                            row.insertCell().textContent = profile.completedAt;
+                            row.insertCell().textContent = profile.isActive;
+                            row.insertCell().textContent = JSON.stringify(profile.profileInformation);
                         });
                     }
                 });
