@@ -16,6 +16,8 @@ describe('Interactions API', () => {
     it('should create a new interaction', async () => {
         const newInteraction = {
             contactId: uuidv4(),
+            profileId: uuidv4(),
+            interactionType: 'EMAIL',
             payload: {
                 message: 'This is a single test interaction',
             },
@@ -29,6 +31,8 @@ describe('Interactions API', () => {
         expect(res.body).to.be.an('object');
         expect(res.body.id).to.be.a('string');
         expect(res.body.contactId).to.equal(newInteraction.contactId);
+        expect(res.body.profileId).to.equal(newInteraction.profileId);
+        expect(res.body.interactionType).to.equal(newInteraction.interactionType);
         expect(res.body.payload.message).to.equal(newInteraction.payload.message);
     });
 
@@ -37,18 +41,24 @@ describe('Interactions API', () => {
         const interactionsToCreate = [
             {
                 contactId: uuidv4(),
+                profileId: uuidv4(),
+                interactionType: 'SMS',
                 payload: {
                     message: 'This is a test interaction 1',
                 },
             },
             {
                 contactId: uuidv4(),
+                profileId: uuidv4(),
+                interactionType: 'CALL',
                 payload: {
                     message: 'This is a test interaction 2',
                 },
             },
             {
                 contactId: uuidv4(),
+                profileId: uuidv4(),
+                interactionType: 'EMAIL',
                 payload: {
                     message: 'This is a test interaction 3',
                 },
@@ -66,6 +76,8 @@ describe('Interactions API', () => {
         res.body.forEach((interaction, index) => {
             expect(interaction).to.be.an('object');
             expect(interaction.contactId).to.equal(interactionsToCreate[index].contactId);
+            expect(interaction.profileId).to.equal(interactionsToCreate[index].profileId);
+            expect(interaction.interactionType).to.equal(interactionsToCreate[index].interactionType);
             expect(interaction.payload.message).to.equal(interactionsToCreate[index].payload.message);
         });
     });

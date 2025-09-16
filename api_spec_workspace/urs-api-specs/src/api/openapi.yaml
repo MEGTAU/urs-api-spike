@@ -2159,6 +2159,13 @@ components:
           type: string
         payload:
           type: object
+        profileId:
+          example: 440e8400-e29b-41d4-a716-446655440000
+          format: uuid
+          type: string
+        interactionType:
+          example: "VIEW"
+          type: string
       type: object
     SyncedRecord:
       description: "A record synced from an external system, identified by the system\

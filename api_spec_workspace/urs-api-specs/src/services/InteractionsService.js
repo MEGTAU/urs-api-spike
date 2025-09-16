@@ -15,7 +15,7 @@ const interactionsBulkPOST = ({ interaction }) => new Promise(
     async (resolve, reject) => {
         try {
             const createdInteractions = interaction.map(item => {
-                const newInteraction = {...item, id: uuidv4()};
+                const newInteraction = {...item, id: uuidv4(), profileId: item.profileId, interactionType: item.interactionType};
                 interactions.push(newInteraction);
                 return newInteraction;
             });
@@ -38,7 +38,7 @@ const interactionsBulkPOST = ({ interaction }) => new Promise(
 const interactionsPOST = ({interaction}) => new Promise(
     async (resolve, reject) => {
         try {
-            const newInteraction = {...interaction, id: uuidv4()};
+            const newInteraction = {...interaction, id: uuidv4(), profileId: interaction.profileId, interactionType: interaction.interactionType};
             interactions.push(newInteraction);
             resolve(Service.successResponse(newInteraction, 201));
         } catch (e) {
