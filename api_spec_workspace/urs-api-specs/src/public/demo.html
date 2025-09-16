@@ -162,6 +162,8 @@
     <h3>Contacts/Persons</h3>
     <p>A `Contact/Person` resource represents the "digital soul". Each `Contact/Person` may have multiple profiles
         (e.g. `jobseeker`) associated with them.</p>
+    <p>This table displays a "wide view" that contains both the core PIU facet of the person/contact as well as the various profiles associated with the individual.</p>
+    <button onclick="exportContacts()">Export to CSV</button>
     <table id="contacts-table">
         <thead>
         <tr>
@@ -622,6 +624,58 @@
         } catch (error) {
             console.error('Error fetching relationships:', error);
         }
+    }
+
+    // TODO this doesn't contain profile details
+    async function exportContacts() {
+        if (contactData.length === 0) {
+            await fetchContacts();
+        }
+
+        const flattenedData = [];
+        contactData.forEach(contact => {
+            if (contact.profiles && contact.profiles.length > 0) {
+                contact.profiles.forEach(profile => {
+                    flattenedData.push({
+                        contactId: contact.id,
+                        firstName: contact.firstName,
+                        lastName: contact.lastName,
+                        email: contact.email,
+                        phone: contact.phone,
+                        createdAt: contact.createdAt,
+                        lastSeenAt: contact.lastSeenAt,
+                        USI: contact.USI,
+                        LUI: contact.LUI,
+                        TFN: contact.TFN,
+                        VSN: contact.VSN,
+                        WorkReadyParticipantNumber: contact.WorkReadyParticipantNumber,
+                        SACEStudentId: contact.SACEStudentId,
+                        profileId: profile.id,
+                        profileType: profile.type
+                    });
+                });
+            } else {
+                flattenedData.push({
+                    contactId: contact.id,
+                    firstName: contact.firstName,
+                    lastName: contact.lastName,
+                    email: contact.email,
+                    phone: contact.phone,
+                    createdAt: contact.createdAt,
+                    lastSeenAt: contact.lastSeenAt,
+                    USI: contact.USI,
+                    LUI: contact.LUI,
+                    TFN: contact.TFN,
+                    VSN: contact.VSN,
+                    WorkReadyParticipantNumber: contact.WorkReadyParticipantNumber,
+                    SACEStudentId: contact.SACEStudentId,
+                    profileId: '',
+                    profileType: ''
+                });
+            }
+        });
+
+        downloadCSV(flattenedData, 'contacts.csv');
     }
 
     async function fetchContacts() {
