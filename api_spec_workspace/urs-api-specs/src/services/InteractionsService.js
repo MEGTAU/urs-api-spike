@@ -56,14 +56,32 @@ const interactionsPOST = ({interaction}) => new Promise(
 *
 * returns InteractionList
 * */
-const interactionsGET = () => new Promise(
+const interactionsGET = ({ profileId, contactId, interactionType, createdAt_gt, createdAt_lt }) => new Promise(
   async (resolve, reject) => {
     try {
+      let filteredInteractions = interactions;
+
+      if (profileId) {
+        filteredInteractions = filteredInteractions.filter(interaction => interaction.profileId === profileId);
+      }
+      if (contactId) {
+        filteredInteractions = filteredInteractions.filter(interaction => interaction.contactId === contactId);
+      }
+      if (interactionType) {
+        filteredInteractions = filteredInteractions.filter(interaction => interaction.interactionType === interactionType);
+      }
+      if (createdAt_gt) {
+        filteredInteractions = filteredInteractions.filter(interaction => new Date(interaction.createdAt) > new Date(createdAt_gt));
+      }
+      if (createdAt_lt) {
+        filteredInteractions = filteredInteractions.filter(interaction => new Date(interaction.createdAt) < new Date(createdAt_lt));
+      }
+
       resolve(Service.successResponse({
-        entries: interactions,
+        entries: filteredInteractions,
         offset: 0,
-        limit: interactions.length,
-        total_count: interactions.length,
+        limit: filteredInteractions.length,
+        total_count: filteredInteractions.length,
       }));
     } catch (e) {
       reject(Service.rejectResponse(

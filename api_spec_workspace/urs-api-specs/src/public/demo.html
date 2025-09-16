@@ -168,23 +168,24 @@
     <h3>Organisations</h3>
     <p>This tab displays organisations, such as education providers and employers.</p>
     <button onclick="document.getElementById('import-organisations-input').click()">Import from CSV</button>
-    <input type="file" id="import-organisations-input" onchange="importOrganisations(this.files[0])" style="display: none;" accept=".csv">
+    <input type="file" id="import-organisations-input" onchange="importOrganisations(this.files[0])"
+           style="display: none;" accept=".csv">
     <button onclick="exportOrganisations()">Export to CSV</button>
     <table id="organisations-table">
         <thead>
-            <tr>
-                <th>ID</th>
-                <th>Legal Name</th>
-                <th>Trading Name</th>
-                <th>Type</th>
-                <th>ABN</th>
-                <th>Employer ID</th>
-                <th>Worksite Address</th>
-                <th>Worksite State</th>
-            </tr>
+        <tr>
+            <th>ID</th>
+            <th>Legal Name</th>
+            <th>Trading Name</th>
+            <th>Type</th>
+            <th>ABN</th>
+            <th>Employer ID</th>
+            <th>Worksite Address</th>
+            <th>Worksite State</th>
+        </tr>
         </thead>
         <tbody>
-            <!-- Organisation data will be inserted here -->
+        <!-- Organisation data will be inserted here -->
         </tbody>
     </table>
 </div>
@@ -193,45 +194,54 @@
     <h3>Relationships</h3>
     <p>This tab displays the various relationships</p>
     <button onclick="document.getElementById('import-relationships-input').click()">Import from CSV</button>
-    <input type="file" id="import-relationships-input" onchange="importRelationships(this.files[0])" style="display: none;" accept=".csv">
+    <input type="file" id="import-relationships-input" onchange="importRelationships(this.files[0])"
+           style="display: none;" accept=".csv">
     <button onclick="exportRelationships()">Export to CSV</button>
     <table id="relationships-table">
         <thead>
-            <tr>
-                <th>ID</th>
-                <th>Created At</th>
-                <th>Last Confirmed At</th>
-                <th>Ended At</th>
-                <th>Primary Party</th>
-                <th>Related Parties</th>
-                <th>Type</th>
-            </tr>
+        <tr>
+            <th>ID</th>
+            <th>Created At</th>
+            <th>Last Confirmed At</th>
+            <th>Ended At</th>
+            <th>Primary Party</th>
+            <th>Related Parties</th>
+            <th>Type</th>
+        </tr>
         </thead>
         <tbody>
-            <!-- Relationship data will be inserted here -->
+        <!-- Relationship data will be inserted here -->
         </tbody>
     </table>
 </div>
 
 <div id="Interactions" class="tabcontent">
     <h3>Interactions</h3>
-    <p>This tab displays interactions.</p>
+    <p>This tab displays interactions. The API to fetch interactions supports filtering on <code>profileId</code>,
+        <code>contactId</code>, <code>createdAt</code>, and <code>interactionType</code>. The
+        <code>interactionType</code> and <code>createdAt</code> query filters can be used together to fetch all
+        "register interest" interaction since a particular date.</p>
+    <p>
+        MINTING
+
+    </p>
     <button onclick="document.getElementById('import-interactions-input').click()">Import from CSV</button>
-    <input type="file" id="import-interactions-input" onchange="importInteractions(this.files[0])" style="display: none;" accept=".csv">
+    <input type="file" id="import-interactions-input" onchange="importInteractions(this.files[0])"
+           style="display: none;" accept=".csv">
     <button onclick="exportInteractions()">Export to CSV</button>
     <table id="interactions-table">
         <thead>
-            <tr>
-                <th>ID</th>
-                <th>Created At</th>
-                <th>Contact ID</th>
-                <th>Profile ID</th>
-                <th>Interaction Type</th>
-                <th>Payload</th>
-            </tr>
+        <tr>
+            <th>ID</th>
+            <th>Created At</th>
+            <th>Contact ID</th>
+            <th>Profile ID</th>
+            <th>Interaction Type</th>
+            <th>Payload</th>
+        </tr>
         </thead>
         <tbody>
-            <!-- Interaction data will be inserted here -->
+        <!-- Interaction data will be inserted here -->
         </tbody>
     </table>
 </div>
@@ -280,7 +290,7 @@
             csvRows.push(values.join(','));
         }
 
-        const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+        const blob = new Blob([csvRows.join('\n')], {type: 'text/csv'});
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.setAttribute('hidden', '');
@@ -313,7 +323,7 @@
 
     function uploadCSV(file, onUpload) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             const text = e.target.result;
             const data = parseCSV(text);
             onUpload(data);
@@ -331,8 +341,11 @@
                 tradingName: org.tradingName,
                 organisationType: org.organisationType,
                 abn: org.abn,
-                employer: org.employerId ? { employerId: org.employerId } : null,
-                worksite: (org.worksiteAddress || org.worksiteState) ? { address: org.worksiteAddress, state: org.worksiteState } : null
+                employer: org.employerId ? {employerId: org.employerId} : null,
+                worksite: (org.worksiteAddress || org.worksiteState) ? {
+                    address: org.worksiteAddress,
+                    state: org.worksiteState
+                } : null
             }));
 
             try {
@@ -364,7 +377,7 @@
         if (organisationData.length === 0) {
             await fetchOrganisations();
         }
-        
+
         // Flatten the data for CSV export
         const flattenedData = organisationData.map(org => ({
             id: org.id,
@@ -387,7 +400,7 @@
             if (response.ok) {
                 const organisationList = await response.json();
                 organisationData = organisationList.entries; // Store the data
-                
+
                 // Clear existing rows
                 organisationsTable.innerHTML = '';
 
@@ -448,7 +461,7 @@
         if (interactionData.length === 0) {
             await fetchInteractions();
         }
-        
+
         const dataToExport = interactionData.map(interaction => ({
             id: interaction.id,
             createdAt: interaction.createdAt,
@@ -468,7 +481,7 @@
             if (response.ok) {
                 const interactionList = await response.json();
                 interactionData = interactionList.entries; // Store the data
-                
+
                 // Clear existing rows
                 interactionsTable.innerHTML = '';
 
@@ -528,7 +541,7 @@
         if (relationshipData.length === 0) {
             await fetchRelationships();
         }
-        
+
         const dataToExport = relationshipData.map(relationship => ({
             id: relationship.id,
             createdAt: relationship.createdAt,
@@ -549,7 +562,7 @@
             if (response.ok) {
                 const relationshipList = await response.json();
                 relationshipData = relationshipList.entries; // Store the data
-                
+
                 // Clear existing rows
                 relationshipsTable.innerHTML = '';
 
@@ -575,50 +588,5 @@
         fetchRelationships();
     });
 </script>
-<!--    <script>-->
-<!--        async function fetchPets() {-->
-<!--            const petsTable = document.querySelector('#pets-table tbody');-->
-<!--            const statuses = ['available', 'pending', 'sold'];-->
-<!--            -->
-<!--            for (const status of statuses) {-->
-<!--                try {-->
-<!--                    const response = await fetch(`/api/v3/pet/findByStatus?status=${status}`);-->
-<!--                    if (response.ok) {-->
-<!--                        const pets = await response.json();-->
-<!--                        pets.forEach(pet => {-->
-<!--                            const row = petsTable.insertRow();-->
-<!--                            row.insertCell().textContent = pet.id;-->
-<!--                            row.insertCell().textContent = pet.name;-->
-<!--                            row.insertCell().textContent = pet.status;-->
-<!--                        });-->
-<!--                    }-->
-<!--                } catch (error) {-->
-<!--                    console.error(`Error fetching pets with status ${status}:`, error);-->
-<!--                }-->
-<!--            }-->
-<!--        }-->
-
-<!--        async function fetchInventory() {-->
-<!--            const inventoryTable = document.querySelector('#inventory-table tbody');-->
-<!--            try {-->
-<!--                const response = await fetch('/api/v3/store/inventory');-->
-<!--                if (response.ok) {-->
-<!--                    const inventory = await response.json();-->
-<!--                    for (const status in inventory) {-->
-<!--                        const row = inventoryTable.insertRow();-->
-<!--                        row.insertCell().textContent = status;-->
-<!--                        row.insertCell().textContent = inventory[status];-->
-<!--                    }-->
-<!--                }-->
-<!--            } catch (error) {-->
-<!--                console.error('Error fetching inventory:', error);-->
-<!--            }-->
-<!--        }-->
-
-<!--        document.addEventListener('DOMContentLoaded', () => {-->
-<!--            fetchPets();-->
-<!--            fetchInventory();-->
-<!--        });-->
-<!--    </script>-->
 </body>
 </html>

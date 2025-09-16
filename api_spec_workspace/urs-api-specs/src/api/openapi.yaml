@@ -1192,6 +1192,36 @@ paths:
     get: # Add this new GET method
       description: Get all interactions
       operationId: interactionsGET
+      parameters:
+        - in: query
+          name: profileId
+          schema:
+            format: uuid
+            type: string
+          required: false
+        - in: query
+          name: contactId
+          schema:
+            format: uuid
+            type: string
+          required: false
+        - in: query
+          name: interactionType
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: createdAt_gt
+          schema:
+            type: string
+            format: date-time
+          required: false
+        - in: query
+          name: createdAt_lt
+          schema:
+            type: string
+            format: date-time
+          required: false
       responses:
         "200":
           content:
