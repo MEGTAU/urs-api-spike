@@ -194,6 +194,7 @@
     </table>
 
     <h3>Analyses</h3>
+    <button onclick="exportAnalyses()">Export Analyses to CSV</button>
     <table id="analyses-table">
         <thead>
         <tr>
@@ -706,6 +707,43 @@
         });
 
         downloadCSV(flattenedData, 'contacts.csv');
+    }
+
+    async function exportAnalyses() {
+        if (contactData.length === 0) {
+            await fetchContacts();
+        }
+
+        const flattenedData = [];
+        contactData.forEach(contact => {
+            if (contact.analyses && contact.analyses.length > 0) {
+                contact.analyses.forEach(analysis => {
+                    flattenedData.push({
+                        contactId: contact.id,
+                        firstName: contact.firstName,
+                        lastName: contact.lastName,
+                        analysisId: analysis.id,
+                        analysisType: analysis.type,
+                        analysisDate: analysis.date,
+                        analysisResult: JSON.stringify(analysis.result),
+                        analysisNotes: analysis.notes
+                    });
+                });
+            } else {
+                // Include contacts with no analyses, but with empty analysis fields
+                flattenedData.push({
+                    contactId: contact.id,
+                    firstName: contact.firstName,
+                    lastName: contact.lastName,
+                    analysisId: '',
+                    analysisType: '',
+                    analysisDate: '',
+                    analysisResult: '',
+                    analysisNotes: ''
+                });
+            }
+        });
+        downloadCSV(flattenedData, 'analyses.csv');
     }
 
     async function fetchContacts() {
