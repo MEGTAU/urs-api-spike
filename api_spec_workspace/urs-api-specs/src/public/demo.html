@@ -225,6 +225,8 @@
                 <th>ID</th>
                 <th>Created At</th>
                 <th>Contact ID</th>
+                <th>Profile ID</th>
+                <th>Interaction Type</th>
                 <th>Payload</th>
             </tr>
         </thead>
@@ -413,6 +415,8 @@
             const interactionsToImport = interactions.map(interaction => ({
                 createdAt: interaction.createdAt,
                 contactId: interaction.contactId,
+                profileId: interaction.profileId,
+                interactionType: interaction.interactionType,
                 payload: JSON.parse(interaction.payload) // Assuming payload is a JSON string in the CSV
             }));
 
@@ -449,6 +453,8 @@
             id: interaction.id,
             createdAt: interaction.createdAt,
             contactId: interaction.contactId,
+            profileId: interaction.profileId,
+            interactionType: interaction.interactionType,
             payload: JSON.stringify(interaction.payload)
         }));
 
@@ -471,6 +477,8 @@
                     row.insertCell().textContent = interaction.id;
                     row.insertCell().textContent = interaction.createdAt;
                     row.insertCell().textContent = interaction.contactId;
+                    row.insertCell().textContent = interaction.profileId;
+                    row.insertCell().textContent = interaction.interactionType;
                     row.insertCell().textContent = JSON.stringify(interaction.payload);
                 });
             }
