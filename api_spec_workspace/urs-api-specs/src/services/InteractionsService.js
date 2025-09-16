@@ -56,7 +56,7 @@ const interactionsPOST = ({interaction}) => new Promise(
 *
 * returns InteractionList
 * */
-const interactionsGET = ({ profileId, contactId, interactionType, createdAt_gt, createdAt_lt }) => new Promise(
+const interactionsGET = ({ profileId, contactId, interactionType, createdAt_gt, createdAt_lt, limit, offset }) => new Promise(
   async (resolve, reject) => {
     try {
       let filteredInteractions = interactions;
@@ -77,11 +77,16 @@ const interactionsGET = ({ profileId, contactId, interactionType, createdAt_gt, 
         filteredInteractions = filteredInteractions.filter(interaction => new Date(interaction.createdAt) < new Date(createdAt_lt));
       }
 
+      const total_count = filteredInteractions.length;
+      const startIndex = offset || 0;
+      const endIndex = (limit !== undefined && limit !== null) ? startIndex + limit : filteredInteractions.length;
+      const paginatedInteractions = filteredInteractions.slice(startIndex, endIndex);
+
       resolve(Service.successResponse({
-        entries: filteredInteractions,
-        offset: 0,
-        limit: filteredInteractions.length,
-        total_count: filteredInteractions.length,
+        entries: paginatedInteractions,
+        offset: startIndex,
+        limit: limit !== undefined && limit !== null ? limit : total_count,
+        total_count: total_count,
       }));
     } catch (e) {
       reject(Service.rejectResponse(

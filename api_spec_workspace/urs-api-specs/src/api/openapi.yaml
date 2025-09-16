@@ -1224,6 +1224,8 @@ paths:
             type: string
             format: date-time
           required: false
+        - $ref: "#/components/parameters/LimitParam"
+        - $ref: "#/components/parameters/OffsetParam"
       responses:
         "200":
           content:
