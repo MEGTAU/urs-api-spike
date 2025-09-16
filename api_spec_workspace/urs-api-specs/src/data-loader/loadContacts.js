@@ -11,6 +11,14 @@ const contacts = [
         phone: '0400111222',
         address: '123 Main St, Sydney NSW',
         organisationId: uuidv4(), // Assuming contacts can be linked to organisations
+        createdAt: '2023-01-01T10:00:00Z',
+        lastSeenAt: '2023-09-15T11:00:00Z',
+        USI: 'USI123456789',
+        LUI: 'LUI123456789',
+        TFN: '123456789',
+        VSN: 'VSN123456789',
+        WorkReadyParticipantNumber: 'WRPN123456789',
+        SACEStudentId: 'SACE123456789',
         profiles: [
             {
                 id: uuidv4(),
@@ -42,6 +50,14 @@ const contacts = [
         phone: '0400333444',
         address: '456 High St, Melbourne VIC',
         organisationId: uuidv4(),
+        createdAt: '2022-03-15T09:00:00Z',
+        lastSeenAt: '2023-10-20T12:00:00Z',
+        USI: 'USI987654321',
+        LUI: 'LUI987654321',
+        TFN: '987654321',
+        VSN: 'VSN987654321',
+        WorkReadyParticipantNumber: 'WRPN987654321',
+        SACEStudentId: 'SACE987654321',
         profiles: [
             {
                 id: uuidv4(),
@@ -72,6 +88,14 @@ const contacts = [
         phone: '0400555666',
         address: '789 Low St, Brisbane QLD',
         organisationId: uuidv4(),
+        createdAt: '2024-02-01T08:00:00Z',
+        lastSeenAt: '2024-08-01T09:30:00Z',
+        USI: 'USI234567890',
+        LUI: 'LUI234567890',
+        TFN: '234567890',
+        VSN: 'VSN234567890',
+        WorkReadyParticipantNumber: 'WRPN234567890',
+        SACEStudentId: 'SACE234567890',
         profiles: [
             {
                 id: uuidv4(),
@@ -103,6 +127,14 @@ const contacts = [
         phone: '0400777888',
         address: '10 Downing St, Canberra ACT',
         organisationId: uuidv4(),
+        createdAt: '2024-01-15T09:00:00Z',
+        lastSeenAt: '2024-07-25T14:00:00Z',
+        USI: 'USI345678901',
+        LUI: 'LUI345678901',
+        TFN: '345678901',
+        VSN: 'VSN345678901',
+        WorkReadyParticipantNumber: 'WRPN345678901',
+        SACEStudentId: 'SACE345678901',
         profiles: [
             {
                 id: uuidv4(),

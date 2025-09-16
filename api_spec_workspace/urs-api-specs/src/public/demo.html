@@ -170,6 +170,14 @@
             <th>Last Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Created At</th>
+            <th>Last Seen At</th>
+            <th>USI</th>
+            <th>LUI</th>
+            <th>TFN</th>
+            <th>VSN</th>
+            <th>WorkReady Participant Number</th>
+            <th>SACE Student Id</th>
             <th>Profile ID</th>
             <th>Profile Type</th>
         </tr>
@@ -637,6 +645,14 @@
                         row.insertCell().textContent = contact.lastName;
                         row.insertCell().textContent = contact.email;
                         row.insertCell().textContent = contact.phone;
+                        row.insertCell().textContent = contact.createdAt;
+                        row.insertCell().textContent = contact.lastSeenAt;
+                        row.insertCell().textContent = contact.USI;
+                        row.insertCell().textContent = contact.LUI;
+                        row.insertCell().textContent = contact.TFN;
+                        row.insertCell().textContent = contact.VSN;
+                        row.insertCell().textContent = contact.WorkReadyParticipantNumber;
+                        row.insertCell().textContent = contact.SACEStudentId;
                         row.insertCell().textContent = ''; // No profile ID
                         row.insertCell().textContent = ''; // No profile Type
                     } else {
@@ -663,6 +679,38 @@
                                 const phoneCell = row.insertCell();
                                 phoneCell.textContent = contact.phone;
                                 phoneCell.rowSpan = numProfiles;
+
+                                const createdAtCell = row.insertCell();
+                                createdAtCell.textContent = contact.createdAt;
+                                createdAtCell.rowSpan = numProfiles;
+
+                                const lastSeenAtCell = row.insertCell();
+                                lastSeenAtCell.textContent = contact.lastSeenAt;
+                                lastSeenAtCell.rowSpan = numProfiles;
+
+                                const USICell = row.insertCell();
+                                USICell.textContent = contact.USI;
+                                USICell.rowSpan = numProfiles;
+
+                                const LUICell = row.insertCell();
+                                LUICell.textContent = contact.LUI;
+                                LUICell.rowSpan = numProfiles;
+
+                                const TFNCell = row.insertCell();
+                                TFNCell.textContent = contact.TFN;
+                                TFNCell.rowSpan = numProfiles;
+
+                                const VSNCell = row.insertCell();
+                                VSNCell.textContent = contact.VSN;
+                                VSNCell.rowSpan = numProfiles;
+
+                                const WRPNCell = row.insertCell();
+                                WRPNCell.textContent = contact.WorkReadyParticipantNumber;
+                                WRPNCell.rowSpan = numProfiles;
+
+                                const SACECell = row.insertCell();
+                                SACECell.textContent = contact.SACEStudentId;
+                                SACECell.rowSpan = numProfiles;
                             }
                             // Add profile details for every profile
                             row.insertCell().textContent = profile.id;
