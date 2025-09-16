@@ -2250,6 +2250,7 @@ components:
           type: boolean
       type: object
     Organisation_employer:
+      nullable: true
       example:
         employerId: "12345678"
       properties:
