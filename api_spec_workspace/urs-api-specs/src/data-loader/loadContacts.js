@@ -24,9 +24,10 @@ const contacts = [
                 id: uuidv4(),
                 type: 'student',
                 startedAt: '2023-01-01T09:00:00Z',
+                completedAt: '2025-01-01T09:00:00Z',
                 isActive: true,
                 profileInformation: {
-                    course: 'Software Engineering',
+                    course: 'Technical Drafting',
                     studentId: 'S12345'
                 }
             },
