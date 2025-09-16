@@ -1190,7 +1190,9 @@ paths:
       summary: Create an interaction
       x-eov-operation-handler: controllers/InteractionsController
     get: # Add this new GET method
-      description: Get all interactions
+      description: Get all interactions.  The
+        `interactionType` and `createdAt` query filters can be used together to fetch all
+        "register interest" interaction since a particular date.
       operationId: interactionsGET
       parameters:
         - in: query

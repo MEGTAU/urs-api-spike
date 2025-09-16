@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-openapi-generator generate -i ./urs-api-spec.yaml -g html2 -o api-docs
+# TODO
+# openapi-generator generate -i ./urs-api-spec.yaml -g html2 -o api-docs
+
+openapi-generator generate -i  ./src/api/openapi.yaml -g html2 -o api-docs
+
