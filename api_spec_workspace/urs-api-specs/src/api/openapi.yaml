@@ -1309,13 +1309,13 @@ components:
             id: 323e4567-e89b-12d3-a456-426614174000
             profileInformation: "{}"
             type: apprentice
-            isActive: "true"
+            isActive: true
           - completedAt: 2025-01-15T17:00:00Z
             startedAt: 2023-01-15T09:00:00Z
             id: 323e4567-e89b-12d3-a456-426614174000
             profileInformation: "{}"
             type: apprentice
-            isActive: "true"
+            isActive: true
         USI: "1234567890"
         memberships:
           - "{}"
@@ -1482,13 +1482,13 @@ components:
                 id: 323e4567-e89b-12d3-a456-426614174000
                 profileInformation: "{}"
                 type: apprentice
-                isActive: "true"
+                isActive: true
               - completedAt: 2025-01-15T17:00:00Z
                 startedAt: 2023-01-15T09:00:00Z
                 id: 323e4567-e89b-12d3-a456-426614174000
                 profileInformation: "{}"
                 type: apprentice
-                isActive: "true"
+                isActive: true
             USI: "1234567890"
             memberships:
               - "{}"
@@ -1575,13 +1575,13 @@ components:
                 id: 323e4567-e89b-12d3-a456-426614174000
                 profileInformation: "{}"
                 type: apprentice
-                isActive: "true"
+                isActive: true
               - completedAt: 2025-01-15T17:00:00Z
                 startedAt: 2023-01-15T09:00:00Z
                 id: 323e4567-e89b-12d3-a456-426614174000
                 profileInformation: "{}"
                 type: apprentice
-                isActive: "true"
+                isActive: true
             USI: "1234567890"
             memberships:
               - "{}"
@@ -1740,7 +1740,7 @@ components:
         id: 323e4567-e89b-12d3-a456-426614174000
         profileInformation: "{}"
         type: apprentice
-        isActive: "true"
+        isActive: true
       properties:
         id:
           example: 323e4567-e89b-12d3-a456-426614174000
@@ -1758,8 +1758,8 @@ components:
           format: date-time
           type: string
         isActive:
-          example: "true"
-          type: string
+          example: true
+          type: boolean
         profileInformation:
           type: object
       type: object
@@ -1771,13 +1771,13 @@ components:
             id: 323e4567-e89b-12d3-a456-426614174000
             profileInformation: "{}"
             type: apprentice
-            isActive: "true"
+            isActive: true
           - completedAt: 2025-01-15T17:00:00Z
             startedAt: 2023-01-15T09:00:00Z
             id: 323e4567-e89b-12d3-a456-426614174000
             profileInformation: "{}"
             type: apprentice
-            isActive: "true"
+            isActive: true
         offset: 0
         total_count: 1
         limit: 6

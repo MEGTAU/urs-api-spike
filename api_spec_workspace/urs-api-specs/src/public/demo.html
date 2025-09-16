@@ -165,7 +165,7 @@
     <table id="contacts-table">
         <thead>
         <tr>
-            <th>Contact ID</th>
+            <th>ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
@@ -628,26 +628,46 @@
                 contactsTable.innerHTML = '';
 
                 contactData.forEach(contact => {
-                    if (contact.profiles && contact.profiles.length > 0) {
-                        contact.profiles.forEach(profile => {
-                            const row = contactsTable.insertRow();
-                            row.insertCell().textContent = contact.id;
-                            row.insertCell().textContent = contact.firstName;
-                            row.insertCell().textContent = contact.lastName;
-                            row.insertCell().textContent = contact.email;
-                            row.insertCell().textContent = contact.phone;
-                            row.insertCell().textContent = profile.id;
-                            row.insertCell().textContent = profile.type;
-                        });
-                    } else {
+                    const numProfiles = contact.profiles ? contact.profiles.length : 0;
+
+                    if (numProfiles === 0) {
                         const row = contactsTable.insertRow();
                         row.insertCell().textContent = contact.id;
                         row.insertCell().textContent = contact.firstName;
                         row.insertCell().textContent = contact.lastName;
                         row.insertCell().textContent = contact.email;
                         row.insertCell().textContent = contact.phone;
-                        row.insertCell().textContent = ''; // no profile id
-                        row.insertCell().textContent = ''; // no profile type
+                        row.insertCell().textContent = ''; // No profile ID
+                        row.insertCell().textContent = ''; // No profile Type
+                    } else {
+                        contact.profiles.forEach((profile, index) => {
+                            const row = contactsTable.insertRow();
+                            if (index === 0) {
+                                // For the first profile, add contact details with rowspan
+                                const idCell = row.insertCell();
+                                idCell.textContent = contact.id;
+                                idCell.rowSpan = numProfiles;
+
+                                const firstNameCell = row.insertCell();
+                                firstNameCell.textContent = contact.firstName;
+                                firstNameCell.rowSpan = numProfiles;
+
+                                const lastNameCell = row.insertCell();
+                                lastNameCell.textContent = contact.lastName;
+                                lastNameCell.rowSpan = numProfiles;
+
+                                const emailCell = row.insertCell();
+                                emailCell.textContent = contact.email;
+                                emailCell.rowSpan = numProfiles;
+
+                                const phoneCell = row.insertCell();
+                                phoneCell.textContent = contact.phone;
+                                phoneCell.rowSpan = numProfiles;
+                            }
+                            // Add profile details for every profile
+                            row.insertCell().textContent = profile.id;
+                            row.insertCell().textContent = profile.type;
+                        });
                     }
                 });
             }
