@@ -223,8 +223,16 @@
         <code>interactionType</code> and <code>createdAt</code> query filters can be used together to fetch all
         "register interest" interaction since a particular date.</p>
     <p>
-        MINTING
+        If the contact/person doesn't already exist in the system, it will be created automatically (minted) when
+        importing.
 
+        If the profile doesn't already exist, it will also be created automatically and linked to the contact/person.
+        The profile type will depend on the type of interaction.
+    </p>
+    <p>
+        Note that the <code>payload</code> field is a JSON object and may contain commas, which may interfere with
+        CSV parsing. The import/export functions handle this by stringifying the JSON object when exporting and
+        parsing it back when importing.
     </p>
     <button onclick="document.getElementById('import-interactions-input').click()">Import from CSV</button>
     <input type="file" id="import-interactions-input" onchange="importInteractions(this.files[0])"
@@ -321,7 +329,7 @@
             if (!currentline) continue;
             for (let j = 0; j < headers.length; j++) {
                 // TODO this was just a quick fix to the incorrect regex provided by a quick search. Use a proper CSV parser library
-                let s = currentline[j].trim().replace(/^"|"$/g, '').replace(/""/g,'"').replace(/^,/, '').replace(/^"/g, '');
+                let s = currentline[j].trim().replace(/^"|"$/g, '').replace(/""/g, '"').replace(/^,/, '').replace(/^"/g, '');
                 obj[headers[j]] = s;
             }
             result.push(obj);
