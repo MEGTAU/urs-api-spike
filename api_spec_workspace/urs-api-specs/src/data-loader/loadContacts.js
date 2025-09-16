@@ -2,6 +2,19 @@ const http = require('http');
 const logger = require('../logger');
 const { v4: uuidv4 } = require('uuid');
 
+function generateSystemLink() {
+    const systemNames = ['G-Force', 'aXcelerate', 'HR System', 'Canvas'];
+    const randomSystemName = systemNames[Math.floor(Math.random() * systemNames.length)];
+    const systemId = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit random number
+
+    return {
+        id: uuidv4(),
+        systemName: randomSystemName,
+        systemId: systemId,
+        url: `https://example.com/${randomSystemName.toLowerCase().replace(/ /g, '-')}/${systemId}`
+    };
+}
+
 function generateAnalysis() {
     const analysisTypes = ['Skills Assessment', 'Career Aptitude Test', 'Psychometric Evaluation', 'Vocational Interest Inventory'];
     const randomType = analysisTypes[Math.floor(Math.random() * analysisTypes.length)];
@@ -59,7 +72,8 @@ const contacts = [
                 }
             }
         ],
-        analyses: [generateAnalysis(), generateAnalysis()]
+        analyses: [generateAnalysis(), generateAnalysis()],
+        systemLinks: [generateSystemLink(), generateSystemLink()]
     },
     {
         id: uuidv4(),
@@ -98,7 +112,8 @@ const contacts = [
                 }
             }
         ],
-        analyses: []
+        analyses: [],
+        systemLinks: [generateSystemLink()]
     },
     {
         id: uuidv4(),
@@ -138,7 +153,8 @@ const contacts = [
                 }
             }
         ],
-        analyses: [generateAnalysis()]
+        analyses: [generateAnalysis()],
+        systemLinks: []
     },
     {
         id: uuidv4(),
@@ -177,7 +193,8 @@ const contacts = [
                 }
             }
         ],
-        analyses: [generateAnalysis()]
+        analyses: [generateAnalysis()],
+        systemLinks: [generateSystemLink()]
     }
 ];
 
