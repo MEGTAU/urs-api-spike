@@ -2,6 +2,23 @@ const http = require('http');
 const logger = require('../logger');
 const { v4: uuidv4 } = require('uuid');
 
+function generateAnalysis() {
+    const analysisTypes = ['Skills Assessment', 'Career Aptitude Test', 'Psychometric Evaluation', 'Vocational Interest Inventory'];
+    const randomType = analysisTypes[Math.floor(Math.random() * analysisTypes.length)];
+    const randomDate = new Date(Date.now() - Math.floor(Math.random() * 365 * 24 * 60 * 60 * 1000)).toISOString(); // Random date within the last year
+
+    return {
+        id: uuidv4(),
+        type: randomType,
+        date: randomDate,
+        result: {
+            status: 'Completed',
+            score: Math.floor(Math.random() * 100) // Random score between 0 and 99
+        },
+        notes: 'This is a simulated analysis result.'
+    };
+}
+
 const contacts = [
     {
         id: uuidv4(), // Changed from contactId to id as per openapi.yaml
@@ -41,7 +58,8 @@ const contacts = [
                     position: 'Hiring Manager'
                 }
             }
-        ]
+        ],
+        analyses: [generateAnalysis(), generateAnalysis()]
     },
     {
         id: uuidv4(),
@@ -79,7 +97,8 @@ const contacts = [
                     area: 'Community Outreach'
                 }
             }
-        ]
+        ],
+        analyses: []
     },
     {
         id: uuidv4(),
@@ -118,7 +137,8 @@ const contacts = [
                     graduationYear: '2020'
                 }
             }
-        ]
+        ],
+        analyses: [generateAnalysis()]
     },
     {
         id: uuidv4(),
@@ -156,7 +176,8 @@ const contacts = [
                     expertise: 'Leadership, Software Development'
                 }
             }
-        ]
+        ],
+        analyses: [generateAnalysis()]
     }
 ];
 
