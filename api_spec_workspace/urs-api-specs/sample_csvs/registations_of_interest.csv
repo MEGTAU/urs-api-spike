@@ -1,0 +1,4 @@
+createdAt,contactId,profileId,interactionType,payload
+2025-08-22T22:00:00.001Z,1ba03cfa-72d1-455b-a6d0-91096bc18233,7e4b9288-5542-4032-9a20-e335841fa5de,REGISTER_INTEREST,"{""course"":""Responsible Service of Alcohol"",""level"":""Vocational Training""}"
+2025-08-10T20:00:00.143Z,3cc718b7-2a1d-4ce8-b3a9-426ce0e332ab,7e873ac4-a2dd-43a7-9e7f-cdce6b1cb299,REGISTER_INTEREST,"{""course"":""First Aid Certificate"",""level"":""Vocational Training""}"
+2025-08-29T13:01:35.056Z,1883a4b6-e4ed-4c6d-9b3b-e26597e50d32,3d92f646-1f72-48dd-947d-8f391c4392b7,REGISTER_INTEREST,"{""course"":""Food Handling Certificate"",""level"":""Vocational Training""}"

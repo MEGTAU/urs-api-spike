@@ -84,6 +84,7 @@
             }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
 </head>
 <body>
 <h1>Universal Relationship Server Spike</h1>
@@ -284,8 +285,14 @@
         // Loop over the rows
         for (const row of data) {
             const values = headers.map(header => {
-                const escaped = ('' + row[header]).replace(/"/g, '"');
-                return `"${escaped}"`;
+                let value = '' + row[header]; // Ensure value is a string
+                const needsQuotes = value.includes(',') || value.includes('"') || value.includes('\n') || value.includes('\r');
+                value = value.replace(/"/g, '""'); // Escape double quotes
+                if (needsQuotes) {
+                    return `"${value}"`;
+                } else {
+                    return value;
+                }
             });
             csvRows.push(values.join(','));
         }
@@ -309,11 +316,13 @@
         for (let i = 1; i < lines.length; i++) {
             if (!lines[i]) continue;
             const obj = {};
-            const currentline = lines[i].match(/(".*?"|[^,]+)(?=\s*,|\s*$)/g);
+            // handle commas within quoted fields. TODO replace with a library
+            const currentline = lines[i].match(/(?:^|,)(?:"((?:[^"]|"")*)"|([^",\r\n]*))/g);
             if (!currentline) continue;
-
             for (let j = 0; j < headers.length; j++) {
-                obj[headers[j]] = currentline[j].trim().replace(/^"|"$/g, '');
+                // TODO this was just a quick fix to the incorrect regex provided by a quick search. Use a proper CSV parser library
+                let s = currentline[j].trim().replace(/^"|"$/g, '').replace(/""/g,'"').replace(/^,/, '').replace(/^"/g, '');
+                obj[headers[j]] = s;
             }
             result.push(obj);
         }
@@ -422,6 +431,7 @@
     }
 
     async function importInteractions(file) {
+        alert('Interactions!');
         if (!file) return;
 
         uploadCSV(file, async (interactions) => {
