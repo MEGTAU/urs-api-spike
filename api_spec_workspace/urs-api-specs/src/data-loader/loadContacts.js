@@ -59,7 +59,8 @@ const contacts = [
                 profileInformation: {
                     course: 'Technical Drafting',
                     studentId: 'S12345'
-                }
+                },
+                organisations: [uuidv4(), uuidv4()]
             },
             {
                 id: uuidv4(),
@@ -69,7 +70,8 @@ const contacts = [
                 profileInformation: {
                     company: 'Tech Solutions Inc.',
                     position: 'Hiring Manager'
-                }
+                },
+                organisations: [uuidv4()]
             }
         ],
         analyses: [generateAnalysis(), generateAnalysis()],
@@ -100,7 +102,8 @@ const contacts = [
                 profileInformation: {
                     childName: 'Billy Smith',
                     childDOB: '2015-07-20'
-                }
+                },
+                organisations: []
             },
             {
                 id: uuidv4(),
@@ -109,7 +112,8 @@ const contacts = [
                 isActive: true,
                 profileInformation: {
                     area: 'Community Outreach'
-                }
+                },
+                organisations: []
             }
         ],
         analyses: [],
@@ -140,7 +144,8 @@ const contacts = [
                 profileInformation: {
                     course: 'Data Science',
                     studentId: 'S67890'
-                }
+                },
+                organisations: [uuidv4()]
             },
             {
                 id: uuidv4(),
@@ -150,7 +155,8 @@ const contacts = [
                 isActive: false,
                 profileInformation: {
                     graduationYear: '2020'
-                }
+                },
+                organisations: []
             }
         ],
         analyses: [generateAnalysis()],
@@ -181,7 +187,8 @@ const contacts = [
                 profileInformation: {
                     desiredRole: 'Project Manager',
                     experience: '5 years'
-                }
+                },
+                organisations: [uuidv4(), uuidv4()]
             },
             {
                 id: uuidv4(),
@@ -190,7 +197,8 @@ const contacts = [
                 isActive: true,
                 profileInformation: {
                     expertise: 'Leadership, Software Development'
-                }
+                },
+                organisations: [uuidv4()]
             }
         ],
         analyses: [generateAnalysis()],

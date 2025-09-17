@@ -172,6 +172,7 @@
             <th>Completed At</th>
             <th>Is Active</th>
             <th>Profile Information</th>
+            <th>Organisations</th>
         </tr>
         </thead>
         <tbody>
@@ -809,6 +810,7 @@
                         row.insertCell().textContent = ''; // No completedAt
                         row.insertCell().textContent = ''; // No isActive
                         row.insertCell().textContent = ''; // No profileInformation
+                        row.insertCell().textContent = ''; // No organisations
                     } else {
                         contact.profiles.forEach((profile, index) => {
                             const row = contactsTable.insertRow();
@@ -873,6 +875,7 @@
                             row.insertCell().textContent = profile.completedAt;
                             row.insertCell().textContent = profile.isActive;
                             row.insertCell().textContent = JSON.stringify(profile.profileInformation);
+                            row.insertCell().textContent = profile.organisations ? profile.organisations.join(', ') : '';
                         });
                     }
                 });

@@ -1739,6 +1739,7 @@ components:
         startedAt: 2023-01-15T09:00:00Z
         id: 323e4567-e89b-12d3-a456-426614174000
         profileInformation: "{}"
+        organisations: []
         type: apprentice
         isActive: true
       properties:
@@ -1762,6 +1763,11 @@ components:
           type: boolean
         profileInformation:
           type: object
+        organisations:
+          type: array
+          items:
+            type: string
+            format: uuid
       type: object
     ProfileList:
       example:
