@@ -84,38 +84,9 @@
             }
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
 </head>
 <body>
 <h1>Universal Relationship Server Spike</h1>
-
-<!--    <h2>Pets</h2>-->
-<!--    <table id="pets-table">-->
-<!--        <thead>-->
-<!--            <tr>-->
-<!--                <th>ID</th>-->
-<!--                <th>Name</th>-->
-<!--                <th>Status</th>-->
-<!--            </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--            &lt;!&ndash; Pet data will be inserted here &ndash;&gt;-->
-<!--        </tbody>-->
-<!--    </table>-->
-
-<!--    <h2>Store Inventory</h2>-->
-<!--    <table id="inventory-table">-->
-<!--        <thead>-->
-<!--            <tr>-->
-<!--                <th>Status</th>-->
-<!--                <th>Quantity</th>-->
-<!--            </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--            &lt;!&ndash; Inventory data will be inserted here &ndash;&gt;-->
-<!--        </tbody>-->
-<!--    </table>-->
-
 
 <!-- Tab links -->
 <div class="tab">
@@ -128,7 +99,7 @@
 
 <!-- Tab content -->
 <div id="About" class="tabcontent">
-    <h3>About</h3>
+    <h2>About</h2>
 
     <ul>
         <li>
@@ -159,10 +130,25 @@
 </div>
 
 <div id="Contacts/Persons" class="tabcontent">
-    <h3>Contacts/Persons</h3>
-    <p>A `Contact/Person` resource represents the "digital soul". Each `Contact/Person` may have multiple profiles
-        (e.g. `jobseeker`) associated with them.</p>
-    <p>This table displays a "wide view" that contains both the core PIU facet of the person/contact as well as the various profiles associated with the individual.</p>
+    <h2>Contacts/Persons</h2>
+    <div style="max-width: 1500px">
+        <p>A <code>Contact/Person</code> resource represents the "digital soul". Each <code>Contact/Person</code> may
+            have multiple profiles (e.g. <code>jobseeker</code>) associated with them.</p>
+        <p>This table displays a "wide view" that contains both the core PII facet of the person/contact and the various
+            profiles associated with the individual. The profile data contains a set of standard attributes that can be
+            used for all profile types as well as a <code>profileInformation</code> JSON attribute that is used to store
+            information specific to a particular profile type. This approach allows new profile types to be introduced
+            without modifying the API or database schema.</p>
+
+        <h3>Batch Upload Scenarios</h3>
+
+        <p>For scenarios such as importing lists of jobseekers from a CSV file or adding students/apprentices from ACP
+            training contracts, the API implementation will check if a contact/person already exists based on a unique
+            identifier such as email or phone number. If the contact/person
+            does not exist, it should be created (minted) and the appropriate added to the contact/person. If the
+            contact/person does exist, the existing record should be updated
+            by associated a new profile of the correct type or updating an existing profile.</p>
+    </div>
     <button onclick="exportContacts()">Export Contact/Person Profiles to CSV</button>
     <table id="contacts-table">
         <thead>
@@ -193,7 +179,18 @@
         </tbody>
     </table>
 
-    <h3>Analyses</h3>
+    <h2>Analyses</h2>
+    <div style="max-width: 1500px">
+        <p>Each <code>Contact/Person</code> may have analyses (e.g. vibrancy index assessment) associated with them.
+            This table provides a "wide view" demonstrating API usage to display the PII facet of the
+            <code>Contact</code>.
+            as well as the analyses for the <code>Contact</code>. The analysis data contains a set of standard
+            attributes that can be
+            used for all analysis types as well as a <code>results</code> JSON attribute that is used to store
+            results specific to a particular analysis type. This approach allows new analysis types types to be
+            introduced
+            without modifying the API or database schema.</p></p>
+    </div>
     <button onclick="exportAnalyses()">Export Analyses to CSV</button>
     <table id="analyses-table">
         <thead>
@@ -213,7 +210,13 @@
         </tbody>
     </table>
 
-    <h3>System Links</h3>
+    <h2>System Links</h2>
+    <div style="max-width: 1500px">
+        <p>Each <code>Contact/Person</code> may have links to external systems associated with them. Examples of
+            external systems include student platforms such as aXcelerate and Canvas.
+            This table provides a "wide view" demonstrating API usage to display the PII facet of the
+            <code>Contact</code> as well as the system links for the <code>Contact</code>.</p>
+    </div>
     <button onclick="exportSystemLinks()">Export System Links to CSV</button>
     <table id="system-links-table">
         <thead>
@@ -234,7 +237,7 @@
 </div>
 
 <div id="Organisations" class="tabcontent">
-    <h3>Organisations</h3>
+    <h2>Organisations</h2>
     <p>This tab displays organisations, such as education providers and employers.</p>
     <button onclick="document.getElementById('import-organisations-input').click()">Import from CSV</button>
     <input type="file" id="import-organisations-input" onchange="importOrganisations(this.files[0])"
@@ -260,7 +263,7 @@
 </div>
 
 <div id="Relationships" class="tabcontent">
-    <h3>Relationships</h3>
+    <h2>Relationships</h2>
     <p>This tab displays the various relationships</p>
     <button onclick="document.getElementById('import-relationships-input').click()">Import from CSV</button>
     <input type="file" id="import-relationships-input" onchange="importRelationships(this.files[0])"
@@ -285,23 +288,29 @@
 </div>
 
 <div id="Interactions" class="tabcontent">
-    <h3>Interactions</h3>
-    <p>This tab displays interactions. The API to fetch interactions supports filtering on <code>profileId</code>,
-        <code>contactId</code>, <code>createdAt</code>, and <code>interactionType</code>. The
-        <code>interactionType</code> and <code>createdAt</code> query filters can be used together to fetch all
-        "register interest" interaction since a particular date.</p>
-    <p>
-        If the contact/person doesn't already exist in the system, it will be created automatically (minted) when
-        importing.
+    <h2>Interactions</h2>
+    <div style="max-width: 1500px">
 
-        If the profile doesn't already exist, it will also be created automatically and linked to the contact/person.
-        The profile type will depend on the type of interaction.
-    </p>
-    <p>
-        Note that the <code>payload</code> field is a JSON object and may contain commas, which may interfere with
-        CSV parsing. The import/export functions handle this by stringifying the JSON object when exporting and
-        parsing it back when importing.
-    </p>
+        <p>This tab displays interactions. The API to fetch interactions supports filtering on <code>profileId</code>,
+            <code>contactId</code>, <code>createdAt</code>, and <code>interactionType</code>. The
+            <code>interactionType</code> and <code>createdAt</code> query filters can be used together to fetch all
+            "register interest" interaction since a particular date. The interaction details are stored in a JSON
+            object. This allows new interaction types to be added without having to change the API or database schema.
+        </p>
+        <p>
+            If the contact/person doesn't already exist in the system, it will be created automatically (minted) when
+            importing.
+
+            If the profile doesn't already exist, it will also be created automatically and linked to the
+            contact/person.
+            The profile type will depend on the type of interaction.
+        </p>
+        <p>
+            Note that the <code>payload</code> field is a JSON object and may contain commas, which may interfere with
+            CSV parsing. The import/export functions handle this by stringifying the JSON object when exporting and
+            parsing it back when importing.
+        </p>
+    </div>
     <button onclick="document.getElementById('import-interactions-input').click()">Import from CSV</button>
     <input type="file" id="import-interactions-input" onchange="importInteractions(this.files[0])"
            style="display: none;" accept=".csv">
