@@ -9,11 +9,21 @@ info:
 
     The API structured to implemented gradually. For example, external system integrations will be implemented after the first release. An HTTP 501 (Not implemented) response will be returned for API methods that are not yet implemented.
     
-    ### **Multiple Roles per Contacts**
+    ## Summary of Key Entities
     
-    This API supports the fact that an individual may act in different capacities through time. Therefore each contact has a number of `profiles`, such as `student`, `parent/guardian`, or `employer contact` associated with it. 
+    * **Contact**: The central entity representing an individual person, containing core identifying information ("digital soul"). Each contact has the following sub-resources:
+      * **Profile**: Represents a specific role a contact holds as a profile type(e.g., 'student', 'employee', 'jobseeker'). Each profile contains a set of standard attributes that can be used for all profile types as well as a `profileInformation` JSON attribute that is used to store information specific to a particular profile type. This approach allows new profile types to be introduced without modifying the API or database schema.
+      * **ContactInformation**: Stores methods for contacting an individual, such as email addresses, phone numbers, and physical addresses. This supports multiple contact records for a contact, where information may originate from different source systems or points in time.
+      * **CommunicationPreference**: Manages a contact's preferences for being contacted through different channels (e.g., email, SMS).
+      * **Disclosure Settings**: Controls a contact's preferences for how their personal information is shared with other parties or systems.
+      * **Document**: Represents a document associated with a contact, such as a resume or certificate, containing a link to the file.
+      * **Analysis**: Stores the results of data analysis performed on a contact, such as a "vibrancy index classification" or interview results. The analysis data contains a set of standard attributes that can be used for all analysis types as well as a `results` JSON attribute that is used to store results specific to a particular analysis type. This approach allows new analysis types types to be introduced without modifying the API or database schema.
+      * **SystemLink**: Provides a reference to a contact's record in an external system (like an LMS or SMS) to link data across platforms.
+    * **Organisation**: Represents a company, training institution, or other organisation that a contact may be associated with.
+    * **Interaction**: Records a specific point-in-time event or activity involving a contact, like a meeting or a "registration of interest". The interaction details are stored in a JSON object. This allows new interaction types to be added without having to change the API or database schema.
+    * **Relationship**: Defines a connection between two or more contacts, specifying its type (e.g., parent-child) and the role of each member.
     
-    The API supports well-known attributes used by multiple profile-types, as well as a generic JSON attributes that are used to store information that is specific to the profile type.
+    ## API Design Principles
     
     ### **Usage of Upsert Approach**
     
