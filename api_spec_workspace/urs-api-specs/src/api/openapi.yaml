@@ -25,7 +25,7 @@ info:
     
     ## API Design Principles
     
-    ### **Usage of Upsert Approach**
+    ### Usage of Upsert Approach
     
     The upsert approach is used to either create or update records like contacts or organisations. This pattern uses a single **PUT** request to either create a new resource or update an existing one. 
     
@@ -36,6 +36,10 @@ info:
     **Advantages:**
     * Simpler Client Logic: The client doesn't need to perform a preliminary `GET` request to check for the resource's existence. It can simply use a single `PUT` request.  
     * Idempotent: The `PUT` method is **idempotent**, meaning that multiple identical requests will have the same effect as a single request. This is a key principle of RESTful design.
+
+    ### Contact Minting
+    
+    If the contact/person doesn't already exist in the system, it will be created automatically (minted) when importing. If the profile doesn't already exist, it will also be created automatically and linked to the contact/person. The profile type will depend on the type of interaction.
 
   title: Universal Relationship Service API
   version: 1.0.0
