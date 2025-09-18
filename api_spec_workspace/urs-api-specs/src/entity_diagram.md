@@ -92,6 +92,16 @@ erDiagram
         boolean preferred
     }
 
+    DisclosureSetting {
+        string id PK
+        string contactId FK
+        string category
+        string subject
+        string recipient
+        boolean allowed
+        datetime lastUpdatedAt
+    }
+
     RelationshipParty {
         string relationshipId PK, FK
         string contactId PK, FK
@@ -110,6 +120,7 @@ erDiagram
     Contact ||--o{ SystemLink : "has"
     Contact ||--o{ CommunicationPreference : "has"
     Contact ||--o{ Interaction : "has"
+    Contact ||--o{ DisclosureSetting : "has"
 
     Interaction }o--|| Profile : "relates to"
 
